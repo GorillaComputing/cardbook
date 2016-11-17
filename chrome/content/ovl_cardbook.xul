@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://cardbook/skin/toolbarButton.css" type="text/css"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xul-overlay href="chrome://cardbook/content/ovl_cardbookStringBundle.xul"?>
+<!DOCTYPE overlay SYSTEM "chrome://cardbook/locale/ovl_cardbook.dtd">
+
+<overlay id="ovl_cardbook"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	
+	<stringbundleset id="stringbundleset"/>
+
+	<script src="wdw_log.js"/>
+	<script src="cardbookUtils.js"/>
+	<script src="cardbookSynchronization.js"/>
+	<script src="ovl_synchro.js"/>
+	<script src="cardbookMailPopularity.js"/>
+	<script src="ovl_mailPopularity.js"/>
+	<script src="chrome://cardbook/content/preferences/cardbookPreferences.js"/>
+	<script src="chrome://cardbook/content/yellowStars/ovl_cardbookYellowStars.js"/>
+	<script src="chrome://cardbook/content/cardEdition/ovl_cardbookContacts.js"/>
+	<script src="chrome://cardbook/content/formatMails/ovl_cardbookFormatMails.js"/>
+	<script src="ovl_cardbook.js"/>
+	
+	<window id="messengerWindow">
+		<broadcasterset id="cardbookBroadcasters">
+			<broadcaster id="cardboookModeBroadcaster" mode="cardbook"/>
+		</broadcasterset>
+	</window>
+
+	<menupopup id="taskPopup">
+		<menuitem id="cardbookMenuItem"
+			label="&cardbookMenuItemLabel;"
+			tooltiptext="&cardbookMenuItemTooltip;"
+			oncommand="ovl_cardbook.open()"
+			insertafter="addressBook"/>
+	</menupopup>
+	<menupopup id="appmenu_taskPopup">
+		<menuitem id="cardbookAppMenuItem"
+			label="&cardbookMenuItemLabel;"
+			tooltiptext="&cardbookMenuItemTooltip;"
+			oncommand="ovl_cardbook.open()"
+			insertafter="appmenu_addressBook"/>
+	</menupopup>
+                      
+	<toolbarpalette id="MailToolbarPalette">
+		<toolbarbutton id="cardbookToolbarButton"
+			label="&cardbookToolbarButtonLabel;"
+			tooltiptext="&cardbookToolbarButtonTooltip;"
+			oncommand="ovl_cardbook.open();"
+			class="toolbarbutton-1"/>
+	</toolbarpalette>
+
+	<window id="messengerWindow">
+		<commandset id="cardbook_commands">
+			<command id="cardbookTabButtonOpen"
+				oncommand="ovl_cardbook.open();"/>
+		</commandset>
+	</window>
+  
+	<toolbar id="tabbar-toolbar">
+		<toolbarbutton id="cardbookTabButton"
+			class="toolbarbutton-1"
+			title="&cardbookTabButtonLabel;"
+			tooltiptext="&cardbookTabButtonTooltip;"
+			command="cardbookTabButtonOpen"/>
+	</toolbar>
+
+	<menupopup id="emailAddressPopup" onpopupshowing="setupEmailAddressPopup(findEmailNodeFromPopupNode(document.popupNode, 'emailAddressPopup'));
+														goUpdateCommand('cmd_createFilterFromPopup')">
+		<menu id="addToCardBookMenu" label="&addToCardBookMenuLabel;" insertbefore="addToAddressBookItem">
+			<menupopup id="addToCardBookMenuPopup" onpopupshowing="cardbookUtils.addToCardBookMenuSubMenu(this.id, ovl_cardbookContacts.addToCardBook)"/>
+		</menu>
+		<menuitem id="editInCardBookMenu" label="&editInCardBookMenuLabel;" insertbefore="editContactItem" onclick="ovl_cardbookContacts.editOrViewContact();"/>
+	</menupopup>
+
+	<statusbarpanel id="totalMessageCount" onclick="wdw_cardbook.openLogEdition();" tooltiptext="&statusProgressInformationTooltip;"/>
+</overlay>

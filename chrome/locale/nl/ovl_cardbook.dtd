@@ -1,0 +1,16 @@
+<!ENTITY cardbookMenuItemLabel "CardBook">
+<!ENTITY cardbookMenuItemTooltip "Ga naar CardBook-tab">
+
+<!ENTITY cardbookToolbarButtonLabel "CardBook">
+<!ENTITY cardbookToolbarButtonTooltip "Ga naar CardBook-tab">
+
+<!ENTITY cardbookTabButtonLabel "CardBook">
+<!ENTITY cardbookTabButtonTooltip "Ga naar CardBook-tab">
+
+<!ENTITY addToCardBookMenuLabel "Toevoegen aan CardBook">
+<!ENTITY editInCardBookMenuLabel "Wijzigen met CardBook">
+
+<!ENTITY addAllAttachementsToCardBookMenuLabel "Alle toevoegen aan CardBook...">
+<!ENTITY addAttachementToCardBookMenuLabel "Toevoegen aan CardBook...">
+
+<!ENTITY statusProgressInformationTooltip "Logbestanden bekijken">

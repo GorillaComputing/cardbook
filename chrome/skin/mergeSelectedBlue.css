@@ -1,0 +1,9 @@
+﻿.cardbookBackgroundColorClass textbox[mergeSelected="true"] {
+	-moz-appearance: none !important;
+	background-color: #81F781 !important;
+	border: 1px !important;
+}
+.cardbookBackgroundColorClass vbox {
+	-moz-appearance: none !important;
+	background-color: #CCE0FF !important;
+}

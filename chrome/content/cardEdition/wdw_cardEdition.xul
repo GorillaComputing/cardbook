@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://cardbook/skin/cardbookEditButtons.css" type="text/css"?>
+<?xml-stylesheet href="chrome://cardbook/skin/cardbookTreeCols.css" type="text/css"?>
+<?xul-overlay href="chrome://cardbook/content/ovl_cardbookStringBundle.xul"?>
+<!DOCTYPE window [
+	<!ENTITY % cardEditionDTD SYSTEM "chrome://cardbook/locale/wdw_cardEdition.dtd"> %cardEditionDTD;
+	<!ENTITY % nameDTD SYSTEM "chrome://cardbook/locale/wdw_nameEdition.dtd"> %nameDTD;
+	<!ENTITY % bdayDTD SYSTEM "chrome://cardbook/locale/wdw_bdayEdition.dtd"> %bdayDTD;
+	<!ENTITY % categoriesDTD SYSTEM "chrome://cardbook/locale/wdw_categoriesEdition.dtd"> %categoriesDTD;
+	<!ENTITY % orgDTD SYSTEM "chrome://cardbook/locale/wdw_orgEdition.dtd"> %orgDTD;
+	<!ENTITY % listsDTD SYSTEM "chrome://cardbook/locale/wdw_lists.dtd"> %listsDTD;
+	<!ENTITY % imagesDTD SYSTEM "chrome://cardbook/locale/wdw_images.dtd"> %imagesDTD;
+	<!ENTITY % cardbookDTD SYSTEM "chrome://cardbook/locale/wdw_cardbook.dtd"> %cardbookDTD;
+	<!ENTITY % buttonsDTD SYSTEM "chrome://cardbook/locale/wdw_editionButtons.dtd"> %buttonsDTD;
+]>
+
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	onload="wdw_cardEdition.load();" resizable="true"
+	onclose="wdw_cardEdition.cancel();"
+	id="wdw_cardEdition"
+	persist="screenX screenY width height" class="cardbookBackgroundColorClass"
+	style="min-width:500px;min-height:600px;">
+	
+	<stringbundleset id="stringbundleset"/>
+
+	<script src="chrome://cardbook/content/preferences/cardbookPreferences.js"/>
+	<script src="chrome://cardbook/content/cardbookUtils.js"/>
+	<script src="chrome://cardbook/content/cardbookElementTools.js"/>
+	<script src="chrome://cardbook/content/cardbookTypes.js"/>
+	<script src="chrome://cardbook/content/wdw_log.js"/>
+	<script src="chrome://cardbook/content/cardbookCardParser.js"/>
+	<script src="chrome://cardbook/content/cardbookSynchronization.js"/>
+	<script src="chrome://cardbook/content/cardbookMailPopularity.js"/>
+	<script src="chrome://cardbook/content/cardEdition/wdw_imageEdition.js"/>
+	<script src="chrome://cardbook/content/cardEdition/wdw_cardEdition.js"/>
+
+	<keyset id="wdw_cardEdition-keys">
+		<key id="returnKey" keycode="VK_RETURN" oncommand="wdw_cardEdition.returnKey();"/>
+		<key id="escapeKey" keycode="VK_ESCAPE" oncommand="wdw_cardEdition.cancel();" />
+	</keyset>
+
+	<menupopup id="imageCardContextMenu" onpopupshowing="wdw_imageEdition.imageCardContextShowing();">
+		<menuitem id="addImageCardFromFile" label="&addImageCardFromFileLabel;" oncommand="wdw_imageEdition.addImageCardFromFile();"/>
+		<menuitem id="addImageCardFromClipboard" label="&addImageCardFromClipboardLabel;" oncommand="wdw_imageEdition.addImageCardFromClipboard();"/>
+		<menuitem id="addImageCardFromUrl" label="&addImageCardFromUrlLabel;" oncommand="wdw_imageEdition.addImageCardFromUrl();"/>
+		<menuitem id="saveImageCard" label="&saveImageCardLabel;" oncommand="wdw_imageEdition.saveImageCard();"/>
+		<menuitem id="deleteImageCard" label="&deleteImageCardLabel;" oncommand="wdw_imageEdition.deleteImageCard();"/>
+	</menupopup>
+
+	<menupopup id="availableCardsTreeContextMenu" onpopupshowing="wdw_cardEdition.changeDisplayOrHideHeadersLabel(this);">
+		<menuitem id="appendlistavailableCardsTreeMenu" label="&appendlistTreeLabel;" oncommand="wdw_cardEdition.modifyLists(this);"/>
+		<menuseparator/>
+		<menuitem id="displayOrHideHeadersavailableCardsTree" label="&displayOrHideHeadersLabel;" oncommand="wdw_cardEdition.displayOrHideHeaders();"/>
+	</menupopup>
+
+	<menupopup id="addedCardsTreeContextMenu" onpopupshowing="wdw_cardEdition.changeDisplayOrHideHeadersLabel(this);">
+		<menuitem id="deletelistaddedCardsTreeMenu" label="&deletelistTreeLabel;" oncommand="wdw_cardEdition.modifyLists(this);"/>
+		<menuseparator/>
+		<menuitem id="displayOrHideHeadersaddedCardsTree" label="&displayOrHideHeadersLabel;" oncommand="wdw_cardEdition.displayOrHideHeaders();"/>
+	</menupopup>
+
+	<tabbox id="wdw_cardEditionTabbox" flex="1">
+		
+		<tabs>
+			<tab id="generalTab" label="&generalTabLabel;"/>        
+			<tab id="noteTab" label="&noteTabLabel;"/>
+			<tab id="categoriesTab" label="&categoriesGroupboxLabel;"/>
+			<tab id="listTab" label="&listTabLabel;"/>
+			<tab id="mailPopularityTab" label="&mailPopularityTabLabel;"/>
+		</tabs>
+		
+		<tabpanels id="mainEditionBox" flex="1">
+			<tabpanel orient="vertical" style="overflow:auto">
+				<hbox flex="1">
+					<vbox align="center" width="170px">
+						<hbox id="imageBox" align="center" height="170px">
+							<html:img id="imageForSizing" hidden="true"/>
+							<image id="defaultCardImage" context="imageCardContextMenu" ondblclick="wdw_imageEdition.addImageCardFromFile();"/>
+						</hbox>
+					</vbox>
+					<vbox flex="1">
+						<hbox flex="1">
+							<vbox flex="1">
+								<groupbox id="addressbookMenulistGroupbox" flex="1">
+									<caption id="addressbookMenulistLabel" class="header"/>
+									<hbox align="center" flex="1">
+										<menulist id="addressbookMenulist" flex="1" oncommand="wdw_cardEdition.changeAddressbook();">
+											<menupopup id="addressbookMenupopup" flex="1"/>
+										</menulist>
+									</hbox>
+								</groupbox>
+								<groupbox id="existingDataGroupbox" flex="1">
+									<caption label="&existingDataGroupboxLabel;" class="header"/>
+									<hbox align="center" flex="1">
+										<label id="contactMenulistLabel" value="&contactLabel;" control="contactMenulist" class="header"/>
+										<menulist id="contactMenulist" editable="true" flex="1" oncommand="wdw_cardEdition.changeContact();">
+											<menupopup id="contactMenupopup" flex="1" onpopupshowing="wdw_cardEdition.loadContacts();"/>
+										</menulist>
+									</hbox>
+								</groupbox>
+							</vbox>
+						</hbox>
+						<groupbox id="fnGroupbox">
+							<caption label="&fnLabel;" class="header"/>
+							<textbox id="fnTextBox"/>
+						</groupbox>
+						<spacer flex="100"/>
+					</vbox>
+				</hbox>
+				<hbox flex="1">
+					<groupbox id="persGroupbox" flex="1">
+						<caption label="&persTitleLabel;" class="header"/>
+						<grid align="center" flex="1">
+							<columns>
+								<column/>
+								<column flex="1"/>
+							</columns>
+							<rows>
+								<row>
+									<hbox>
+										<vbox flex="1">
+											<textbox id="lastnameLabel" value="&lastnameLabel;" control="lastnameTextBox" class="header" readonly="true"/>
+											<textbox id="firstnameLabel" value="&firstnameLabel;" control="firstnameTextBox" class="header" readonly="true"/>
+										</vbox>
+										<hbox align="center">
+											<vbox align="center" flex="1">
+												<button id="cardbookSwitchButton" class="editionButtonClass" tooltiptext="&cardbookSwitchButtonTooltip;"
+														buttonType="switch" onclick="wdw_cardEdition.switchLastnameAndFirstname();" oninput="wdw_cardEdition.switchLastnameAndFirstname();"/>
+											</vbox>
+										</hbox>
+									</hbox>
+									<vbox flex="1">
+										<textbox id="lastnameTextBox"/>
+										<textbox id="firstnameTextBox"/>
+									</vbox>
+								</row>
+								<row align="center">
+									<label id="othernameLabel" value="&othernameLabel;" control="othernameTextBox" class="header"/>
+									<textbox id="othernameTextBox"/>
+								</row>
+								<row align="center">
+									<label id="prefixnameLabel" value="&prefixnameLabel;" control="prefixnameTextBox" class="header"/>
+									<textbox id="prefixnameTextBox"/>
+								</row>
+								<row align="center">
+									<label id="suffixnameLabel" value="&suffixnameLabel;" control="suffixnameTextBox" class="header"/>
+									<textbox id="suffixnameTextBox"/>
+								</row>
+								<row align="center">
+									<label id="nicknameLabel" value="&nicknameLabel;" control="nicknameTextBox" class="header"/>
+									<textbox id="nicknameTextBox"/>
+								</row>
+								<row align="center">
+									<label id="bdayLabel" value="&bdayLabel;" control="bdayTextBox" class="header"/>
+									<textbox id="bdayTextBox"/>
+								</row>
+								<row align="center">
+									<label id="genderLabel" value="&genderLabel;" control="genderTextBox" class="header"/>
+									<textbox id="genderTextBox"/>
+								</row>
+								<row align="center">
+									<label id="customField1NameLabel" control="customField1NameTextBox" class="header"/>
+									<textbox id="customField1NameTextBox"/>
+								</row>
+								<row align="center">
+									<label id="customField2NameLabel" control="customField2NameTextBox" class="header"/>
+									<textbox id="customField2NameTextBox"/>
+								</row>
+								<row align="center">
+									<textbox id="othersTextBox" hidden="true" multiline="true"/>
+								</row>
+								<row align="center">
+									<textbox id="photolocalURITextBox" hidden="true"/>
+								</row>
+								<row align="center">
+									<textbox id="photoURITextBox" hidden="true"/>
+								</row>
+								<row align="center">
+									<textbox id="photoExtensionTextBox" hidden="true"/>
+								</row>
+								<row align="center">
+									<textbox id="dirPrefIdTextBox" hidden="true"/>
+								</row>
+								<row align="center">
+									<textbox id="uidTextBox" hidden="true"/>
+								</row>
+								<row align="center">
+									<textbox id="versionTextBox" hidden="true"/>
+								</row>
+							</rows>
+						</grid>
+					</groupbox>
+					<groupbox id="orgGroupbox" flex="1">
+						<caption label="&orgTitleLabel;" class="header"/>
+						<grid align="center" flex="1">
+							<columns>
+								<column/>
+								<column flex="1"/>
+							</columns>
+							<rows id="orgRows"/>
+						</grid>
+					</groupbox>
+				</hbox>
+				<vbox flex="1">
+					<groupbox id="emailGroupbox" flex="1"/>
+					<groupbox id="telGroupbox" flex="1"/>
+					<groupbox id="adrGroupbox" flex="1"/>
+					<groupbox id="imppGroupbox" flex="1"/>
+					<groupbox id="urlGroupbox" flex="1"/>
+				</vbox>
+				<spacer flex="100"/>
+			</tabpanel>
+
+			<tabpanel orient="vertical" style="overflow:auto">
+				<hbox id="noteGroupbox" flex="1">
+					<textbox id="noteTextBox" flex="1" multiline="true" wrap="virtual"/>
+				</hbox>
+			</tabpanel>
+
+			<tabpanel orient="vertical" style="overflow:auto">
+				<groupbox id="categoriesReadOnlyGroupbox">
+					<caption id="categoriesLabel" label="&categoriesGroupboxLabel;" class="header"/>
+					<textbox id="categoriesTextBox" flex="1"/>
+				</groupbox>
+				<groupbox id="categoriesReadWriteGroupbox" flex="1">
+					<caption label="&categoriesGroupboxLabel;" class="header"/>
+					<grid align="center" flex="1">
+						<columns>
+							<column/>
+							<column flex="1"/>
+						</columns>
+						<rows>
+							<row align="center" flex="1">
+								<label value="&categoriesListboxLabel;" control="categoriesListbox" class="header"/>
+								<listbox id="categoriesListbox" align="center" flex="1"/>
+							</row>
+							<row align="center">
+								<label value="&categoryTextboxLabel;" control="categoryTextbox" class="header"/>
+								<textbox id="categoryTextbox"/>
+								<button id="createCategoryEditionLabel" label="&createEditionLabel;" accesskey="&createEditionAccesskey;" oncommand="wdw_cardEdition.createCategory();"/>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+				<spacer flex="100"/>
+			</tabpanel>
+
+			<tabpanel orient="vertical" style="overflow:auto">
+				<vbox id="listReadOnlyGroupbox" flex="1">
+					<grid align="center" flex="1">
+						<columns>
+							<column/>
+							<column flex="1"/>
+						</columns>
+						<rows>
+							<groupbox id="addedCardsReadOnlyGroupbox" flex="1">
+								<caption label="&addedCardsGroupboxLabel;" class="header"/>
+								<vbox id="addedCardsBox" flex="1"/>
+							</groupbox>
+						</rows>
+					</grid>
+					<spacer flex="100"/>
+				</vbox>
+				<vbox id="listReadWriteGroupbox" flex="1">
+					<hbox align="center">
+						<label value="&kindLabel;" accesskey="&kindAccesskey;" control="kindTextBox" class="header"/>
+						<textbox id="kindTextBox"/>
+					</hbox>
+					<hbox flex="1">
+						<vbox flex="1">
+							<groupbox id="availableCardsGroupbox" flex="1">
+								<caption label="&availableCardsGroupboxLabel;" class="header"/>
+								<textbox id="searchAvailableCardsInput"
+									type="search" class="cardbookBackgroundColorClass"
+									oncommand="wdw_cardEdition.searchAvailableCards(null);"/>
+								<tree id="availableCardsTree" context="availableCardsTreeContextMenu" class="cardbookTreeChildrenCardClass" flex="1" enableColumnDrag="true" persist="height sortDirection sortResource" sortDirection="ascending" sortResource="availableCardsName">
+									<treecols id="availableCardsTreeCols">
+										<treecol id="availableCardsName" label="&fnColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" onclick="wdw_cardEdition.sortListTreeCol(null, this, null);" class="sortDirectionIndicator" sortDirection="ascending"/>
+										<splitter class="tree-splitter"/>
+										<treecol id="availableCardsId" label="&uidColumnLabel;" flex="1" persist="width ordinal hidden" hidden="true" style="text-align:left" onclick="wdw_cardEdition.sortListTreeCol(null, this, null);" class="sortDirectionIndicator" sortDirection="ascending"/>
+									</treecols>
+									<treechildren id="availableCardsTreeChildren" ondblclick="wdw_cardEdition.modifyLists(this);"/>
+								</tree>
+							</groupbox>
+						</vbox>
+						<vbox flex="1" align="center">
+							<hbox flex="1" align="center">
+								<vbox flex="1" align="center">
+									<button class="cardbookButtonClass" id="appendlistavailableCardsTreeButton" label="&buttonAppendToListLabel;"
+											accesskey="&buttonAppendToListAccesskey;" oncommand="wdw_cardEdition.modifyLists(this);"/>
+									<button class="cardbookButtonClass" id="deletelistaddedCardsTreeButton" label="&buttonRemoveFromListLabel;"
+											accesskey="&buttonRemoveFromListAccesskey;" oncommand="wdw_cardEdition.modifyLists(this);"/>
+								</vbox>
+							</hbox>
+						</vbox>
+						<vbox flex="1">
+							<groupbox id="addedCardsGroupbox" flex="1">
+								<caption label="&addedCardsGroupboxLabel;" class="header"/>
+								<tree id="addedCardsTree" context="addedCardsTreeContextMenu" class="cardbookTreeChildrenCardClass" flex="1" enableColumnDrag="true" persist="height sortDirection sortResource" sortDirection="ascending" sortResource="addedCardsName">
+									<treecols id="addedCardsTreeCols">
+										<treecol id="addedCardsName" label="&fnColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" onclick="wdw_cardEdition.sortListTreeCol(null, this, null);" class="sortDirectionIndicator" sortDirection="ascending"/>
+										<splitter class="tree-splitter"/>
+										<treecol id="addedCardsId" label="&uidColumnLabel;" flex="1" persist="width ordinal hidden" hidden="true" style="text-align:left" onclick="wdw_cardEdition.sortListTreeCol(null, this, null);" class="sortDirectionIndicator" sortDirection="ascending"/>
+									</treecols>
+									<treechildren id="addedCardsTreeChildren" ondblclick="wdw_cardEdition.modifyLists(this);"/>
+								</tree>
+							</groupbox>
+						</vbox>
+					</hbox>
+				</vbox>
+			</tabpanel>
+
+			<tabpanel orient="vertical" style="overflow:auto">
+				<groupbox id="mailPopularityReadWriteGroupbox" flex="1">
+					<caption label="&mailPopularityTabLabel;" class="header"/>
+					<grid>
+						<columns flex="1">
+							<column/>
+							<column flex="1"/>
+						</columns>
+						<rows id="mailPopularityRows"/>
+					</grid>
+				</groupbox>
+				<spacer flex="100"/>
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+
+	<hbox>
+		<spacer flex="1"/>
+		<button id="createEditionLabel" label="&createEditionLabel;" accesskey="&createEditionAccesskey;" oncommand="wdw_cardEdition.create();"/>
+		<button id="createAndReplaceEditionLabel" label="&createAndReplaceEditionLabel;" accesskey="&createAndReplaceEditionAccesskey;" oncommand="wdw_cardEdition.createAndReplace();"/>
+		<button id="saveEditionLabel" label="&saveEditionLabel;" accesskey="&saveEditionAccesskey;" oncommand="wdw_cardEdition.save();"/>
+		<button id="cancelEditionLabel" label="&cancelEditionLabel;" accesskey="&cancelEditionAccesskey;" oncommand="wdw_cardEdition.cancel();"/>
+	</hbox>
+</window>

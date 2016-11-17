@@ -1,0 +1,16 @@
+<!ENTITY cardbookMenuItemLabel "CardBook">
+<!ENTITY cardbookMenuItemTooltip "Aller à l'onglet CardBook">
+
+<!ENTITY cardbookToolbarButtonLabel "CardBook">
+<!ENTITY cardbookToolbarButtonTooltip "Aller à l'onglet CardBook">
+
+<!ENTITY cardbookTabButtonLabel "CardBook">
+<!ENTITY cardbookTabButtonTooltip "Aller à l'onglet CardBook">
+
+<!ENTITY addToCardBookMenuLabel "Ajouter à CardBook">
+<!ENTITY editInCardBookMenuLabel "Modifier avec CardBook">
+
+<!ENTITY addAllAttachementsToCardBookMenuLabel "Tout dans CardBook...">
+<!ENTITY addAttachementToCardBookMenuLabel "Dans CardBook...">
+
+<!ENTITY statusProgressInformationTooltip "Cliquer ici pour voir les logs">

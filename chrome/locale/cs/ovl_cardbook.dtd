@@ -1,0 +1,16 @@
+<!ENTITY cardbookMenuItemLabel "CardBook">
+<!ENTITY cardbookMenuItemTooltip "Jít na záložku CardBooku">
+
+<!ENTITY cardbookToolbarButtonLabel "CardBook">
+<!ENTITY cardbookToolbarButtonTooltip "Jít na záložku CardBooku">
+
+<!ENTITY cardbookTabButtonLabel "CardBook">
+<!ENTITY cardbookTabButtonTooltip "Jít na záložku CardBooku">
+
+<!ENTITY addToCardBookMenuLabel "Přidat do CardBooku">
+<!ENTITY editInCardBookMenuLabel "Upravit v CardBooku">
+
+<!ENTITY addAllAttachementsToCardBookMenuLabel "Vše do CardBooku...">
+<!ENTITY addAttachementToCardBookMenuLabel "Do CardBooku...">
+
+<!ENTITY statusProgressInformationTooltip "Klikněte zde pro zobrazení protokolů">

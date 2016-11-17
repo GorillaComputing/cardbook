@@ -1,0 +1,148 @@
+﻿.cardbookBackgroundColorClass tabbox {
+	-moz-appearance: none !important;
+	background-color: #CCE0FF !important;
+}
+.cardbookBackgroundColorClass tabpanels {
+	-moz-appearance: none !important;
+	background-color: #CCE0FF !important;
+}
+.cardbookBackgroundColorClass tabpanel {
+	-moz-appearance: none !important;
+	background-color: #CCE0FF !important;
+}
+.cardbookBackgroundColorClass grid {
+	-moz-appearance: none !important;
+	background-color: #CCE0FF !important;
+}
+.cardbookBackgroundColorClass caption {
+	-moz-appearance: none !important;
+	background-color: #CCE0FF !important;
+}
+.cardbookBackgroundColorClass listbox {
+	-moz-appearance: none !important;
+	background-color: #CCE0FF !important;
+	border: 1px !important;
+}
+.cardbookBackgroundColorClass textbox[readonly="true"] {
+	-moz-appearance: none !important;
+	background-color: #CCE0FF !important;
+	border: 0px !important;
+	min-height:16px !important;
+	padding-left: 0px !important;
+}
+.cardbookBackgroundColorClass textbox[link="true"] {
+	-moz-appearance: none !important;
+	background-color: #CCE0FF !important;
+	border: 0px !important;
+	cursor: pointer !important;
+	color: #0000ff !important;
+	text-decoration: underline !important;
+	min-height:16px !important;
+}
+.cardbookBackgroundColorClass textbox[link="true"]:hover {
+	-moz-appearance: none !important;
+	background-color: #CCE0FF !important;
+	border: 0px !important;
+	cursor: pointer !important;
+	color: #ff0000 !important;
+	text-decoration: underline !important;
+	min-height:16px !important;
+}
+
+#mainEditionBox,
+#mainHbox {
+	-moz-appearance: none !important;
+	background-color: #CCE0FF !important;
+	border: 0px !important;
+}
+.cardbookBackgroundColorClass textbox {
+	-moz-appearance: none !important;
+	background-color: #E6F0FF !important;
+	border: 0px !important;
+	min-height:16px !important;
+}
+.cardbookBackgroundColorClass treechildren,
+.cardbookBackgroundColorClass treechildren::-moz-tree-row(odd),
+.cardbookBackgroundColorClass treechildren::-moz-tree-row(even) {
+	background-color: #E6F0FF;
+}
+.cardbookBackgroundColorClass listitem {
+	-moz-appearance: none !important;
+	background-color: #E6F0FF !important;
+}
+.cardbookBackgroundColorClass menulist {
+	-moz-appearance: none !important;
+	background-color: #E6F0FF !important;
+	border: 1px !important;
+}
+.cardbookBackgroundColorClass menupopup {
+	-moz-appearance: none !important;
+	background-color: #E6F0FF !important;
+}
+
+.cardbookTreeChildrenAccountClass treechildren,
+.cardbookTreeChildrenAccountClass treechildren::-moz-tree-row(odd),
+.cardbookTreeChildrenAccountClass treechildren::-moz-tree-row(even) {
+	background-color: #E6F0FF;
+}
+.cardbookTreeChildrenAccountClass treechildren::-moz-tree-row(odd selected),
+.cardbookTreeChildrenAccountClass treechildren::-moz-tree-row(even selected) {
+	-moz-appearance: none !important;
+    background-color: Highlight !important;
+    color: HighlightText !important;
+    padding: 0 5px !important;
+}
+
+.cardbookTreeChildrenCardsClass treechildren,
+.cardbookTreeChildrenCardsClass treechildren::-moz-tree-row(NOSEARCH odd),
+.cardbookTreeChildrenCardsClass treechildren::-moz-tree-row(NOSEARCH even) {
+	background-color: #E6F0FF;
+}
+.cardbookTreeChildrenCardsClass treechildren::-moz-tree-row(NOSEARCH odd selected),
+.cardbookTreeChildrenCardsClass treechildren::-moz-tree-row(NOSEARCH even selected) {
+	-moz-appearance: none !important;
+    background-color: Highlight !important;
+    color: HighlightText !important;
+    padding: 0 5px !important;
+}
+
+.cardbookTreeChildrenCardClass treechildren,
+.cardbookTreeChildrenCardClass treechildren::-moz-tree-row(odd),
+.cardbookTreeChildrenCardClass treechildren::-moz-tree-row(even) {
+	background-color: #E6F0FF;
+}
+.cardbookTreeChildrenCardClass treechildren::-moz-tree-row(odd selected),
+.cardbookTreeChildrenCardClass treechildren::-moz-tree-row(even selected) {
+	-moz-appearance: none !important;
+    background-color: Highlight !important;
+    color: HighlightText !important;
+    padding: 0 5px !important;
+}
+
+.cardbookVerticalSplitter {
+	-moz-appearance: none !important;
+	border-top: 0px;
+	border-left: 0px;
+	border-right: 2px solid ThreeDShadow;
+	border-bottom: 0px;
+	overflow: hidden;
+	background-color: #E6F0FF;
+}
+.cardbookHorizontalSplitter {
+	-moz-appearance: none !important;
+	border-top: 2px solid ThreeDShadow;
+	border-left: 0px;
+	border-right: 0px;
+	border-bottom: 0px;
+	overflow: hidden;
+	background-color: #CCE0FF;
+}
+
+.cardbookPrefClass {
+	list-style-image: url("chrome://cardbook/skin/valid_32_16.png");
+	-moz-image-region: rect(0 16px 16px 0);
+}
+.cardbookNotPrefClass {
+	list-style-image: url("chrome://cardbook/skin/valid_32_16.png");
+	-moz-image-region: rect(0 32px 16px 16px);
+}
