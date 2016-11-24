@@ -54,3 +54,6 @@ pref("extensions.cardbook.eventEntryTime", "00:00");
 pref("extensions.cardbook.eventEntryWholeDay", false);
 pref("extensions.cardbook.calendarEntryAlarm", "7");
 pref("extensions.cardbook.calendarEntryCategories", "");
+
+pref("extensions.cardbook.viewABPane", true);
+pref("extensions.cardbook.viewABContact", true);

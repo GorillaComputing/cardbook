@@ -14,3 +14,7 @@
 <!ENTITY addAttachementToCardBookMenuLabel "Do CardBooku...">
 
 <!ENTITY statusProgressInformationTooltip "Klikněte zde pro zobrazení protokolů">
+<!ENTITY cardbookABPaneItemLabel "Panel adresáře">
+<!ENTITY cardbookABPaneItemAccesskey "A">
+<!ENTITY cardbookContactPaneItemLabel "Panel kontaktu">
+<!ENTITY cardbookContactPaneItemAccesskey "K">

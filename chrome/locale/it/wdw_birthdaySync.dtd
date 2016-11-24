@@ -1,0 +1,7 @@
+<!ENTITY calendarNameLabel "Calendario">
+<!ENTITY calendarIdLabel "ID Calendario">
+<!ENTITY existingLabel "Esistente">
+<!ENTITY failedLabel "Non riuscito">
+<!ENTITY succeededLabel "Riuscito">
+<!ENTITY closeButtonLabel "Chiudi">
+<!ENTITY closeButtonAccesskey "C">

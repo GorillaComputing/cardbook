@@ -67,13 +67,13 @@
 <!ENTITY typesCategoryTelLabel "Telefon">
 <!ENTITY typesCategoryTelAccesskey "T">
 <!ENTITY typesCategoryUrlLabel "URL">
-<!ENTITY typesCategoryUrlAccesskey "U">
+<!ENTITY typesCategoryUrlAccesskey "L">
 <!ENTITY typesCodeLabel "Kód">
 <!ENTITY typesLabelLabel "Popisek">
 <!ENTITY addTypeLabel "Přidat">
 <!ENTITY addTypeAccesskey "P">
-<!ENTITY renameTypeLabel "Přejmenovat">
-<!ENTITY renameTypeAccesskey "J">
+<!ENTITY renameTypeLabel "Upravit">
+<!ENTITY renameTypeAccesskey "U">
 <!ENTITY deleteTypeLabel "Smazat">
 <!ENTITY deleteTypeAccesskey "S">
 <!ENTITY preferenceGroupboxLabel "Pole PREF">
@@ -98,11 +98,6 @@
 <!ENTITY lookGroupboxLabel "Styl">
 <!ENTITY defaultLookLabel "Styl CardBooku (modrý)">
 <!ENTITY defaultLookAccesskey "C">
-<!ENTITY panesViewGroupboxLabel "Styl položky kontaktu">
-<!ENTITY panesViewClassicalLabel "Jeden sloupec, dva řádky (klasické zobrazení)">
-<!ENTITY panesViewClassicalAccesskey "J">
-<!ENTITY panesViewModernLabel "Tři sloupce">
-<!ENTITY panesViewModernAccesskey "T">
 
 <!ENTITY syncGroupboxLabel "Synch.">
 <!ENTITY syncWarn "Synchronizace zajistí odeslání vašich úprav na server a úprav na serveru k vám.">

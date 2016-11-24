@@ -24,6 +24,7 @@
 	<script src="wdw_log.js"/>
 	<script src="chrome://cardbook/content/preferences/cardbookPreferences.js"/>
 	<script src="cardbookSynchronization.js"/>
+	<script src="chrome://cardbook/content/layout/ovl_cardbookLayout.js"/>
 	<script src="chrome://cardbook/content/birthdays/cardbookBirthdaysUtils.js"/>
 
 	<prefpane id="sw2-stock-pane" label="Stock Settings">
@@ -259,16 +260,9 @@
 						</hbox>
 						
 						<hbox flex="1">
-							<hbox align="center">
-								<vbox flex="1">
-									<button id="addTypeLabel" label="&addTypeLabel;" accesskey="&addTypeAccesskey;" oncommand="wdw_cardbookConfiguration.addType();"/>
-									<button id="renameTypeLabel" label="&renameTypeLabel;" accesskey="&renameTypeAccesskey;" oncommand="wdw_cardbookConfiguration.renameType();"/>
-									<button id="deleteTypeLabel" label="&deleteTypeLabel;" accesskey="&deleteTypeAccesskey;" oncommand="wdw_cardbookConfiguration.deleteType();"/>
-								</vbox>
-							</hbox>
 							<vbox flex="1">
 								<hbox flex="1">
-									<tree id="typesTree" class="cardbookTreeChildrenConfigClass" hidecolumnpicker="true" flex="1" seltype="single" enableColumnDrag="false">
+									<tree id="typesTree" class="cardbookTreeChildrenConfigClass" hidecolumnpicker="true" flex="1" seltype="single" enableColumnDrag="false" onselect="wdw_cardbookConfiguration.selectTypes();">
 										<treecols id="typesTreeCols">
 											<treecol id="typesCode" label="&typesCodeLabel;" persist="width ordinal hidden" style="text-align:left"/>
 											<splitter class="tree-splitter"/>
@@ -278,6 +272,13 @@
 									</tree>
 								</hbox>
 							</vbox>
+							<hbox align="top">
+								<vbox flex="1">
+									<button id="addTypeLabel" label="&addTypeLabel;" accesskey="&addTypeAccesskey;" oncommand="wdw_cardbookConfiguration.addType();"/>
+									<button id="renameTypeLabel" label="&renameTypeLabel;" accesskey="&renameTypeAccesskey;" oncommand="wdw_cardbookConfiguration.renameType();" disabled="true"/>
+									<button id="deleteTypeLabel" label="&deleteTypeLabel;" accesskey="&deleteTypeAccesskey;" oncommand="wdw_cardbookConfiguration.deleteType();" disabled="true"/>
+								</vbox>
+							</hbox>
 						</hbox>
 					</groupbox>
 					<groupbox>
@@ -307,15 +308,17 @@
 					<separator class="thin"/>
 					<groupbox>
 						<caption label="&orgTitleLabel;"/>
-						<hbox flex="1" align="center">
+						<hbox flex="1">
 							<vbox flex="1">
-								<listbox rows="8" id="orgListbox"/>
+								<listbox rows="8" id="orgListbox" onselect="wdw_cardbookConfiguration.selectOrg();" ondblclick="wdw_cardbookConfiguration.renameOrg();"/>
 							</vbox>
-							<vbox flex="1">
-								<button id="addOrgLabel" label="&addTypeLabel;" accesskey="&addTypeAccesskey;" oncommand="wdw_cardbookConfiguration.addOrg();"/>
-								<button id="renameOrgLabel" label="&renameTypeLabel;" accesskey="&renameTypeAccesskey;" oncommand="wdw_cardbookConfiguration.renameOrg();"/>
-								<button id="deleteOrgLabel" label="&deleteTypeLabel;" accesskey="&deleteTypeAccesskey;" oncommand="wdw_cardbookConfiguration.deleteOrg();"/>
-							</vbox>
+							<hbox align="top">
+								<vbox flex="1">
+									<button id="addOrgLabel" label="&addTypeLabel;" accesskey="&addTypeAccesskey;" oncommand="wdw_cardbookConfiguration.addOrg();"/>
+									<button id="renameOrgLabel" label="&renameTypeLabel;" accesskey="&renameTypeAccesskey;" oncommand="wdw_cardbookConfiguration.renameOrg();" disabled="true"/>
+									<button id="deleteOrgLabel" label="&deleteTypeLabel;" accesskey="&deleteTypeAccesskey;" oncommand="wdw_cardbookConfiguration.deleteOrg();" disabled="true"/>
+								</vbox>
+							</hbox>
 						</hbox>
 					</groupbox>
 				</tabpanel>
@@ -424,16 +427,6 @@
 							<checkbox id="defaultLookCheckBox" label="&defaultLookLabel;"
 								accesskey="&defaultLookAccesskey;"
 								preference="extensions.cardbook.defaultLook"/>
-						</hbox>
-					</groupbox>
-
-					<groupbox>
-						<caption label="&panesViewGroupboxLabel;"/>
-						<hbox align="center">
-							<radiogroup id="panesViewRadiogroup" preference="extensions.cardbook.panesView">
-								<radio value="classical" label="&panesViewClassicalLabel;" accesskey="&panesViewClassicalAccesskey;" selected="true"/>
-								<radio value="modern" label="&panesViewModernLabel;" accesskey="&panesViewModernAccesskey;"/>
-							</radiogroup>
 						</hbox>
 					</groupbox>
 				</tabpanel>

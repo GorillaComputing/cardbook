@@ -72,15 +72,15 @@
 <!ENTITY typesLabelLabel "Etiqueta">
 <!ENTITY addTypeLabel "Adicionar">
 <!ENTITY addTypeAccesskey "A">
-<!ENTITY renameTypeLabel "Renomear">
-<!ENTITY renameTypeAccesskey "R">
+<!ENTITY renameTypeLabel "Editar">
+<!ENTITY renameTypeAccesskey "E">
 <!ENTITY deleteTypeLabel "Apagar">
 <!ENTITY deleteTypeAccesskey "G">
 <!ENTITY preferenceGroupboxLabel "Campo PREFerido">
 <!ENTITY preferenceLabel "Etiqueta do campo PREFerido">
 <!ENTITY preferenceAccesskey "P">
 <!ENTITY preferenceValueLabel "Etiqueta do campo PREFerido (só para vCard 4.0)">
-<!ENTITY preferenceValueAccesskey "E">
+<!ENTITY preferenceValueAccesskey "Q">
 
 <!ENTITY customFieldsPanelLabel "Definição de campos customizaveis.">
 <!ENTITY customFieldName "Nome do campo">
@@ -98,22 +98,17 @@
 <!ENTITY lookGroupboxLabel "Estilo">
 <!ENTITY defaultLookLabel "Estilo CardBook (azul)">
 <!ENTITY defaultLookAccesskey "C">
-<!ENTITY panesViewGroupboxLabel "Estilo de visualização">
-<!ENTITY panesViewClassicalLabel "Uma coluna, 2 colunas (vista classica)">
-<!ENTITY panesViewClassicalAccesskey "U">
-<!ENTITY panesViewModernLabel "3 colunas">
-<!ENTITY panesViewModernAccesskey "O">
 
 <!ENTITY syncGroupboxLabel "Sinc.">
 <!ENTITY syncWarn "A Sincronização vai propagar as modificações para o servidor remoto e as modificações do servidor remoto para local.">
 <!ENTITY initialSyncLabel "Correr a sincronização inicial no arranque do Thunderbird">
 <!ENTITY initialSyncAccesskey "C">
-<!ENTITY solveConflictsLabel "??If a contact was updated both on server and locally:??">
-<!ENTITY solveConflictsLocalLabel "??Prefer the local modification??">
+<!ENTITY solveConflictsLabel "Se um contacto foi actualizado localmente e no servidor:">
+<!ENTITY solveConflictsLocalLabel "Preferir a alteração local">
 <!ENTITY solveConflictsLocalAccesskey "L">
-<!ENTITY solveConflictsRemoteLabel "??Prefer the server modification??">
-<!ENTITY solveConflictsRemoteAccesskey "S">
-<!ENTITY solveConflictsUserLabel "??Ask user??">
+<!ENTITY solveConflictsRemoteLabel "Preferir a alteração remota">
+<!ENTITY solveConflictsRemoteAccesskey "R">
+<!ENTITY solveConflictsUserLabel "Perguntar ao utilizador">
 <!ENTITY solveConflictsUserAccesskey "U">
 <!ENTITY autoSyncGroupboxLabel "Sincronização periódica">
 <!ENTITY autoSyncLabel "Activar sincronização periódica">

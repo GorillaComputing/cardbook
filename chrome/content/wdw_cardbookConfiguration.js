@@ -391,6 +391,28 @@ if ("undefined" == typeof(wdw_cardbookConfiguration)) {
 			buttonAccept.disabled = false;
 		},
 
+		selectTypes: function() {
+			var btnEdit = document.getElementById("renameTypeLabel");
+			var myTree = document.getElementById("typesTree");
+			if (myTree.view.selection.getRangeCount() > 0) {
+				btnEdit.disabled = false;
+			} else {
+				btnEdit.disabled = true;
+			}
+			document.getElementById("deleteTypeLabel").disabled = btnEdit.disabled;
+		},
+
+		selectOrg: function() {
+			var btnEdit = document.getElementById("renameOrgLabel");
+			var listBox = document.getElementById("orgListbox");
+			if (listBox.selectedCount > 0) {
+				btnEdit.disabled = false;
+			} else {
+				btnEdit.disabled = true;
+			}
+			document.getElementById("deleteOrgLabel").disabled = btnEdit.disabled;
+		},
+
 		loadCustoms: function () {
 			for (var i in cardbookRepository.customFields) {
 				document.getElementById(cardbookRepository.customFields[i] + 'Name').value = cardbookRepository.customFieldsValue[cardbookRepository.customFields[i]];
@@ -518,6 +540,7 @@ if ("undefined" == typeof(wdw_cardbookConfiguration)) {
 				}
 			}
 			document.getElementById('typesTree').view = typesTreeView;
+			wdw_cardbookConfiguration.selectTypes();
 		},
 		
 		addType: function () {
@@ -738,7 +761,7 @@ if ("undefined" == typeof(wdw_cardbookConfiguration)) {
 			wdw_cardbookConfiguration.validateOrg();
 			wdw_cardbookConfiguration.validateMailAccounts();
 			wdw_cardbookConfiguration.validateEventEntryTitle();
-			cardbookUtils.orientBoxes();
+			ovl_cardbookLayout.orientPanes();
 			if (!(wdw_cardbookConfiguration.validateCustoms())) {
 				// don't work
 				// return false;

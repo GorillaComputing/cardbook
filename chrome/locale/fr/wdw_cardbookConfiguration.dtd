@@ -72,8 +72,8 @@
 <!ENTITY typesLabelLabel "Label">
 <!ENTITY addTypeLabel "Ajouter">
 <!ENTITY addTypeAccesskey "A">
-<!ENTITY renameTypeLabel "Renommer">
-<!ENTITY renameTypeAccesskey "R">
+<!ENTITY renameTypeLabel "Modifier">
+<!ENTITY renameTypeAccesskey "M">
 <!ENTITY deleteTypeLabel "Supprimer">
 <!ENTITY deleteTypeAccesskey "S">
 <!ENTITY preferenceGroupboxLabel "Champ PREF">
@@ -98,11 +98,6 @@
 <!ENTITY lookGroupboxLabel "Apparence">
 <!ENTITY defaultLookLabel "Thème CardBook (bleu)">
 <!ENTITY defaultLookAccesskey "C">
-<!ENTITY panesViewGroupboxLabel "Positionnement des blocs">
-<!ENTITY panesViewClassicalLabel "Vue avec une colonne et deux lignes (vue standard)">
-<!ENTITY panesViewClassicalAccesskey "U">
-<!ENTITY panesViewModernLabel "Vue en trois colonnes">
-<!ENTITY panesViewModernAccesskey "T">
 
 <!ENTITY syncGroupboxLabel "Synchronisations">
 <!ENTITY syncWarn "Synchroniser est la seule méthode pour sauver vos modifications sur un serveur distant.">

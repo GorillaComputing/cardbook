@@ -72,8 +72,8 @@
 <!ENTITY typesLabelLabel "Naam">
 <!ENTITY addTypeLabel "Toevoegen">
 <!ENTITY addTypeAccesskey "T">
-<!ENTITY renameTypeLabel "Hernoemen">
-<!ENTITY renameTypeAccesskey "H">
+<!ENTITY renameTypeLabel "Bewerken">
+<!ENTITY renameTypeAccesskey "B">
 <!ENTITY deleteTypeLabel "Verwijderen">
 <!ENTITY deleteTypeAccesskey "V">
 <!ENTITY preferenceGroupboxLabel "Rubriek 'Voorkeur'">
@@ -98,11 +98,6 @@
 <!ENTITY lookGroupboxLabel "Stijl">
 <!ENTITY defaultLookLabel "CardBook stijl (blauw)">
 <!ENTITY defaultLookAccesskey "C">
-<!ENTITY panesViewGroupboxLabel "Stijl van bewerken contactpersoon">
-<!ENTITY panesViewClassicalLabel "Eén kolom, twee kolommen, twee rijen (klassiek)">
-<!ENTITY panesViewClassicalAccesskey "E">
-<!ENTITY panesViewModernLabel "Drie kolommen">
-<!ENTITY panesViewModernAccesskey "D">
 
 <!ENTITY syncGroupboxLabel "Voorrang">
 <!ENTITY syncWarn "Synchroniseren werkt de wijzigingen in CardBook bij naar de server en de wijzigingen op de server naar CardBook.">

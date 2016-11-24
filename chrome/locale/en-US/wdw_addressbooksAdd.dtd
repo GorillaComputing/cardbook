@@ -10,7 +10,6 @@
 <!ENTITY initialpage.network.label "Remote">
 
 <!ENTITY locationComputerPage.wizard.description "Type and location of the new local address book.">
-<!ENTITY locationComputerPage.description "Do you want to open an existing address book or create a new empty one ? :">
 <!ENTITY locationComputerPage.type.description "What is the type of your local address book ? :">
 <!ENTITY locationComputerPage.type.label "Type">
 <!ENTITY locationComputerPage.createDirectory.label "Create a new address book (Directory)">

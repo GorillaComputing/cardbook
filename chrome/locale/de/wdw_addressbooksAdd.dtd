@@ -10,7 +10,6 @@
 <!ENTITY initialpage.network.label "Im Netzwerk">
 
 <!ENTITY locationComputerPage.wizard.description "Art und Ort des neuen lokalen Adressbuchs.">
-<!ENTITY locationComputerPage.description "Möchten Sie ein existierendes Adressbuch öffnen oder ein neues erstellen?">
 <!ENTITY locationComputerPage.type.description "Welcher Art ist das lokale Adressbuch?">
 <!ENTITY locationComputerPage.type.label "Art">
 <!ENTITY locationComputerPage.createDirectory.label "Neues Adressbuch erstellen (Verzeichnis)">

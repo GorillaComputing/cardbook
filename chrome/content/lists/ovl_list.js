@@ -33,16 +33,16 @@ cardbookListConversion.prototype = {
 		var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 		var preferEmailPref = prefs.getBoolPref("extensions.cardbook.preferEmailPref");
 		Components.utils.import("chrome://cardbook/content/cardbookRepository.js");
-		var listOfEmails = [];
-		listOfEmails = cardbookUtils.getDisplayNameAndEmailFromEmails(aEmails);
-		for (var i = 0; i < listOfEmails.length; i++) {
-			if (listOfEmails[i][1].indexOf("@") > 0) {
-				this.emailResult.push(listOfEmails[i][0] + " <" + listOfEmails[i][1] + ">");
+		var addresses = {}, names = {}, fullAddresses = {};
+		MailServices.headerParser.parseHeadersWithArray(aEmails, addresses, names, fullAddresses);
+		for (var i = 0; i < addresses.value.length; i++) {
+			if (addresses.value[i].indexOf("@") > 0) {
+				this.emailResult.push(fullAddresses.value[i]);
 			} else {
 				for (j in cardbookRepository.cardbookCards) {
 					var myCard = cardbookRepository.cardbookCards[j];
-					if (cardbookUtils.formatFnForEmail(myCard.fn) == listOfEmails[i][0]) {
-						this.recursiveList.push(listOfEmails[i][0]);
+					if (cardbookUtils.formatFnForEmail(myCard.fn) == names.value[i]) {
+						this.recursiveList.push(names.value[i]);
 						if (myCard.version == "4.0") {
 							for (var k = 0; k < myCard.member.length; k++) {
 								var uid = myCard.member[k].replace("urn:uuid:", "");
@@ -85,7 +85,7 @@ if ("undefined" == typeof(ovl_list)) {
 			for (var i = 0; i < listToCollect.length; i++) {
 				if (myFields[listToCollect[i]]) {
 					if (myFields[listToCollect[i]] != null && myFields[listToCollect[i]] !== undefined && myFields[listToCollect[i]] != "") {
-						var myConversion = new cardbookListConversion(jsmime.headerparser.decodeRFC2047Words(myFields[listToCollect[i]]));
+						var myConversion = new cardbookListConversion(myFields[listToCollect[i]]);
 						myFields[listToCollect[i]] = cardbookRepository.arrayUnique(myConversion.emailResult).join(", ");
 					}
 				}

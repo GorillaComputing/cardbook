@@ -14,3 +14,7 @@
 <!ENTITY addAttachementToCardBookMenuLabel "Dans CardBook...">
 
 <!ENTITY statusProgressInformationTooltip "Cliquer ici pour voir les logs">
+<!ENTITY cardbookABPaneItemLabel "Paneau des carnets d'adresses">
+<!ENTITY cardbookABPaneItemAccesskey "A">
+<!ENTITY cardbookContactPaneItemLabel "Paneau du contact">
+<!ENTITY cardbookContactPaneItemAccesskey "O">

@@ -72,8 +72,8 @@
 <!ENTITY typesLabelLabel "Label">
 <!ENTITY addTypeLabel "Hinzufügen">
 <!ENTITY addTypeAccesskey "H">
-<!ENTITY renameTypeLabel "Umbenennen">
-<!ENTITY renameTypeAccesskey "U">
+<!ENTITY renameTypeLabel "Bearbeiten">
+<!ENTITY renameTypeAccesskey "B">
 <!ENTITY deleteTypeLabel "Löschen">
 <!ENTITY deleteTypeAccesskey "L">
 <!ENTITY preferenceGroupboxLabel "Feld PREF">
@@ -98,11 +98,6 @@
 <!ENTITY lookGroupboxLabel "Aussehen">
 <!ENTITY defaultLookLabel "CardBook-Design (blau)">
 <!ENTITY defaultLookAccesskey "C">
-<!ENTITY panesViewGroupboxLabel "Layout der Anzeige">
-<!ENTITY panesViewClassicalLabel "Eine Spalte, zwei Zeilen (Klassische Ansicht)">
-<!ENTITY panesViewClassicalAccesskey "E">
-<!ENTITY panesViewModernLabel "Drei Spalten">
-<!ENTITY panesViewModernAccesskey "D">
 
 <!ENTITY syncGroupboxLabel "Synchronisieren">
 <!ENTITY syncWarn "Änderungen können nur durch eine Synchronisation auf den Server übertragen werden.">

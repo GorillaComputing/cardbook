@@ -21,8 +21,8 @@
 <!ENTITY cardbookToolsMenuFindAllDuplicatesLabel "Procurar duplicados em todas as agendas">
 <!ENTITY cardbookToolsMenuFindSingleDuplicatesLabel "Procurar duplicados na agenda actual">
 
-<!ENTITY cardbookToolbarLabel "??CardBook Toolbar??">
-<!ENTITY cardbookToolbarAccesskey "??C??">
+<!ENTITY cardbookToolbarLabel "Barra de ferramentas do Cardbook">
+<!ENTITY cardbookToolbarAccesskey "C">
 <!ENTITY CustomizeCardBookToolbarLabel "Personalizar...">
 <!ENTITY CustomizeCardBookToolbarAccesskey "P">
 <!ENTITY cardbookToolbarAddServerButtonLabel "Adicionar agenda">
@@ -32,17 +32,17 @@
 <!ENTITY cardbookToolbarConfigurationButtonLabel "Preferências">
 <!ENTITY cardbookToolbarConfigurationButtonTooltip "Preferências do CardBook">
 <!ENTITY cardbookToolbarAddButtonLabel "Criar cartão">
-<!ENTITY cardbookToolbarAddButtonTooltip "??Allow the contact creation??">
+<!ENTITY cardbookToolbarAddButtonTooltip "Permitir criação de contacto">
 <!ENTITY cardbookToolbarEditButtonLabel "Editar contacto">
-<!ENTITY cardbookToolbarEditButtonTooltip "??Allow the contact modification??">
+<!ENTITY cardbookToolbarEditButtonTooltip "Permitir alteração de contacto">
 <!ENTITY cardbookToolbarRemoveButtonLabel "Apagar cartão">
-<!ENTITY cardbookToolbarRemoveButtonTooltip "??Allow the contact deletion??">
-<!ENTITY cardbookToolbarAppMenuButtonLabel "??CardBook menu??">
-<!ENTITY cardbookToolbarAppMenuButtonTooltip "??CardBook menu??">
-<!ENTITY cardbookToolbarSearchBoxLabel "??Contacts search??">
-<!ENTITY cardbookToolbarSearchBoxTooltip "??Contacts search??">
-<!ENTITY cardbookToolbarComplexSearchLabel "??Advanced Search??">
-<!ENTITY cardbookToolbarComplexSearchTooltip "??Search accross multiple conditions??">
+<!ENTITY cardbookToolbarRemoveButtonTooltip "Permitir apagar contacto">
+<!ENTITY cardbookToolbarAppMenuButtonLabel "Menu CardBook">
+<!ENTITY cardbookToolbarAppMenuButtonTooltip "Menu CardBook">
+<!ENTITY cardbookToolbarSearchBoxLabel "Procura de contactos">
+<!ENTITY cardbookToolbarSearchBoxTooltip "Procura de contactos">
+<!ENTITY cardbookToolbarComplexSearchLabel "Procura avançada">
+<!ENTITY cardbookToolbarComplexSearchTooltip "Procurar várias condições">
 <!ENTITY cardbookToolbarThMenuButtonLabel "Menu">
 <!ENTITY cardbookToolbarThMenuButtonTooltip "Mostra o menu do &brandShortName;">
 
@@ -50,7 +50,7 @@
 <!ENTITY mailPopularityTabLabel "Email popular">
 <!ENTITY technicalTabLabel "Tecnico">
 <!ENTITY vcardTabLabel "vCard">
-<!ENTITY complexSearchTabLabel "??Advanced Search??">
+<!ENTITY complexSearchTabLabel "Procura avançada">
 
 <!ENTITY dispnColumnLabel "Nomes">
 <!ENTITY lastnameColumnLabel "Nome">
@@ -119,7 +119,7 @@
 
 <!ENTITY dirPrefIdLabel "dirPrefId">
 <!ENTITY cardurlLabel "URL do cartão">
-<!ENTITY cacheuriLabel "??Cache URI??">
+<!ENTITY cacheuriLabel "Cache URI">
 <!ENTITY revLabel "Rev">
 <!ENTITY etagLabel "Etag">
 
@@ -139,12 +139,12 @@
 <!ENTITY bccEmailCardFromCardsLabel "Enviar cartões por email (bcc)">
 <!ENTITY localizeCardFromCardsLabel "Localizar">
 <!ENTITY openURLCardFromCardsLabel "Abrir URL do cartão">
-<!ENTITY cutCardFromAccountsOrCatsLabel "??Cut contact??">
-<!ENTITY cutCardFromCardsLabel "??Cut contact??">
-<!ENTITY copyCardFromAccountsOrCatsLabel "Copiar cartão">
-<!ENTITY copyCardFromCardsLabel "Copiar cartão">
-<!ENTITY pasteCardFromAccountsOrCatsLabel "Colar cartão">
-<!ENTITY pasteCardFromCardsLabel "Colar cartão">
+<!ENTITY cutCardFromAccountsOrCatsLabel "Cortar contacto">
+<!ENTITY cutCardFromCardsLabel "Cortar contacto">
+<!ENTITY copyCardFromAccountsOrCatsLabel "Copiar contacto">
+<!ENTITY copyCardFromCardsLabel "Copiar contacto">
+<!ENTITY pasteCardFromAccountsOrCatsLabel "Colar contacto">
+<!ENTITY pasteCardFromCardsLabel "Colar contacto">
 <!ENTITY exportCardToFileLabel "Exportar cartão para ficheiro">
 <!ENTITY exportCardToDirLabel "Exportar cartão para diretoria">
 <!ENTITY importCardFromFileLabel "Importar cartões de ficheiro">
@@ -153,7 +153,7 @@
 <!ENTITY removeCatFromAccountsOrCatsLabel "Remover categoria">
 <!ENTITY mergeCardsFromCardsLabel "Juntar cartões">
 <!ENTITY duplicateCardFromCardsLabel "Contacto duplicado">
-<!ENTITY convertListToCategoryFromCardsLabel "??Convert list to category??">
+<!ENTITY convertListToCategoryFromCardsLabel "Converter lista para categoria">
 <!ENTITY editAccountFromAccountsOrCatsLabel "Editar agenda">
 <!ENTITY syncAccountFromAccountsOrCatsLabel "Sincronizar agenda">
 <!ENTITY removeAccountFromAccountsOrCatsLabel "Fechar agenda">

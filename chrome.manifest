@@ -8,6 +8,7 @@ locale	cardbook	de	chrome/locale/de/
 locale	cardbook	pt-PT	chrome/locale/pt-PT/
 locale	cardbook	cs	chrome/locale/cs/
 locale	cardbook	nl	chrome/locale/nl/
+locale	cardbook	it	chrome/locale/it/
 skin	cardbook                                                        	classic/1.0 chrome/skin/
 
 # support for customizing toolbars

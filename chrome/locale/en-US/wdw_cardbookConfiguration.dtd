@@ -61,7 +61,7 @@
 <!ENTITY typesCategoryAdrLabel "Address">
 <!ENTITY typesCategoryAdrAccesskey "S">
 <!ENTITY typesCategoryEmailLabel "Email">
-<!ENTITY typesCategoryEmailAccesskey "E">
+<!ENTITY typesCategoryEmailAccesskey "m">
 <!ENTITY typesCategoryImppLabel "IMPP">
 <!ENTITY typesCategoryImppAccesskey "I">
 <!ENTITY typesCategoryTelLabel "Phone">
@@ -72,8 +72,8 @@
 <!ENTITY typesLabelLabel "Label">
 <!ENTITY addTypeLabel "Add">
 <!ENTITY addTypeAccesskey "A">
-<!ENTITY renameTypeLabel "Rename">
-<!ENTITY renameTypeAccesskey "R">
+<!ENTITY renameTypeLabel "Edit">
+<!ENTITY renameTypeAccesskey "E">
 <!ENTITY deleteTypeLabel "Delete">
 <!ENTITY deleteTypeAccesskey "D">
 <!ENTITY preferenceGroupboxLabel "Field PREF">
@@ -98,11 +98,6 @@
 <!ENTITY lookGroupboxLabel "Style">
 <!ENTITY defaultLookLabel "CardBook style (blue)">
 <!ENTITY defaultLookAccesskey "C">
-<!ENTITY panesViewGroupboxLabel "Contact Entry Style">
-<!ENTITY panesViewClassicalLabel "One column, two rows (Classical view)">
-<!ENTITY panesViewClassicalAccesskey "O">
-<!ENTITY panesViewModernLabel "Three columns">
-<!ENTITY panesViewModernAccesskey "T">
 
 <!ENTITY syncGroupboxLabel "Sync.">
 <!ENTITY syncWarn "Synchronizing propagates your modifications to a remote server and the server's modifications to you.">

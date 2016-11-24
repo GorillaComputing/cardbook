@@ -18,15 +18,15 @@ if ("undefined" == typeof(ovl_collected)) {
 						if (myFields[listToCollect[i]] != null && myFields[listToCollect[i]] !== undefined && myFields[listToCollect[i]] != "") {
 							var emailsCollectionList = [];
 							emailsCollectionList = emailsCollection.split(',');
-							var listOfEmails = [];
 							Components.utils.import("chrome://cardbook/content/cardbookRepository.js");
-							listOfEmails = cardbookUtils.getDisplayNameAndEmailFromEmails(jsmime.headerparser.decodeRFC2047Words(myFields[listToCollect[i]]));
-							for (var j = 0; j < listOfEmails.length; j++) {
-								if (!cardbookRepository.isEmailRegistered(listOfEmails[j][1])) {
+							var addresses = {}, names = {}, fullAddresses = {};
+							MailServices.headerParser.parseHeadersWithArray(myFields[listToCollect[i]], addresses, names, fullAddresses);
+							for (var j = 0; j < addresses.value.length; j++) {
+								if (!cardbookRepository.isEmailRegistered(addresses.value[j])) {
 									for (var k = 0; k < emailsCollectionList.length; k++) {
 										var dirPrefIdName = cardbookUtils.getPrefNameFromPrefId(emailsCollectionList[k]);
-										wdw_cardbooklog.updateStatusProgressInformationWithDebug2(dirPrefIdName + " : debug mode : trying to collect contact " + listOfEmails[j][0]);
-										cardbookRepository.addCardFromDisplayAndEmail(emailsCollectionList[k], listOfEmails[j][0], listOfEmails[j][1]);
+										wdw_cardbooklog.updateStatusProgressInformationWithDebug2(dirPrefIdName + " : debug mode : trying to collect contact " + names.value[j]);
+										cardbookRepository.addCardFromDisplayAndEmail(emailsCollectionList[k], names.value[j], addresses.value[j]);
 									}
 								}
 							}

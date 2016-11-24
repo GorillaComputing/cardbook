@@ -1,0 +1,14 @@
+<!ENTITY viewResultEditionLabel "Visualizza risultato">
+<!ENTITY viewResultEditionAccesskey "V">
+<!ENTITY createEditionLabel "Crea">
+<!ENTITY createEditionAccesskey "T">
+<!ENTITY createAndReplaceEditionLabel "Crea e sostituisci">
+<!ENTITY createAndReplaceEditionAccesskey "R">
+<!ENTITY saveEditionLabel "Salva">
+<!ENTITY saveEditionAccesskey "S">
+<!ENTITY cancelEditionLabel "Cancella">
+<!ENTITY cancelEditionAccesskey "C">
+<!ENTITY buttonAppendToListLabel "Aggiungi">
+<!ENTITY buttonAppendToListAccesskey "A">
+<!ENTITY buttonRemoveFromListLabel "Rimuovi">
+<!ENTITY buttonRemoveFromListAccesskey "O">

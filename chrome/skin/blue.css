@@ -119,7 +119,7 @@
     padding: 0 5px !important;
 }
 
-.cardbookVerticalSplitter {
+.cardbookVerticalSplitterClass {
 	-moz-appearance: none !important;
 	border-top: 0px;
 	border-left: 0px;
@@ -128,7 +128,7 @@
 	overflow: hidden;
 	background-color: #E6F0FF;
 }
-.cardbookHorizontalSplitter {
+.cardbookHorizontalSplitterClass {
 	-moz-appearance: none !important;
 	border-top: 2px solid ThreeDShadow;
 	border-left: 0px;

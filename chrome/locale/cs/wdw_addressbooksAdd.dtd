@@ -10,7 +10,6 @@
 <!ENTITY initialpage.network.label "Vzdálený">
 
 <!ENTITY locationComputerPage.wizard.description "Typ a umístění nového místního adresáře.">
-<!ENTITY locationComputerPage.description "Přejete si otevřít existující adresář, nebo vytvořit nový prázdný ? :">
 <!ENTITY locationComputerPage.type.description "Jaký je typ vašeho místního adresáře ? :">
 <!ENTITY locationComputerPage.type.label "Typ">
 <!ENTITY locationComputerPage.createDirectory.label "Vytvořit nový adresář (složka)">

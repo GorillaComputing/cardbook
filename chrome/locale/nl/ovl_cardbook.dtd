@@ -14,3 +14,7 @@
 <!ENTITY addAttachementToCardBookMenuLabel "Toevoegen aan CardBook...">
 
 <!ENTITY statusProgressInformationTooltip "Logbestanden bekijken">
+<!ENTITY cardbookABPaneItemLabel "Adresboek-tab">
+<!ENTITY cardbookABPaneItemAccesskey "A">
+<!ENTITY cardbookContactPaneItemLabel "Contacten-tab">
+<!ENTITY cardbookContactPaneItemAccesskey "O">

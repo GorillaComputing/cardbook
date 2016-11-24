@@ -93,15 +93,15 @@ cardbookAutocompleteSearch.prototype = {
 			if (aPopularity != null && aPopularity !== undefined && aPopularity != "") {
 				myPopularity = aPopularity;
 			} else {
-				var listOfEmails = [];
-				listOfEmails = cardbookUtils.getDisplayNameAndEmailFromEmails(aEmailValue);
+				var addresses = {}, names = {}, fullAddresses = {};
+				MailServices.headerParser.parseHeadersWithArray(aEmailValue, addresses, names, fullAddresses);
 				var myTmpPopularity = 0;
-				for (var i = 0; i < listOfEmails.length; i++) {
-					if (listOfEmails[i][1] == "") {
+				for (var i = 0; i < addresses.value.length; i++) {
+					if (addresses.value[i] == "") {
 						continue;
 					}
-					if (cardbookRepository.cardbookMailPopularityIndex[listOfEmails[i][1].toLowerCase()]) {
-						myTmpPopularity = cardbookRepository.cardbookMailPopularityIndex[listOfEmails[i][1].toLowerCase()];
+					if (cardbookRepository.cardbookMailPopularityIndex[addresses.value[i].toLowerCase()]) {
+						myTmpPopularity = cardbookRepository.cardbookMailPopularityIndex[addresses.value[i].toLowerCase()];
 						if (myPopularity === 0) {
 							myPopularity = myTmpPopularity;
 						}

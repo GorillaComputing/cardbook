@@ -51,7 +51,7 @@ if ("undefined" == typeof(cardbookTabType)) {
 				restoreTab: function(aTabmail, aState) {
 					var strBundle = document.getElementById("cardbook-strings");
 					aState.title = strBundle.getString("cardbookTitle");
-					cardbookUtils.orientBoxes();
+					ovl_cardbookLayout.orientPanes();
 					aTabmail.openTab('cardbook', aState);
 				},
 				
@@ -61,15 +61,32 @@ if ("undefined" == typeof(cardbookTabType)) {
 				},
 				
 				supportsCommand: function supportsCommand(aCommand, aTab) {
-					return false;
+					switch (aCommand) {
+						case "cmd_viewClassicMailLayout":
+						case "cmd_viewVerticalMailLayout":
+							return true;
+						default:
+							return false;
+					}
 				},
 				
 				isCommandEnabled: function isCommandEnabled(aCommand, aTab) {
-					return false;
+					switch (aCommand) {
+						case "cmd_viewClassicMailLayout":
+						case "cmd_viewVerticalMailLayout":
+							return true;
+						default:
+							return false;
+					}
 				},
 				
 				doCommand: function doCommand(aCommand, aTab) {
-					return false;
+					switch (aCommand) {
+						case "cmd_viewClassicMailLayout":
+						case "cmd_viewVerticalMailLayout":
+							ovl_cardbookLayout.changeOrientPanes(aCommand);
+							break;
+					}
 				},
 
 				onEvent: function(aEvent, aTab) {}
@@ -84,7 +101,6 @@ if ("undefined" == typeof(cardbookTabType)) {
 if ("undefined" == typeof(ovl_cardbook)) {
 	var ovl_cardbook = {
 		open: function() {
-			cardbookUtils.orientBoxes();
 			var strBundle = document.getElementById("cardbook-strings");
 			document.getElementById('tabmail').openTab('cardbook', {title: strBundle.getString("cardbookTitle")});
 		}

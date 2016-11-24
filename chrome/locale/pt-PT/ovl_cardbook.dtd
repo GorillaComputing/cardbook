@@ -8,9 +8,13 @@
 <!ENTITY cardbookTabButtonTooltip "Seleccionar tab do CardBook">
 
 <!ENTITY addToCardBookMenuLabel "Adicionar ao CardBook">
-<!ENTITY editInCardBookMenuLabel "??Modify with CardBook??">
+<!ENTITY editInCardBookMenuLabel "Modificar com o CardBook">
 
 <!ENTITY addAllAttachementsToCardBookMenuLabel "Adicionar todos ao Carbook...">
 <!ENTITY addAttachementToCardBookMenuLabel "Adicionar ao Carbook">
 
 <!ENTITY statusProgressInformationTooltip "Clique aqui para ver os logs">
+<!ENTITY cardbookABPaneItemLabel "Vista de Agenda">
+<!ENTITY cardbookABPaneItemAccesskey "A">
+<!ENTITY cardbookContactPaneItemLabel "Vista de Contactos">
+<!ENTITY cardbookContactPaneItemAccesskey "O">

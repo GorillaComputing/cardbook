@@ -16,17 +16,28 @@
 	<script src="cardbookMailPopularity.js"/>
 	<script src="ovl_mailPopularity.js"/>
 	<script src="chrome://cardbook/content/preferences/cardbookPreferences.js"/>
-	<script src="chrome://cardbook/content/yellowStars/ovl_cardbookYellowStars.js"/>
-	<script src="chrome://cardbook/content/cardEdition/ovl_cardbookContacts.js"/>
-	<script src="chrome://cardbook/content/formatMails/ovl_cardbookFormatMails.js"/>
+	<script src="chrome://cardbook/content/mailContact/ovl_cardbookMailContacts.js"/>
+	<script src="chrome://cardbook/content/layout/ovl_cardbookLayout.js"/>
 	<script src="ovl_cardbook.js"/>
 	
 	<window id="messengerWindow">
 		<broadcasterset id="cardbookBroadcasters">
-			<broadcaster id="cardboookModeBroadcaster" mode="cardbook"/>
+			<broadcaster id="cardboookModeBroadcaster" mode="mail"/>
 		</broadcasterset>
 	</window>
 
+	<menupopup id="view_layout_popup">
+		<menuitem id="cardbookABPaneItem"
+			type="checkbox"
+			label="&cardbookABPaneItemLabel;" accesskey="&cardbookABPaneItemAccesskey;"
+			oncommand="ovl_cardbookLayout.changeResizePanes('viewABPane')"
+			insertafter="menu_showFolderPane"/>
+		<menuitem id="cardbookContactPaneItem"
+			type="checkbox" key="key_toggleMessagePane"
+			label="&cardbookContactPaneItemLabel;" accesskey="&cardbookContactPaneItemAccesskey;"
+			oncommand="ovl_cardbookLayout.changeResizePanes('viewABContact')"
+			insertafter="menu_showMessage"/>
+	</menupopup>
 	<menupopup id="taskPopup">
 		<menuitem id="cardbookMenuItem"
 			label="&cardbookMenuItemLabel;"
@@ -68,9 +79,9 @@
 	<menupopup id="emailAddressPopup" onpopupshowing="setupEmailAddressPopup(findEmailNodeFromPopupNode(document.popupNode, 'emailAddressPopup'));
 														goUpdateCommand('cmd_createFilterFromPopup')">
 		<menu id="addToCardBookMenu" label="&addToCardBookMenuLabel;" insertbefore="addToAddressBookItem">
-			<menupopup id="addToCardBookMenuPopup" onpopupshowing="cardbookUtils.addToCardBookMenuSubMenu(this.id, ovl_cardbookContacts.addToCardBook)"/>
+			<menupopup id="addToCardBookMenuPopup" onpopupshowing="cardbookUtils.addToCardBookMenuSubMenu(this.id, ovl_cardbookMailContacts.addToCardBook)"/>
 		</menu>
-		<menuitem id="editInCardBookMenu" label="&editInCardBookMenuLabel;" insertbefore="editContactItem" onclick="ovl_cardbookContacts.editOrViewContact();"/>
+		<menuitem id="editInCardBookMenu" label="&editInCardBookMenuLabel;" insertbefore="editContactItem" onclick="ovl_cardbookMailContacts.editOrViewContact();"/>
 	</menupopup>
 
 	<statusbarpanel id="totalMessageCount" onclick="wdw_cardbook.openLogEdition();" tooltiptext="&statusProgressInformationTooltip;"/>

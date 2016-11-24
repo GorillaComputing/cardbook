@@ -27,10 +27,10 @@ if ("undefined" == typeof(ovl_filters)) {
 			let count = aMsgHdrs.length;
 			for (var i = 0; i < count; i++) {
 				let hdr = aMsgHdrs.queryElementAt(i, Components.interfaces.nsIMsgDBHdr);
-				var listOfEmails = [];
-				listOfEmails = cardbookUtils.getDisplayNameAndEmailFromEmails(jsmime.headerparser.decodeRFC2047Words(hdr[aField]));
-				for (var j = 0; j < listOfEmails.length; j++) {
-					cardbookRepository.addCardFromDisplayAndEmail(aActionValue, listOfEmails[j][0], listOfEmails[j][1]);
+				var addresses = {}, names = {}, fullAddresses = {};
+				MailServices.headerParser.parseHeadersWithArray(hdr[aField], addresses, names, fullAddresses);
+				for (var j = 0; j < addresses.value.length; j++) {
+					cardbookRepository.addCardFromDisplayAndEmail(aActionValue, names.value[j], addresses.value[j]);
 				}
 			}
 		},
@@ -45,21 +45,21 @@ if ("undefined" == typeof(ovl_filters)) {
 				cardbookUtils.formatStringForOutput("errorFiltersMatchEmailsABNotEnabled", [aSearchValue], "Error");
 				return false;
 			}
-			var listOfEmails = [];
-			listOfEmails = cardbookUtils.getDisplayNameAndEmailFromEmails(jsmime.headerparser.decodeRFC2047Words(aMsgHdrEmails));
+			var addresses = {}, names = {}, fullAddresses = {};
+			MailServices.headerParser.parseHeadersWithArray(aMsgHdrEmails, addresses, names, fullAddresses);
 			var matches = false;
-			for (var i = 0; i < listOfEmails.length; i++) {
+			for (var i = 0; i < addresses.value.length; i++) {
 				switch (aSearchOp) {
 					case Components.interfaces.nsMsgSearchOp.IsInAB:
 					case Components.interfaces.nsMsgSearchOp.IsntInAB:
 						if (i === 0) {
-							if (cardbookRepository.isEmailInPrefIdRegistered(aSearchValue, listOfEmails[i][1])) {
+							if (cardbookRepository.isEmailInPrefIdRegistered(aSearchValue, addresses.value[i])) {
 								matches = true;
 							} else {
 								matches = false;
 							}
 						} else { 
-							if (cardbookRepository.isEmailInPrefIdRegistered(aSearchValue, listOfEmails[i][1])) {
+							if (cardbookRepository.isEmailInPrefIdRegistered(aSearchValue, addresses.value[i])) {
 								matches = (matches && true);
 							} else {
 								matches = (matches && false);

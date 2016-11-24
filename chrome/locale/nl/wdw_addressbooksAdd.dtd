@@ -10,7 +10,6 @@
 <!ENTITY initialpage.network.label "Op internet">
 
 <!ENTITY locationComputerPage.wizard.description "Plaats en type van het locale adresboek.">
-<!ENTITY locationComputerPage.description "Open een bestaand adresboek of maak een nieuw:">
 <!ENTITY locationComputerPage.type.description "Type van het locale adresboek:">
 <!ENTITY locationComputerPage.type.label "Type">
 <!ENTITY locationComputerPage.createDirectory.label "Nieuw adresboek toevoegen (Map)">

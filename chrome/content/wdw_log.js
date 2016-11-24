@@ -73,16 +73,18 @@ if ("undefined" == typeof(wdw_cardbooklog)) {
 		},
 		
 		fetchSyncActivity: function(aDirPrefId, aCountDone, aCountTotal) {
-			var stringBundleService = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
-			var strBundle = stringBundleService.createBundle("chrome://cardbook/locale/cardbook.properties");
-			var processMessage = strBundle.formatStringFromName("synchroProcessed", [aCountDone, aCountTotal], 2);
-			wdw_cardbooklog.syncActivity[aDirPrefId].syncProcess.setProgress(processMessage, aCountDone, aCountTotal);
+			if (wdw_cardbooklog.syncActivity[aDirPrefId] && wdw_cardbooklog.syncActivity[aDirPrefId].syncProcess) {
+				var stringBundleService = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
+				var strBundle = stringBundleService.createBundle("chrome://cardbook/locale/cardbook.properties");
+				var processMessage = strBundle.formatStringFromName("synchroProcessed", [aCountDone, aCountTotal], 2);
+				wdw_cardbooklog.syncActivity[aDirPrefId].syncProcess.setProgress(processMessage, aCountDone, aCountTotal);
+			}
 		},
 		
 		finishSyncActivity: function(aDirPrefId, aDirPrefName) {
-			var gActivityManager = Components.classes["@mozilla.org/activity-manager;1"].getService(Components.interfaces.nsIActivityManager);
-			wdw_cardbooklog.syncActivity[aDirPrefId].syncProcess.state = Components.interfaces.nsIActivityProcess.STATE_COMPLETED;
-			if (wdw_cardbooklog.syncActivity[aDirPrefId].syncProcess) {
+			if (wdw_cardbooklog.syncActivity[aDirPrefId] && wdw_cardbooklog.syncActivity[aDirPrefId].syncProcess) {
+				var gActivityManager = Components.classes["@mozilla.org/activity-manager;1"].getService(Components.interfaces.nsIActivityManager);
+				wdw_cardbooklog.syncActivity[aDirPrefId].syncProcess.state = Components.interfaces.nsIActivityProcess.STATE_COMPLETED;
 				gActivityManager.removeActivity(wdw_cardbooklog.syncActivity[aDirPrefId].syncProcess.id);
 			}
 		},

@@ -10,7 +10,6 @@
 <!ENTITY initialpage.network.label "Distant">
 
 <!ENTITY locationComputerPage.wizard.description "Type et emplacement du nouveau carnet d'adresses local.">
-<!ENTITY locationComputerPage.description "Voulez vous ouvrir un carnet d'adresses existant ou un nouveau ? :">
 <!ENTITY locationComputerPage.type.description "Quel est le type de votre carnet d'adresses local ? :">
 <!ENTITY locationComputerPage.type.label "Type">
 <!ENTITY locationComputerPage.createDirectory.label "Créér un nouveau carnet d'adresses (Répertoire)">

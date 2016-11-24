@@ -2,16 +2,16 @@ if ("undefined" == typeof(cardbookMailPopularity)) {
 	var cardbookMailPopularity = {
 
 		updateMailPopularity: function (aEmail) {
-			var listOfEmails = [];
-			listOfEmails = cardbookUtils.getDisplayNameAndEmailFromEmails(aEmail);
-			for (var i = 0; i < listOfEmails.length; i++) {
-				if (listOfEmails[i][1] == "") {
+			var addresses = {}, names = {}, fullAddresses = {};
+			MailServices.headerParser.parseHeadersWithArray(aEmail, addresses, names, fullAddresses);
+			for (var i = 0; i < addresses.value.length; i++) {
+				if (addresses.value[i] == "") {
 					continue;
 				}
-				if (cardbookRepository.cardbookMailPopularityIndex[listOfEmails[i][1].toLowerCase()]) {
-					cardbookRepository.cardbookMailPopularityIndex[listOfEmails[i][1].toLowerCase()]++;
+				if (cardbookRepository.cardbookMailPopularityIndex[addresses.value[i].toLowerCase()]) {
+					cardbookRepository.cardbookMailPopularityIndex[addresses.value[i].toLowerCase()]++;
 				} else {
-					cardbookRepository.cardbookMailPopularityIndex[listOfEmails[i][1].toLowerCase()] = 1;
+					cardbookRepository.cardbookMailPopularityIndex[addresses.value[i].toLowerCase()] = 1;
 				}
 			}
 			cardbookMailPopularity.writeMailPopularity();

@@ -10,7 +10,6 @@
 <!ENTITY initialpage.network.label "Remota">
 
 <!ENTITY locationComputerPage.wizard.description "Tipo e localização de nova agenda local.">
-<!ENTITY locationComputerPage.description "Deseja abrir uma agenda existente ou criar uma nova?">
 <!ENTITY locationComputerPage.type.description "Qual o tipo de agenda local?">
 <!ENTITY locationComputerPage.type.label "Tipo">
 <!ENTITY locationComputerPage.createDirectory.label "Criar uma nova agenda (Directoria)">

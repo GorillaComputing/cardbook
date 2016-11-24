@@ -14,3 +14,7 @@
 <!ENTITY addAttachementToCardBookMenuLabel "Anhang zu CardBook...">
 
 <!ENTITY statusProgressInformationTooltip "Hier klicken, um das Protokoll anzuzeigen">
+<!ENTITY cardbookABPaneItemLabel "Adressbuchbereich">
+<!ENTITY cardbookABPaneItemAccesskey "A">
+<!ENTITY cardbookContactPaneItemLabel "Kontaktebereich">
+<!ENTITY cardbookContactPaneItemAccesskey "K">

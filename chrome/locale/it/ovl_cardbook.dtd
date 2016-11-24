@@ -1,0 +1,20 @@
+<!ENTITY cardbookMenuItemLabel "CardBook">
+<!ENTITY cardbookMenuItemTooltip "Vai a CardBook">
+
+<!ENTITY cardbookToolbarButtonLabel "CardBook">
+<!ENTITY cardbookToolbarButtonTooltip "Vai a CardBook">
+
+<!ENTITY cardbookTabButtonLabel "CardBook">
+<!ENTITY cardbookTabButtonTooltip "Vai a CardBook">
+
+<!ENTITY addToCardBookMenuLabel "Aggiungi a CardBook">
+<!ENTITY editInCardBookMenuLabel "Modifica con CardBook">
+
+<!ENTITY addAllAttachementsToCardBookMenuLabel "Aggiungi TUTTI a CardBook">
+<!ENTITY addAttachementToCardBookMenuLabel "Aggiungi a CardBook">
+
+<!ENTITY statusProgressInformationTooltip "Clicca qui per visualizzare i registri">
+<!ENTITY cardbookABPaneItemLabel "Pannello Rubrica">
+<!ENTITY cardbookABPaneItemAccesskey "R">
+<!ENTITY cardbookContactPaneItemLabel "Pannello Contatto">
+<!ENTITY cardbookContactPaneItemAccesskey "O">
