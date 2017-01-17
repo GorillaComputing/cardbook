@@ -8,8 +8,8 @@ if ("undefined" == typeof(wdw_cardbookAddType)) {
 		},
 
 		save: function () {
-			window.arguments[0].code = document.getElementById('typeCodeTextBox').value;
-			window.arguments[0].label = document.getElementById('typeLabelTextBox').value;
+			window.arguments[0].code = document.getElementById('typeCodeTextBox').value.trim();
+			window.arguments[0].label = document.getElementById('typeLabelTextBox').value.trim();
 			window.arguments[0].typeAction="SAVE";
 			close();
 		},

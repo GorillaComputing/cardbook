@@ -123,6 +123,7 @@ cardbookAutocompleteSearch.prototype = {
 											 value: aEmailValue,
 											 comment: aComment,
 											 card: null,
+											 isPrimaryEmail: true,
 											 emailToUse: aEmailValue,
 											 popularity: myPopularity
 										 });
@@ -134,6 +135,7 @@ cardbookAutocompleteSearch.prototype = {
 													 value: aEmailValue,
 													 comment: aComment,
 													 card: null,
+													 isPrimaryEmail: true,
 													 emailToUse: aEmailValue,
 													 popularity: myPopularity
 												 });
@@ -146,6 +148,7 @@ cardbookAutocompleteSearch.prototype = {
 												 value: aEmailValue,
 												 comment: aComment,
 												 card: null,
+												 isPrimaryEmail: true,
 												 emailToUse: aEmailValue,
 												 popularity: myPopularity
 											 });
@@ -200,19 +203,19 @@ cardbookAutocompleteSearch.prototype = {
 		}
 		
 		// add Cards
-		for (var i in cardbookRepository.cardbookCardSearch) {
+		for (var i in cardbookRepository.cardbookCardSearch1) {
 			if (i.indexOf(aSearchString) >= 0) {
-				for (var j = 0; j < cardbookRepository.cardbookCardSearch[i].length; j++) {
-					var myCard = cardbookRepository.cardbookCardSearch[i][j];
+				for (var j = 0; j < cardbookRepository.cardbookCardSearch1[i].length; j++) {
+					var myCard = cardbookRepository.cardbookCardSearch1[i][j];
 					for (var k = 0; k < myCard.email.length; k++) {
-						var myCurrentEmail = cardbookUtils.formatFnForEmail(myCard.fn) + " <" + myCard.email[k][0][0] + ">";
-						this.addResult(result, myCurrentEmail, cardbookUtils.formatFnForEmail(myCard.fn), null, myCard.dirPrefId, debugMode);
+						var myCurrentEmail = MailServices.headerParser.makeMimeAddress(myCard.fn, myCard.email[k][0][0]);
+						this.addResult(result, myCurrentEmail, myCard.fn, null, myCard.dirPrefId, debugMode);
 					}
 					// add Lists
-					if (cardbookUtils.isMyCardAList(myCard)) {
-						this.addResult(result, cardbookUtils.formatFnForEmail(myCard.fn) + " <" + cardbookUtils.formatFnForEmail(myCard.fn) + ">", cardbookUtils.formatFnForEmail(myCard.fn) + " (List)", null, myCard.dirPrefId, debugMode);
+					if (myCard.isAList) {
+						this.addResult(result, myCard.fn + " <" + myCard.fn + ">", myCard.fn + " (List)", null, myCard.dirPrefId, debugMode);
 					} else {
-						this.addResult(result, cardbookUtils.getEmailsFromCards([myCard], preferEmail).join(" , "), cardbookUtils.formatFnForEmail(myCard.fn) + allLabel, null, myCard.dirPrefId, debugMode);
+						this.addResult(result, cardbookUtils.getMimeEmailsFromCards([myCard]).join(" , "), myCard.fn + allLabel, null, myCard.dirPrefId, debugMode);
 					}
 				}
 			}
@@ -222,13 +225,15 @@ cardbookAutocompleteSearch.prototype = {
 		for (var dirPrefId in cardbookRepository.cardbookAccountsCategories) {
 			for (var i = 0; i < cardbookRepository.cardbookAccountsCategories[dirPrefId].length; i++) {
 				var myCategory = cardbookRepository.cardbookAccountsCategories[dirPrefId][i];
-				if (myCategory.replace(/[\s+\-+\.+\,+\;+]/g, "").toUpperCase().indexOf(aSearchString) >= 0) {
-					var myCardList = [] ;
-					for (var j = 0; j < cardbookRepository.cardbookDisplayCards[dirPrefId+"::"+myCategory].length; j++) {
-						var myCard = cardbookRepository.cardbookDisplayCards[dirPrefId+"::"+myCategory][j];
-						myCardList.push(myCard);
+				if (myCategory != cardbookRepository.cardbookUncategorizedCards) {
+					if (myCategory.replace(/[\s+\-+\.+\,+\;+]/g, "").toUpperCase().indexOf(aSearchString) >= 0) {
+						var myCardList = [] ;
+						for (var j = 0; j < cardbookRepository.cardbookDisplayCards[dirPrefId+"::"+myCategory].length; j++) {
+							var myCard = cardbookRepository.cardbookDisplayCards[dirPrefId+"::"+myCategory][j];
+							myCardList.push(myCard);
+						}
+						this.addResult(result, cardbookUtils.getMimeEmailsFromCards(myCardList).join(" , "), myCategory + categoryLabel, null, dirPrefId, debugMode);
 					}
-					this.addResult(result, cardbookUtils.getEmailsFromCards(myCardList, preferEmail).join(" , "), myCategory + categoryLabel, null, dirPrefId, debugMode);
 				}
 			}
 		}

@@ -1,6 +1,5 @@
 if ("undefined" == typeof(cardbookComplexSearch)) {
 	var cardbookComplexSearch = {
-		matchAll: false,
 		
 		isMyCardFound: function (aCard) {
 			var myRegexp;
@@ -71,15 +70,16 @@ if ("undefined" == typeof(cardbookComplexSearch)) {
 			return result;
 		},
 
-		searchEngine: function () {
-			var myAddressBook = document.getElementById('addressbookMenulist').selectedItem.value;
-			cardbookRepository.cardbookComplexRules = cardbookComplexSearch.getAllArray("searchTerms");
-			cardbookRepository.cardbookComplexMatchAll = document.getElementById('booleanAndGroup').selectedItem.value == "and" ? true : false;
+		searchEngine: function (aData, aParams) {
+			cardbookComplexSearch.parseRule(aData);
+			var cardbookPrefService = new cardbookPreferenceService(aParams.aPrefId);
+			if (!cardbookPrefService.getEnabled()) {
+				return;
+			}
 			for (var i = 0; i < cardbookRepository.cardbookAccounts.length; i++) {
-				if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][6]) {
+				if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][5] && (cardbookRepository.cardbookAccounts[i][6] != "SEARCH")) {
 					var myDirPrefId = cardbookRepository.cardbookAccounts[i][4];
-					if ((myAddressBook == myDirPrefId) || (myAddressBook === "allAddressBooks")) {
-						var myDirPrefName = cardbookUtils.getPrefNameFromPrefId(myDirPrefId);
+					if ((cardbookRepository.cardbookComplexSearchAB == myDirPrefId) || (cardbookRepository.cardbookComplexSearchAB === "allAddressBooks")) {
 						for (var j = 0; j < cardbookRepository.cardbookDisplayCards[myDirPrefId].length; j++) {
 							var myCard = cardbookRepository.cardbookDisplayCards[myDirPrefId][j];
 							if (cardbookComplexSearch.isMyCardFound(myCard)) {
@@ -89,26 +89,37 @@ if ("undefined" == typeof(cardbookComplexSearch)) {
 					}
 				}
 			}
+			wdw_cardbook.selectAccountOrCat();
 		},
 
-		loadAddressBooks: function () {
-			var myPopup = document.getElementById("addressbookMenupopup");
-			cardbookElementTools.deleteRows('addressbookMenupopup');
-			var stringBundleService = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
-			var strBundle = stringBundleService.createBundle("chrome://messenger/locale/addressbook/addressBook.properties");
-			var menuItem = document.createElement("menuitem");
-			menuItem.setAttribute("label", strBundle.GetStringFromName("allAddressBooks"));
-			menuItem.setAttribute("value", "allAddressBooks");
-			myPopup.appendChild(menuItem);
-			for (var i = 0; i < cardbookRepository.cardbookAccounts.length; i++) {
-				if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][6]) {
-					var menuItem = document.createElement("menuitem");
-					menuItem.setAttribute("label", cardbookRepository.cardbookAccounts[i][0]);
-					menuItem.setAttribute("value", cardbookRepository.cardbookAccounts[i][4]);
-					myPopup.appendChild(menuItem);
-				}
+		buildEngine: function (aData) {
+			cardbookElementTools.loadAddressBooks("addressbookMenupopup", "addressbookMenulist", cardbookRepository.cardbookComplexSearchAB, true, true, true, false);
+			cardbookComplexSearch.loadMatchAll(cardbookRepository.cardbookComplexMatchAll);
+			cardbookComplexSearch.constructDynamicRows("searchTerms", cardbookRepository.cardbookComplexRules, "3.0");
+			document.getElementById('searchTerms_0_valueBox').focus();
+		},
+
+		parseRule: function (aData) {
+			var relative = aData.match("^searchAB:([^:]*):searchAll:([^:]*)(.*)");
+			cardbookRepository.cardbookComplexSearchAB = relative[1];
+			if (relative[2] == "true") {
+				cardbookRepository.cardbookComplexMatchAll = true;
+			} else {
+				cardbookRepository.cardbookComplexMatchAll = false;
 			}
-			document.getElementById("addressbookMenulist").selectedIndex = 0;
+			var tmpRuleArray = relative[3].split(/:case:/);
+			for (var i = 1; i < tmpRuleArray.length; i++) {
+				var relative = tmpRuleArray[i].match("([^:]*):field:([^:]*):term:([^:]*):value:([^:]*)");
+				cardbookRepository.cardbookComplexRules.push([relative[1], relative[2], relative[3], relative[4]]);
+			}
+		},
+
+		loadMatchAll: function (aDefaultValue) {
+			if (aDefaultValue) {
+				document.getElementById("booleanAndGroup").selectedIndex = 0;
+			} else {
+				document.getElementById("booleanAndGroup").selectedIndex = 1;
+			}
 		},
 
 		getAllArray: function (aType) {
@@ -127,22 +138,6 @@ if ("undefined" == typeof(cardbookComplexSearch)) {
 				}
 			}
 			return myResult;
-		},
-
-		enableOrDisableAllTerms: function (aType, aValue) {
-			var i = 0;
-			while (true) {
-				if (document.getElementById(aType + '_' + i + '_hbox')) {
-					document.getElementById(aType + '_' + i + '_menulistObj').disabled=aValue;
-					document.getElementById(aType + '_' + i + '_menulistTerm').disabled=aValue;
-					document.getElementById(aType + '_' + i + '_valueBox').disabled=aValue;
-					i++;
-				} else {                                                                             
-					break;
-				}
-			}
-			document.getElementById("booleanAndGroup").disabled=aValue;
-			document.getElementById("addressbookMenulist").disabled=aValue;
 		},
 
 		showOrHideForEmpty: function (aId) {
@@ -169,7 +164,7 @@ if ("undefined" == typeof(cardbookComplexSearch)) {
 			cardbookElementTools.addMenuCaselist(aHBox, aType, aIndex, aArray[0]);
 			cardbookElementTools.addMenuObjlist(aHBox, aType, aIndex, aArray[1]);
 			cardbookElementTools.addMenuTermlist(aHBox, aType, aIndex, aArray[2]);
-			cardbookElementTools.addTextbox(aHBox, aType + '_' + aIndex + '_valueBox', aArray[3], {hidden: "false"});
+			cardbookElementTools.addKeyTextbox(aHBox, aType + '_' + aIndex + '_valueBox', aArray[3], {flex: "1"}, aVersion, aIndex);
 
 			function fireUpButton(event) {
 				if (document.getElementById(this.id).disabled) {
@@ -250,57 +245,57 @@ if ("undefined" == typeof(cardbookComplexSearch)) {
 			}
 		},
 
-		setStartLabel: function () {
-			var gSearchBundle = document.getElementById("bundle_search");
-			var gSearchButton = document.getElementById("cardbookComplexSearchButton");
-			gSearchButton.setAttribute("label", gSearchBundle.getString("labelForSearchButton"));
-			gSearchButton.setAttribute("accesskey", gSearchBundle.getString("labelForSearchButton.accesskey"));
-		},
-
-		setStopLabel: function () {
-			var gSearchBundle = document.getElementById("bundle_search");
-			var gSearchButton = document.getElementById("cardbookComplexSearchButton");
-			gSearchButton.setAttribute("label", gSearchBundle.getString("labelForStopButton"));
-			gSearchButton.setAttribute("accesskey", gSearchBundle.getString("labelForStopButton.accesskey"));
-		},
-
-		initComplexSearch: function () {
-			wdw_cardbook.setComplexSearchMode();
-			cardbookComplexSearch.setStartLabel();
-			cardbookComplexSearch.enableOrDisableAllTerms("searchTerms", false);
-			cardbookComplexSearch.loadAddressBooks();
-			cardbookComplexSearch.constructDynamicRows("searchTerms", [["","","",""]], "3.0");
-			document.getElementById('searchTerms_0_valueBox').focus();
-		},
-
-		search: function (aEvent) {
-			var gSearchBundle = document.getElementById("bundle_search");
-			if (aEvent.target.label == gSearchBundle.getString("labelForSearchButton")) {
-				cardbookComplexSearch.startSearch();
+		initComplexSearch: function (aSearchId) {
+			if (aSearchId != null && aSearchId !== undefined && aSearchId != "") {
+				var myFile = cardbookRepository.getRuleFile(aSearchId);
+				if (myFile.exists() && myFile.isFile()) {
+					var params = {};
+					params["showError"] = true;
+					cardbookSynchronization.getFileDataAsync(myFile.path, cardbookComplexSearch.buildEngine, params);
+				}
 			} else {
-				cardbookComplexSearch.stopSearch();
+				cardbookElementTools.loadAddressBooks("addressbookMenupopup", "addressbookMenulist", "allAddressBooks", true, true, true, false);
+				cardbookComplexSearch.loadMatchAll("and");
+				cardbookComplexSearch.constructDynamicRows("searchTerms", [["","","",""]], "3.0");
+				document.getElementById('searchTerms_0_valueBox').focus();
+			}
+		},
+
+		startComplexSearch: function (aPrefId) {
+			cardbookRepository.cardbookSearchValue=cardbookRepository.cardbookComplexSearchMode;
+			cardbookRepository.cardbookDisplayCards[cardbookRepository.cardbookSearchValue] = [];
+			var myFile = cardbookRepository.getRuleFile(aPrefId);
+			if (myFile.exists() && myFile.isFile()) {
+				var params = {};
+				params["showError"] = true;
+				params["aPrefId"] = aPrefId;
+				cardbookSynchronization.getFileDataAsync(myFile.path, cardbookComplexSearch.searchEngine, params);
 			}
 		},
 		
-		startSearch: function () {
-			cardbookComplexSearch.setStopLabel();
-			cardbookComplexSearch.enableOrDisableAllTerms("searchTerms", true);
-			cardbookRepository.cardbookSearchValue=cardbookRepository.cardbookComplexSearchMode;
-			cardbookRepository.cardbookDisplayCards[cardbookRepository.cardbookSearchValue] = [];
-			cardbookComplexSearch.searchEngine();
-			cardbookComplexSearch.stopSearch();
-		},
-		
-		stopSearch: function () {
-			cardbookComplexSearch.setStartLabel();
-			cardbookComplexSearch.enableOrDisableAllTerms("searchTerms", false);
-		},
-
-		clearSearch: function () {
-			cardbookComplexSearch.stopSearch();
-			cardbookRepository.cardbookSearchValue=cardbookRepository.cardbookComplexSearchMode;
-			cardbookRepository.cardbookDisplayCards[cardbookRepository.cardbookSearchValue] = [];
-			cardbookComplexSearch.constructDynamicRows("searchTerms", [["","","",""]], "3.0");
+		getSearch: function () {
+			var result = "searchAB:" + document.getElementById('addressbookMenulist').selectedItem.value;
+			var searchAll = document.getElementById('booleanAndGroup').selectedItem.value == "and" ? "true" : "false";
+			result = result + ":searchAll:" + searchAll;
+			var found = false;
+			var allRules = cardbookComplexSearch.getAllArray("searchTerms");
+			for (var i = 0; i < allRules.length; i++) {
+				if (allRules[i][2] == "IsEmpty") {
+					found = true;
+				} else if (allRules[i][2] == "IsntEmpty") {
+					found = true;
+				} else if (allRules[i][3] != "") {
+					found = true;
+				}
+				if (found) {
+					result = result + ":case:" + allRules[i][0] + ":field:" + allRules[i][1] + ":term:" + allRules[i][2] + ":value:" + allRules[i][3];
+				}
+			}
+			if (found) {
+				return result;
+			} else {
+				return "";
+			}
 		}
 
 	};

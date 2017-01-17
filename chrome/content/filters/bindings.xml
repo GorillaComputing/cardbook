@@ -43,7 +43,7 @@
 					for (let i = 0; i < result.length; i++) {
 						var myPrefId = result[i];
 						var cardbookPrefService1 = new cardbookPreferenceService(myPrefId);
-						if (cardbookPrefService1.getEnabled()) {
+						if (cardbookPrefService1.getEnabled() && (cardbookPrefService1.getType() !== "SEARCH")) {
 							this.addDirectories(menupopup, myPrefId, cardbookPrefService1.getName());
 						}
 					}
@@ -99,7 +99,7 @@
 					for (let i = 0; i < result.length; i++) {
 						var myPrefId = result[i];
 						var cardbookPrefService1 = new cardbookPreferenceService(myPrefId);
-						if (cardbookPrefService1.getEnabled()) {
+						if (cardbookPrefService1.getEnabled() && (cardbookPrefService1.getType() !== "SEARCH") && !cardbookPrefService1.getReadOnly()) {
 							this.addDirectories(menupopup, myPrefId, cardbookPrefService1.getName());
 						}
 					}

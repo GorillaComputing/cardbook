@@ -27,6 +27,7 @@ cardbookCardParser.prototype = {
 		this.updated = false;
 		this.deleted = false;
 		this.created = false;
+		this.isAList = false;
 
 		this.lastname = "";
 		this.firstname = "";
@@ -40,6 +41,7 @@ cardbookCardParser.prototype = {
 		this.adr = [];
 		this.tel = [];
 		this.email = [];
+		this.emails = [];
 		this.mailer = "";
 		this.tz = "";
 		this.geo = "";
@@ -67,7 +69,6 @@ cardbookCardParser.prototype = {
 		this.kind = "";
 		this.member = [];
 
-		this.dispn = "";
 		this.dispadr = "";
 		this.disphomeadr = "";
 		this.dispworkadr = "";
@@ -264,7 +265,6 @@ cardbookCardParser.prototype = {
 							} else {
 								this.suffixname = "";
 							}
-							this.dispn = cardbookUtils.unescapeString(vCardDataArrayTrailer);
 							break;
 						case "FN":
 							this.fn = cardbookUtils.unescapeString(vCardDataArrayTrailer);
@@ -381,7 +381,6 @@ cardbookCardParser.prototype = {
 						case "GENDER":
 							this.gender = vCardDataArrayTrailer;
 							break;
-						// outside ftp://ftp.rfc-editor.org/in-notes/rfc2426.txt
 						case "IMPP":
 							if (vCardDataArrayTrailer != null && vCardDataArrayTrailer !== undefined && vCardDataArrayTrailer != "") {
 								vCardDataArrayTrailerArray = cardbookUtils.escapeString(vCardDataArrayTrailer).split(";");
@@ -425,12 +424,7 @@ cardbookCardParser.prototype = {
 					}
 				}
 	
-				cardbookUtils.parseAdrsCard(this);
-				cardbookUtils.parseTelsCard(this);
-				cardbookUtils.parseEmailsCard(this);
-				this.dispurl = cardbookUtils.parseArrayByType(this.url);
-				this.dispimpp = cardbookUtils.parseArrayByType(this.impp);
-				this.dispcategories = this.categories.join(" ");
+				cardbookUtils.setCalculatedFieldsWithoutRev(this);
 				
 				if (vSiteUrl != null && vSiteUrl !== undefined && vSiteUrl != "") {
 					this.cardurl = vSiteUrl;

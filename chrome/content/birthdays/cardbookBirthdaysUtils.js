@@ -1,6 +1,5 @@
 if ("undefined" == typeof(cardbookBirthdaysUtils)) {  
 	var cardbookBirthdaysUtils = {
-		LIGHTNING_ID : "{e2fda1a4-762b-4020-b5ad-a41df1933103}",
 		lBirthdayList : [],
 		lCalendarList : [],
 		lBirthdaySyncResult : [],
@@ -40,7 +39,7 @@ if ("undefined" == typeof(cardbookBirthdaysUtils)) {
 			if (cardbookBirthdaysUtils.lBirthdayList.length != 0) {
 				cardbookBirthdaysUtils.lBirthdaySyncResult = [];
 				Components.utils.import("resource://gre/modules/AddonManager.jsm");  
-				AddonManager.getAddonByID(cardbookBirthdaysUtils.LIGHTNING_ID, cardbookBirthdaysUtils.doSyncWithLightning);
+				AddonManager.getAddonByID(cardbookRepository.LIGHTNING_ID, cardbookBirthdaysUtils.doSyncWithLightning);
 			}
 		},
 
@@ -523,7 +522,7 @@ if ("undefined" == typeof(cardbookBirthdaysUtils)) {
 			cardbookBirthdaysUtils.lBirthdayList = [];
 			
 			for (var i = 0; i < cardbookRepository.cardbookAccounts.length; i++) {
-				if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][6]) {
+				if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][5] && (cardbookRepository.cardbookAccounts[i][6] != "SEARCH")) {
 					var myDirPrefId = cardbookRepository.cardbookAccounts[i][4];
 					if ((myContact.indexOf(myDirPrefId) >= 0 ) || (myContact === "allAddressBooks")) {
 						var myDirPrefName = cardbookUtils.getPrefNameFromPrefId(myDirPrefId);
@@ -532,7 +531,7 @@ if ("undefined" == typeof(cardbookBirthdaysUtils)) {
 							if (myCard.bday != "") {
 								var lDateOfBirth = cardbookBirthdaysUtils.convertDateToGoodFormat(myCard.bday, dateFormat);
 								if (lDateOfBirth != "WRONGDATE") {
-									listOfEmail = cardbookUtils.getEmailsFromCards([myCard], cardbookBirthdaysUtils.getPref("extensions.cardbook.preferEmailPref"));
+									listOfEmail = cardbookUtils.getMimeEmailsFromCards([myCard]);
 									cardbookBirthdaysUtils.getAllBirthdaysByName(lDateOfBirth, myCard.fn, lnumberOfDays, myCard.bday, listOfEmail);
 								} else {
 									cardbookUtils.formatStringForOutput("birthdayEntry1Wrong", [myDirPrefName, myCard.fn, myCard.bday, dateFormat], "Warning");
@@ -548,7 +547,7 @@ if ("undefined" == typeof(cardbookBirthdaysUtils)) {
 											var lNotesDateFound = lNotesLine[a].replace(EmptyParamRegExp1, "$2").replace(/^\s+|\s+$/g,"");
 											var lNotesDate = this.convertDateToGoodFormat(lNotesDateFound, dateFormat);
 											if (lNotesDate != "WRONGDATE") {
-												listOfEmail = cardbookUtils.getEmailsFromCards([myCard], cardbookBirthdaysUtils.getPref("extensions.cardbook.preferEmailPref"));
+												listOfEmail = cardbookUtils.getMimeEmailsFromCards([myCard]);
 												cardbookBirthdaysUtils.getAllBirthdaysByName(lNotesDate, lNotesName, lnumberOfDays, lNotesDateFound, listOfEmail);
 											} else {
 												cardbookUtils.formatStringForOutput("birthdayEntry2Wrong", [myDirPrefName, myCard.fn, lNotesDateFound, dateFormat], "Warning");

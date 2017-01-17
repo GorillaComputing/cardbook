@@ -7,7 +7,6 @@ if ("undefined" == typeof(wdw_birthdaySync)) {
 		
 		syncAllBirthdays: function () {
 			Components.utils.import("chrome://cardbook/content/cardbookRepository.js");
-			cardbookRepository.validateLook();
 			cardbookBirthdaysUtils.syncWithLightning();
 			wdw_birthdaySync.do_refresh();
 			

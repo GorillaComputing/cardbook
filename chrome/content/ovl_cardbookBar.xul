@@ -105,6 +105,12 @@
 							<menuitem id="cardbookContactsMenuCcEmailCards" label="&ccEmailCardFromCardsLabel;" oncommand="wdw_cardbook.emailCardsFromCards('cc');"/>
 							<menuitem id="cardbookContactsMenuBccEmailCards" label="&bccEmailCardFromCardsLabel;" oncommand="wdw_cardbook.emailCardsFromCards('bcc');"/>
 							<menuseparator/>
+							<menu id="cardbookContactsMenuIMPPCards" label="&IMPPMenuLabel;">
+								<menupopup id="cardbookContactsMenuIMPPCardsMenuPopup"/>
+							</menu>
+							<menuseparator/>
+							<menuitem id="cardbookContactsMenuFindEmails" label="&findEmailsFromCardsLabel;" oncommand="wdw_cardbook.findEmailsFromCards();"/>
+							<menuseparator/>
 							<menuitem id="cardbookContactsMenuLocalizeCards" label="&localizeCardFromCardsLabel;" oncommand="wdw_cardbook.localizeCardsFromCards();"/>
 							<menuseparator/>
 							<menuitem id="cardbookContactsMenuOpenURL" label="&openURLCardFromCardsLabel;" oncommand="wdw_cardbook.openURLFromCards();"/>
@@ -125,7 +131,7 @@
 							<menuitem id="cardbookToolsBirthdayList" label="&cardbookToolsMenuBirthdayListLabel;" oncommand="wdw_cardbook.displayBirthdayList();"/>
 							<menuitem id="cardbookToolsSyncLightning" label="&cardbookToolsMenuSyncLightningLabel;" oncommand="wdw_cardbook.displaySyncList();"/>
 							<menuseparator/>
-							<menuitem id="cardbookToolsMenuComplexSearch" label="&cardbookToolbarComplexSearchLabel;" oncommand="cardbookComplexSearch.initComplexSearch();"/>
+							<menuitem id="cardbookToolsMenuComplexSearch" label="&cardbookToolbarComplexSearchLabel;" oncommand="wdw_cardbook.editComplexSearch();"/>
 							<menuitem id="cardbookToolsMenuFindSingleDuplicates" label="&cardbookToolsMenuFindSingleDuplicatesLabel;" oncommand="wdw_cardbook.findDuplicatesFromAccountsOrCats();"/>
 							<menuitem id="cardbookToolsMenuFindDuplicates" label="&cardbookToolsMenuFindAllDuplicatesLabel;" oncommand="wdw_cardbook.findDuplicates();"/>
 							<menuseparator/>
@@ -147,7 +153,7 @@
 			<toolbarbutton id="cardbookToolbarComplexSearch"
 				label="&cardbookToolbarComplexSearchLabel;"
 				tooltiptext="&cardbookToolbarComplexSearchTooltip;"
-				oncommand="cardbookComplexSearch.initComplexSearch();"
+				oncommand="wdw_cardbook.editComplexSearch();"
 				class="toolbarbutton-1"/>
 			<toolbarbutton id="cardbookToolbarThMenuButton"
 				class="toolbarbutton-1 button-appmenu"
@@ -161,7 +167,7 @@
 			fullscreentoolbar="true" mode="full"
 			customizable="true"
 			context="cardbook-toolbar-context"
-			defaultset="cardbookToolbarAppMenuButton,cardbookToolbarSyncButton,cardbookToolbarConfigurationButton,spring,cardbookToolbarSearchBox,cardbookToolbarComplexSearch,cardbookToolbarAddButton,cardbookToolbarEditButton,cardbookToolbarRemoveButton,cardbookToolbarThMenuButton"/>
+			defaultset="cardbookToolbarAppMenuButton,cardbookToolbarSyncButton,cardbookToolbarConfigurationButton,spring,cardbookToolbarSearchBox,cardbookToolbarAddButton,cardbookToolbarEditButton,cardbookToolbarRemoveButton,cardbookToolbarThMenuButton"/>
 		<toolbarset id="cardbookToolbars" context="cardbook-toolbar-context"/>
 	</toolbox>
 
@@ -175,10 +181,12 @@
 		<menuitem id="copytelTree" label="&copyCardTreeLabel;" oncommand="wdw_cardbook.copyCardTree();"/>
 	</menupopup>
 
-	<menupopup id="emailTreeContextMenu">
+	<menupopup id="emailTreeContextMenu" onpopupshowing="wdw_cardbook.emailTreeContextShowing();">
 		<menuitem id="toemailemailTree" label="&toEmailEmailTreeLabel;" oncommand="wdw_cardbook.emailCardFromTree('to');"/>
 		<menuitem id="ccemailemailTree" label="&ccEmailEmailTreeLabel;" oncommand="wdw_cardbook.emailCardFromTree('cc');"/>
 		<menuitem id="bccemailemailTree" label="&bccemailemailTree;" oncommand="wdw_cardbook.emailCardFromTree('bcc');"/>
+		<menuseparator/>
+		<menuitem id="findemailemailTree" label="&findEmailsFromCardsLabel;" oncommand="wdw_cardbook.findEmailsFromTree();"/>
 		<menuseparator/>
 		<menuitem id="copyemailTree" label="&copyCardTreeLabel;" oncommand="wdw_cardbook.copyCardTree();"/>
 	</menupopup>
@@ -212,8 +220,8 @@
 		<menuitem id="copyCardsFromAccountsOrCats" label="&copyCardFromAccountsOrCatsLabel;" oncommand="wdw_cardbook.copyCardsFromAccountsOrCats();"/>
 		<menuitem id="pasteCardsFromAccountsOrCats" label="&pasteCardFromAccountsOrCatsLabel;" oncommand="wdw_cardbook.pasteCards();"/>
 		<menuseparator/>
-		<menuitem id="renameCatFromAccountsOrCats" label="&renameCatFromAccountsOrCatsLabel;" oncommand="wdw_cardbook.renameCategory();"/>
-		<menuitem id="removeCatFromAccountsOrCats" label="&removeCatFromAccountsOrCatsLabel;" oncommand="wdw_cardbook.removeCategory();"/>
+		<menuitem id="renameCatFromAccountsOrCats" label="&renameCatFromAccountsOrCatsLabel;" oncommand="wdw_cardbook.selectCategoryToAction('RENAME');"/>
+		<menuitem id="removeCatFromAccountsOrCats" label="&removeCatFromAccountsOrCatsLabel;" oncommand="wdw_cardbook.selectCategoryToAction('REMOVE');"/>
 		<menuseparator/>
 		<menuitem id="findDuplicatesFromAccountsOrCats" label="&cardbookToolsMenuFindSingleDuplicatesLabel;" oncommand="wdw_cardbook.findDuplicatesFromAccountsOrCats();"/>
 		<menuseparator/>
@@ -232,6 +240,12 @@
 		<menuitem id="toEmailCardsFromCards" label="&toEmailCardFromCardsLabel;" oncommand="wdw_cardbook.emailCardsFromCards('to');"/>
 		<menuitem id="ccEmailCardsFromCards" label="&ccEmailCardFromCardsLabel;" oncommand="wdw_cardbook.emailCardsFromCards('cc');"/>
 		<menuitem id="bccEmailCardsFromCards" label="&bccEmailCardFromCardsLabel;" oncommand="wdw_cardbook.emailCardsFromCards('bcc');"/>
+		<menuseparator/>
+		<menu id="IMPPCardFromCards" label="&IMPPMenuLabel;">
+			<menupopup id="IMPPCardFromCardsMenuPopup"/>
+		</menu>
+		<menuseparator/>
+		<menuitem id="findEmailsFromCards" label="&findEmailsFromCardsLabel;" oncommand="wdw_cardbook.findEmailsFromCards();"/>
 		<menuseparator/>
 		<menuitem id="localizeCardsFromCards" label="&localizeCardFromCardsLabel;" oncommand="wdw_cardbook.localizeCardsFromCards();"/>
 		<menuseparator/>

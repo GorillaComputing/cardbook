@@ -12,7 +12,7 @@
 	onload="wdw_serverEdition.load();" resizable="true"
 	onclose="wdw_serverEdition.cancel();"
 	id="wdw_serverEdition" title="&namePage.wizard.description;"
-	persist="screenX screenY width height" class="cardbookBackgroundColorClass"
+	persist="screenX screenY width height"
 	style="min-width:600px;min-height:400px;">
 	
 	<stringbundleset id="stringbundleset"/>

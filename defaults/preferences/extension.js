@@ -6,20 +6,19 @@ pref("extensions.cardbook.statusInformationLineNumber", "250");
 pref("extensions.cardbook.debugMode", false);
 
 pref("extensions.cardbook.cardCreationVersion", "3.0");
-pref("extensions.cardbook.preferEmailEdition", false);
-pref("extensions.cardbook.noteTabView", true);
+pref("extensions.cardbook.preferEmailEdition", true);
 pref("extensions.cardbook.listTabView", false);
 pref("extensions.cardbook.mailPopularityTabView", false);
 pref("extensions.cardbook.technicalTabView", false);
 pref("extensions.cardbook.vcardTabView", false);
 
-pref("extensions.cardbook.defaultLook", false);
-pref("extensions.cardbook.panesView", "classical");
+pref("extensions.cardbook.panesView", "modern");
 pref("extensions.cardbook.initialSync", true);
 pref("extensions.cardbook.solveConflicts", "Local");
 pref("extensions.cardbook.autoSync", true);
 pref("extensions.cardbook.autoSyncInterval", "30");
 pref("extensions.cardbook.multiget", "40");
+pref("extensions.cardbook.decodeReport", true);
 
 pref("extensions.cardbook.preferEmailPref", true);
 

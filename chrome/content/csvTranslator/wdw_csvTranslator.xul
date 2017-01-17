@@ -11,7 +11,7 @@
 	onload="wdw_csvTranslator.load();" resizable="true"
 	onclose="wdw_csvTranslator.cancel();"
 	id="wdw_csvTranslator"
-	persist="screenX screenY width height" class="cardbookBackgroundColorClass"
+	persist="screenX screenY width height"
 	style="min-width:500px;min-height:400px;">
 	
 	<stringbundleset id="stringbundleset"/>
@@ -52,7 +52,7 @@
 				<vbox flex="1">
 					<groupbox id="availableColumnsGroupbox" flex="1">
 						<caption id="availableColumnsGroupboxLabel" class="header"/>
-						<tree id="availableColumnsTree" class="cardbookTreeChildrenCardClass" flex="1" hidecolumnpicker="true">
+						<tree id="availableColumnsTree" class="cardbookTreeClass" flex="1" hidecolumnpicker="true">
 							<treecols id="availableColumnsTreeCols">
 								<treecol id="availableColumnsId" flex="1" persist="width ordinal hidden" hidden="true" style="text-align:left"/>
 								<treecol id="availableColumnsName" flex="1" persist="width ordinal hidden" style="text-align:left" hideheader="true"/>
@@ -74,7 +74,7 @@
 				<vbox flex="1">
 					<groupbox id="addedColumnsGroupbox" flex="1">
 						<caption id="addedColumnsGroupboxLabel" class="header"/>
-						<tree id="addedColumnsTree" class="cardbookTreeChildrenCardClass" flex="1" hidecolumnpicker="true">
+						<tree id="addedColumnsTree" class="cardbookTreeClass" flex="1" hidecolumnpicker="true">
 							<treecols id="addedColumnsTreeCols">
 								<treecol id="addedColumnsId" flex="1" persist="width ordinal hidden" hidden="true"/>
 								<treecol id="addedColumnsName" flex="1" persist="width ordinal hidden" style="text-align:left" hideheader="true"/>
@@ -86,7 +86,7 @@
 				<vbox id="foundColumnsVBox" flex="1">
 					<groupbox id="foundColumnsGroupbox" flex="1">
 						<caption id="foundColumnsGroupboxLabel" class="header"/>
-						<tree id="foundColumnsTree" class="cardbookTreeChildrenCardClass" flex="1" hidecolumnpicker="true">
+						<tree id="foundColumnsTree" class="cardbookTreeClass" flex="1" hidecolumnpicker="true">
 							<treecols id="foundColumnsTreeCols">
 								<treecol id="foundColumnsId" flex="1" persist="width ordinal hidden" hidden="true"/>
 								<treecol id="foundColumnsName" flex="1" persist="width ordinal hidden" style="text-align:left" hideheader="true"/>

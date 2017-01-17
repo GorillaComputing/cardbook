@@ -1,22 +1,8 @@
 if ("undefined" == typeof(wdw_logEdition)) {
 	var wdw_logEdition = {
 		
-		validateLook: function (aPrefValue) {
-			if (aPrefValue) {
-				cardbookRepository.unregisterCss("chrome://cardbook/skin/logEditionNull.css");
-				cardbookRepository.reloadCss("chrome://cardbook/skin/logEditionBlue.css");
-			} else {
-				cardbookRepository.unregisterCss("chrome://cardbook/skin/logEditionBlue.css");
-				cardbookRepository.reloadCss("chrome://cardbook/skin/logEditionNull.css");
-			}
-		},
-
 		load: function () {
 			Components.utils.import("chrome://cardbook/content/cardbookRepository.js");
-			var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-			var defaultLook = prefs.getBoolPref("extensions.cardbook.defaultLook");
-			wdw_logEdition.validateLook(defaultLook);
-
 			var myLogArray = cardbookRepository.statusInformation;
 			var myTreeView = {
 				rowCount : myLogArray.length,

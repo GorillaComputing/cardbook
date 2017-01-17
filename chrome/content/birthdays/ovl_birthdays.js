@@ -35,13 +35,14 @@ if ("undefined" == typeof(ovl_birthdays)) {
 		} },
 	
 		onLoad: function() {
+			Components.utils.import("chrome://cardbook/content/cardbookRepository.js");
 			if (cardbookBirthdaysUtils.getPref("extensions.cardbook.showPopupOnStartup")) {
 				ovl_birthdays.onShowPopup();
 			}
 			
 			if (cardbookBirthdaysUtils.getPref("extensions.cardbook.syncWithLightningOnStartup")) {
 				Components.utils.import("resource://gre/modules/AddonManager.jsm");  
-				AddonManager.getAddonByID(cardbookBirthdaysUtils.LIGHTNING_ID, ovl_birthdays.displaySyncListAddon);
+				AddonManager.getAddonByID(cardbookRepository.LIGHTNING_ID, ovl_birthdays.displaySyncListAddon);
 			}
 		},
 	

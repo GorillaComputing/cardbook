@@ -5,12 +5,13 @@
 <!ENTITY welcomePage.description "Bij het eerste gebruik van CardBook wordt geprobeerd om de contactpersonen uit het standaard-adresboek van Thunderbird te importeren.">
 
 <!ENTITY initialpage.wizard.description "Opslag van het nieuwe adresboek">
-<!ENTITY initialpage.description "Staat het nieuwe adresboek locaal of op internet:">
-<!ENTITY initialpage.computer.label "Locaal">
+<!ENTITY initialpage.description "Staat het nieuwe adresboek lokaal of op internet:">
+<!ENTITY initialpage.computer.label "Lokaal">
 <!ENTITY initialpage.network.label "Op internet">
+<!ENTITY initialpage.search.label "Zoeken in bestaande adresboeken">
 
-<!ENTITY locationComputerPage.wizard.description "Plaats en type van het locale adresboek.">
-<!ENTITY locationComputerPage.type.description "Type van het locale adresboek:">
+<!ENTITY locationComputerPage.wizard.description "Plaats en type van het lokale adresboek.">
+<!ENTITY locationComputerPage.type.description "Type van het lokale adresboek:">
 <!ENTITY locationComputerPage.type.label "Type">
 <!ENTITY locationComputerPage.createDirectory.label "Nieuw adresboek toevoegen (Map)">
 <!ENTITY locationComputerPage.createFile.label "Nieuw adresboek toevoegen (Bestand)">
@@ -18,8 +19,8 @@
 <!ENTITY locationComputerPage.openFile.label "Open een bestaand adresboek (Bestand)">
 <!ENTITY locationComputerPage.standard.label "Importeren standaard-adresboek van Thunderbird (Map)">
 <!ENTITY locationComputerPage.uri.label "Map of bestand">
-<!ENTITY locationComputerPage.uri.description "Gebruik Verkenner om de locatie van het nieuwe adresboek te kiezen. In geval van een nieuw bestand, kies '.vcf' als bestandsextensie.">
-<!ENTITY locationFirstPage.uri.description "Kies de locatie voor het nieuwe adresboek">
+<!ENTITY locationComputerPage.uri.description "Gebruik Verkenner om de lokatie van het nieuwe adresboek te kiezen. In geval van een nieuw bestand, kies '.vcf' als bestandsextensie.">
+<!ENTITY locationFirstPage.uri.description "Kies de lokatie voor het nieuwe adresboek">
 <!ENTITY locationComputerPage.uributton.label "Verkenner">
 
 <!ENTITY locationNetworkPage.wizard.description "Type en plaats van het nieuwe internet-adresboek.">
@@ -31,8 +32,11 @@
 <!ENTITY locationNetworkPage.connection.label "Verbinding">
 <!ENTITY locationNetworkPage.uri.description "Bij een CardDAV-type: vul de URL van het internet-adresboek in.">
 <!ENTITY locationNetworkPage.uri.label "URL">
-<!ENTITY locationNetworkPage.credentials.description "Toegangscodes voor het internet-adresboek. (Pas op: voor Google-adresboek de Google-email invullen.">
+<!ENTITY locationNetworkPage.credentials.description "Toegangscodes voor het internet-adresboek. (Let op: voor Google-adresboek de Google-email invullen.)">
 <!ENTITY locationNetworkPage.validatebutton.label "Controleren">
+
+<!ENTITY locationSearchPage.wizard.description "Definitie van geavanceerd zoeken">
+<!ENTITY locationSearchPage.label "Geavanceerd zoeken">
 
 <!ENTITY googleOauthPage.wizard.description "Google-authenticatie">
 

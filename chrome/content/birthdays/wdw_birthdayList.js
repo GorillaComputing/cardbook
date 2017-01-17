@@ -11,12 +11,11 @@ if ("undefined" == typeof(wdw_birthdayList)) {
 
 		setupWindow: function () {
 			Components.utils.import("resource://gre/modules/AddonManager.jsm");  
-			AddonManager.getAddonByID(cardbookBirthdaysUtils.LIGHTNING_ID, this.enableSyncList);
+			AddonManager.getAddonByID(cardbookRepository.LIGHTNING_ID, this.enableSyncList);
 		},
 	
 		displayAllBirthdays: function () {
 			Components.utils.import("chrome://cardbook/content/cardbookRepository.js");
-			cardbookRepository.validateLook();
 			wdw_birthdayList.setupWindow();
 			
 			var strBundle = document.getElementById("cardbook-strings");

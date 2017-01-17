@@ -8,7 +8,6 @@ if ("undefined" == typeof(ovl_synchro)) {
 			cardbookRepository.cardbookUncategorizedCards = strBundle.GetStringFromName("uncategorizedCards");
 			cardbookRepository.cardbookCollectedCards = strBundle.GetStringFromName("collectedCards");
 
-			cardbookRepository.setCache();
 			cardbookRepository.setSolveConflicts();
 			cardbookRepository.setTypes();
 			cardbookRepository.loadCustoms();
@@ -22,7 +21,7 @@ if ("undefined" == typeof(ovl_synchro)) {
 		}
 
 	};
-	
+
 	ovl_synchro.runBackgroundSync();
 
 };

@@ -6,6 +6,8 @@
 <!ENTITY createAndReplaceEditionAccesskey "R">
 <!ENTITY saveEditionLabel "Save">
 <!ENTITY saveEditionAccesskey "S">
+<!ENTITY validateEditionLabel "Validate">
+<!ENTITY validateEditionAccesskey "V">
 <!ENTITY cancelEditionLabel "Cancel">
 <!ENTITY cancelEditionAccesskey "C">
 <!ENTITY buttonAppendToListLabel "Add">

@@ -575,7 +575,7 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 						if (aCard[aField].URI.indexOf("http") == 0) {
 							cardbookUtils.jsInclude(["chrome://cardbook/content/cardbookWebDAV.js"]);
 							var listener_getimage = {
-								onDAVQueryComplete: function(status, response, etag) {
+								onDAVQueryComplete: function(status, response, askCertificate, etag) {
 									if (status > 199 && status < 400) {
 										cardbookUtils.formatStringForOutput("serverCardGetImageOK", [aImageConnection.connDescription, aCard.fn]);
 										var cacheDir = cardbookUtils.getMediaCacheFile(aCard.uid, aCard.dirPrefId, aCard.etag, aField, aCard[aField].extension);
@@ -616,7 +616,7 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 
 		serverDelete: function(aConnection, aMode, aCard, aPrefIdType) {
 			var listener_delete = {
-				onDAVQueryComplete: function(status, response) {
+				onDAVQueryComplete: function(status, response, askCertificate) {
 					if (status > 199 && status < 400) {
 						cardbookUtils.formatStringForOutput("serverCardDeletedFromServer", [aConnection.connDescription, aCard.fn]);
 						cardbookRepository.removeCardFromRepository(aCard, true);
@@ -645,7 +645,7 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 
 		serverUpdate: function(aConnection, aMode, aCard, aModifiedCard, aPrefIdType) {
 			var listener_update = {
-				onDAVQueryComplete: function(status, response, etag) {
+				onDAVQueryComplete: function(status, response, askCertificate, etag) {
 					if (status > 199 && status < 400) {
 						if (etag != null && etag !== undefined && etag != "") {
 							cardbookUtils.formatStringForOutput("serverCardUpdatedOnServerWithEtag", [aConnection.connDescription, aModifiedCard.fn, etag]);
@@ -679,7 +679,7 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 
 		serverCreate: function(aConnection, aMode, aCard, aPrefIdType) {
 			var listener_create = {
-				onDAVQueryComplete: function(status, response, etag) {
+				onDAVQueryComplete: function(status, response, askCertificate, etag) {
 					if (status > 199 && status < 400) {
 						if (cardbookRepository.cardbookCards[aCard.dirPrefId+"::"+aCard.uid]) {
 							// if aCard and aCard have the same cached medias
@@ -719,7 +719,7 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 
 		serverGetForMerge: function(aConnection, aMode, aEtag, aCacheCard, aPrefIdType) {
 			var listener_get = {
-				onDAVQueryComplete: function(status, response, etag) {
+				onDAVQueryComplete: function(status, response, askCertificate, etag) {
 					if (status > 199 && status < 400) {
 						try {
 							var myCard = new cardbookCardParser(response, aConnection.connUrl, etag, aConnection.connPrefId);
@@ -770,7 +770,7 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 
 		serverGet: function(aConnection, aMode) {
 			var listener_get = {
-				onDAVQueryComplete: function(status, response, etag) {
+				onDAVQueryComplete: function(status, response, askCertificate, etag) {
 					if (status > 199 && status < 400) {
 						try {
 							var myCard = new cardbookCardParser(response, aConnection.connUrl, etag, aConnection.connPrefId);
@@ -808,79 +808,88 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 
 		serverMultiGet: function(aConnection, aMode) {
 			var listener_multiget = {
-				onDAVQueryComplete: function(status, response, etagDummy, length) {
+				onDAVQueryComplete: function(status, response, askCertificate, etagDummy, length) {
 					if (response && response["parsererror"] && response["parsererror"][0]["sourcetext"] && response["parsererror"][0]["sourcetext"][0]) {
 						cardbookUtils.formatStringForOutput("unableToParseResponse", [aConnection.connDescription, response["parsererror"][0]["sourcetext"][0]], "Error");
 						cardbookRepository.cardbookServerSyncDone[aConnection.connPrefId] = cardbookRepository.cardbookServerSyncDone[aConnection.connPrefId] + length;
 						cardbookRepository.cardbookServerMultiGetError[aConnection.connPrefId]++;
 					} else if (response && response["multistatus"] && (status > 199 && status < 400)) {
-						let jsonResponses = response["multistatus"][0]["response"];
-						for each (let jsonResponse in jsonResponses) {
-							try {
-								let href = decodeURIComponent(jsonResponse["href"][0]);
-								let propstats = jsonResponse["propstat"];
-								// 2015.04.27 14:03:55 : href : /remote.php/carddav/addressbooks/11111/contacts/
-								// 2015.04.27 14:03:55 : propstats : [{prop:[{getcontenttype:[null], getetag:[null]}], status:["HTTP/1.1 404 Not Found"]}]
-								// 2015.04.27 14:03:55 : href : /remote.php/carddav/addressbooks/11111/contacts/C68894CF-D340-0001-78C3-1E301B4011F5.vcf
-								// 2015.04.27 14:03:55 : propstats : [{prop:[{getcontenttype:["text/x-vcard"], getetag:["\"6163e30117192647e1967de751fb5467\""]}], status:["HTTP/1.1 200 OK"]}]
-								for each (let propstat in propstats) {
-									cardbookRepository.cardbookServerGetRequest[aConnection.connPrefId]++;
-									if (propstat["status"][0].indexOf("HTTP/1.1 200") == 0) {
-										if (propstat["prop"] != null && propstat["prop"] !== undefined && propstat["prop"] != "") {
-											let prop = propstat["prop"][0];
-											if (typeof(prop["getetag"]) == "undefined") {
-												var etag = "";
-											} else {
-												var etag = prop["getetag"][0];
-											}
-											var myUrl = aConnection.connUrl + href;
-											try {
-												var myContent = decodeURIComponent(prop["address-data"][0]);
-											}
-											catch (e) {
-												var myContent = prop["address-data"][0];
-											}
-											try {
-												var aRootUrl = cardbookSynchronization.getRootUrl(aConnection.connUrl);
-												var myCard = new cardbookCardParser(myContent, aRootUrl + href, etag, aConnection.connPrefId);
-											}
-											catch (e) {
-												cardbookRepository.cardbookServerSyncDone[aConnection.connPrefId]++;
-												cardbookRepository.cardbookServerGetResponse[aConnection.connPrefId]++;
-												cardbookRepository.cardbookServerGetError[aConnection.connPrefId]++;
-												if (e.message == "") {
-													var stringBundleService = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
-													var strBundle = stringBundleService.createBundle("chrome://cardbook/locale/cardbook.properties");
-													cardbookUtils.formatStringForOutput("parsingCardError", [aConnection.connDescription, strBundle.GetStringFromName(e.code), myContent], "Error");
+						try {
+							let jsonResponses = response["multistatus"][0]["response"];
+							for (var prop in jsonResponses) {
+								var jsonResponse = jsonResponses[prop];
+								try {
+									let href = decodeURIComponent(jsonResponse["href"][0]);
+									let propstats = jsonResponse["propstat"];
+									// 2015.04.27 14:03:55 : href : /remote.php/carddav/addressbooks/11111/contacts/
+									// 2015.04.27 14:03:55 : propstats : [{prop:[{getcontenttype:[null], getetag:[null]}], status:["HTTP/1.1 404 Not Found"]}]
+									// 2015.04.27 14:03:55 : href : /remote.php/carddav/addressbooks/11111/contacts/C68894CF-D340-0001-78C3-1E301B4011F5.vcf
+									// 2015.04.27 14:03:55 : propstats : [{prop:[{getcontenttype:["text/x-vcard"], getetag:["\"6163e30117192647e1967de751fb5467\""]}], status:["HTTP/1.1 200 OK"]}]
+									for (var prop1 in propstats) {
+										var propstat = propstats[prop1];
+										cardbookRepository.cardbookServerGetRequest[aConnection.connPrefId]++;
+										if (propstat["status"][0].indexOf("HTTP/1.1 200") == 0) {
+											if (propstat["prop"] != null && propstat["prop"] !== undefined && propstat["prop"] != "") {
+												let prop = propstat["prop"][0];
+												if (typeof(prop["getetag"]) == "undefined") {
+													var etag = "";
 												} else {
-													cardbookUtils.formatStringForOutput("parsingCardError", [aConnection.connDescription, e.message, myContent], "Error");
+													var etag = prop["getetag"][0];
 												}
-												continue;
+												var myUrl = aConnection.connUrl + href;
+												try {
+													var myContent = decodeURIComponent(prop["address-data"][0]);
+												}
+												catch (e) {
+													var myContent = prop["address-data"][0];
+												}
+												try {
+													var aRootUrl = cardbookSynchronization.getRootUrl(aConnection.connUrl);
+													var myCard = new cardbookCardParser(myContent, aRootUrl + href, etag, aConnection.connPrefId);
+												}
+												catch (e) {
+													cardbookRepository.cardbookServerSyncDone[aConnection.connPrefId]++;
+													cardbookRepository.cardbookServerGetResponse[aConnection.connPrefId]++;
+													cardbookRepository.cardbookServerGetError[aConnection.connPrefId]++;
+													if (e.message == "") {
+														var stringBundleService = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
+														var strBundle = stringBundleService.createBundle("chrome://cardbook/locale/cardbook.properties");
+														cardbookUtils.formatStringForOutput("parsingCardError", [aConnection.connDescription, strBundle.GetStringFromName(e.code), myContent], "Error");
+													} else {
+														cardbookUtils.formatStringForOutput("parsingCardError", [aConnection.connDescription, e.message, myContent], "Error");
+													}
+													continue;
+												}
+												if (cardbookRepository.cardbookCards[myCard.dirPrefId+"::"+myCard.uid]) {
+													var myOldCard = cardbookRepository.cardbookCards[myCard.dirPrefId+"::"+myCard.uid];
+													cardbookRepository.removeCardFromRepository(myOldCard, true);
+												}
+												cardbookRepository.addCardToRepository(myCard, aMode, cardbookUtils.getFileNameFromUrl(aConnection.connUrl + href));
+												cardbookUtils.formatStringForOutput("serverCardGetOK", [aConnection.connDescription, myCard.fn]);
+											} else {
+												cardbookRepository.cardbookServerGetError[aConnection.connPrefId]++;
+												cardbookUtils.formatStringForOutput("serverCardGetFailed", [aConnection.connDescription, aConnection.connUrl, status]);
 											}
-											if (cardbookRepository.cardbookCards[myCard.dirPrefId+"::"+myCard.uid]) {
-												var myOldCard = cardbookRepository.cardbookCards[myCard.dirPrefId+"::"+myCard.uid];
-												cardbookRepository.removeCardFromRepository(myOldCard, true);
-											}
-											cardbookRepository.addCardToRepository(myCard, aMode, cardbookUtils.getFileNameFromUrl(aConnection.connUrl + href));
-											cardbookUtils.formatStringForOutput("serverCardGetOK", [aConnection.connDescription, myCard.fn]);
 										} else {
 											cardbookRepository.cardbookServerGetError[aConnection.connPrefId]++;
 											cardbookUtils.formatStringForOutput("serverCardGetFailed", [aConnection.connDescription, aConnection.connUrl, status]);
 										}
-									} else {
-										cardbookRepository.cardbookServerGetError[aConnection.connPrefId]++;
-										cardbookUtils.formatStringForOutput("serverCardGetFailed", [aConnection.connDescription, aConnection.connUrl, status]);
+										cardbookRepository.cardbookServerSyncDone[aConnection.connPrefId]++;
+										cardbookRepository.cardbookServerGetResponse[aConnection.connPrefId]++;
 									}
-									cardbookRepository.cardbookServerSyncDone[aConnection.connPrefId]++;
+								}
+								catch(e) {
 									cardbookRepository.cardbookServerGetResponse[aConnection.connPrefId]++;
+									cardbookRepository.cardbookServerSyncDone[aConnection.connPrefId]++;
+									cardbookRepository.cardbookServerMultiGetError[aConnection.connPrefId]++;
+									wdw_cardbooklog.updateStatusProgressInformation(aConnection.connDescription + " : cardbookSynchronization.serverMultiGet error : " + e, "Error");
 								}
 							}
-							catch(e) {
-								cardbookRepository.cardbookServerGetResponse[aConnection.connPrefId]++;
-								cardbookRepository.cardbookServerSyncDone[aConnection.connPrefId]++;
-								cardbookRepository.cardbookServerMultiGetError[aConnection.connPrefId]++;
-								wdw_cardbooklog.updateStatusProgressInformation(aConnection.connDescription + " : cardbookSynchronization.serverMultiGet error : " + e, "Error");
-							}
+						}
+						catch(e) {
+							cardbookRepository.cardbookServerSyncDone[aConnection.connPrefId] = cardbookRepository.cardbookServerSyncDone[aConnection.connPrefId] + length;
+							cardbookRepository.cardbookServerMultiGetError[aConnection.connPrefId]++;
+							wdw_cardbooklog.updateStatusProgressInformation(aConnection.connDescription + " : cardbookSynchronization.serverMultiGet error : " + e, "Error");
 						}
 					} else {
 						cardbookRepository.cardbookServerSyncDone[aConnection.connPrefId] = cardbookRepository.cardbookServerSyncDone[aConnection.connPrefId] + length;
@@ -946,7 +955,11 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 			if (aSync) {
 				cardbookSynchronization.waitForLoadCacheFinished(aPrefId, aPrefName, aPrefType, aPrefUser, aPrefUrl, aMode);
 			} else {
-				cardbookSynchronization.waitForSyncFinished(aPrefId, aPrefName, aMode);
+				if (aPrefType === "GOOGLE" || aPrefType === "CARDDAV" || aPrefType === "APPLE") {
+					cardbookSynchronization.waitForSyncFinished(aPrefId, aPrefName, aMode);
+				} else {
+					cardbookSynchronization.waitForDirFinished(aPrefId, aPrefName, aMode);
+				}
 			}
 
 		},
@@ -1187,12 +1200,18 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 
 		googleSyncCards: function(aConnection, aMode, aPrefIdType) {
 			var listener_propfind = {
-				onDAVQueryComplete: function(status, response) {
+				onDAVQueryComplete: function(status, response, askCertificate) {
 					if (status == 0) {
-						var certificateExceptionAdded = false;
-						var certificateExceptionAdded = cardbookSynchronization.addCertificateException(cardbookSynchronization.getRootUrl(aConnection.connUrl));
-						if (certificateExceptionAdded) {
-							cardbookSynchronization.serverSyncCards(aConnection, aMode, aPrefIdType);
+						if (askCertificate) {
+							var certificateExceptionAdded = false;
+							var certificateExceptionAdded = cardbookSynchronization.addCertificateException(cardbookSynchronization.getRootUrl(aConnection.connUrl));
+							if (certificateExceptionAdded) {
+								cardbookSynchronization.serverSyncCards(aConnection, aMode, aPrefIdType);
+							} else {
+								cardbookUtils.formatStringForOutput("synchronizationFailed", [aConnection.connDescription, "googleSyncCards", aConnection.connUrl, status]);
+								cardbookRepository.cardbookServerSyncError[aConnection.connPrefId]++;
+								cardbookRepository.cardbookServerSyncResponse[aConnection.connPrefId]++;
+							}
 						} else {
 							cardbookUtils.formatStringForOutput("synchronizationFailed", [aConnection.connDescription, "googleSyncCards", aConnection.connUrl, status]);
 							cardbookRepository.cardbookServerSyncError[aConnection.connPrefId]++;
@@ -1208,14 +1227,16 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 							var filesFromCache = cardbookSynchronization.getFilesFromCache(aConnection.connPrefId);
 							cardbookRepository.cardbookServerSyncHandleRemainingTotal[aConnection.connPrefId] = filesFromCache.length;
 							let jsonResponses = response["multistatus"][0]["response"];
-							for each (let jsonResponse in jsonResponses) {
+							for (var prop in jsonResponses) {
+								var jsonResponse = jsonResponses[prop];
 								let href = decodeURIComponent(jsonResponse["href"][0]);
 								let propstats = jsonResponse["propstat"];
 								// 2015.04.27 13:53:48 : href : /carddav/v1/principals/foo.bar@gmail.com/lists/default/
 								// 2015.04.27 13:53:48 : propstats : [{status:["HTTP/1.1 200 OK"]}, {status:["HTTP/1.1 404 Not Found"], prop:[{getetag:[null]}]}]
 								// 2015.04.27 14:03:54 : href : /carddav/v1/principals/foo.bar@gmail.com/lists/default/69ada43d89c0d90b
 								// 2015.04.27 14:03:54 : propstats : [{status:["HTTP/1.1 200 OK"], prop:[{getetag:["\"2014-07-15T13:43:23.997-07:00\""]}]}]
-								for each (let propstat in propstats) {
+								for (var prop1 in propstats) {
+									var propstat = propstats[prop1];
 									if (propstat["status"][0].indexOf("HTTP/1.1 200") == 0) {
 										if (propstat["prop"] != null && propstat["prop"] !== undefined && propstat["prop"] != "") {
 											cardbookRepository.cardbookServerSyncTotal[aConnection.connPrefId]++;
@@ -1262,12 +1283,18 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 
 		serverSyncCards: function(aConnection, aMode, aPrefIdType) {
 			var listener_propfind = {
-				onDAVQueryComplete: function(status, response) {
+				onDAVQueryComplete: function(status, response, askCertificate) {
 					if (status == 0) {
-						var certificateExceptionAdded = false;
-						var certificateExceptionAdded = cardbookSynchronization.addCertificateException(cardbookSynchronization.getRootUrl(aConnection.connUrl));
-						if (certificateExceptionAdded) {
-							cardbookSynchronization.serverSyncCards(aConnection, aMode, aPrefIdType);
+						if (askCertificate) {
+							var certificateExceptionAdded = false;
+							var certificateExceptionAdded = cardbookSynchronization.addCertificateException(cardbookSynchronization.getRootUrl(aConnection.connUrl));
+							if (certificateExceptionAdded) {
+								cardbookSynchronization.serverSyncCards(aConnection, aMode, aPrefIdType);
+							} else {
+								cardbookUtils.formatStringForOutput("synchronizationFailed", [aConnection.connDescription, "serverSyncCards", aConnection.connUrl, status]);
+								cardbookRepository.cardbookServerSyncError[aConnection.connPrefId]++;
+								cardbookRepository.cardbookServerSyncResponse[aConnection.connPrefId]++;
+							}
 						} else {
 							cardbookUtils.formatStringForOutput("synchronizationFailed", [aConnection.connDescription, "serverSyncCards", aConnection.connUrl, status]);
 							cardbookRepository.cardbookServerSyncError[aConnection.connPrefId]++;
@@ -1283,14 +1310,16 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 							var filesFromCache = cardbookSynchronization.getFilesFromCache(aConnection.connPrefId);
 							cardbookRepository.cardbookServerSyncHandleRemainingTotal[aConnection.connPrefId] = filesFromCache.length;
 							let jsonResponses = response["multistatus"][0]["response"];
-							for each (let jsonResponse in jsonResponses) {
+							for (var prop in jsonResponses) {
+								var jsonResponse = jsonResponses[prop];
 								let href = decodeURIComponent(jsonResponse["href"][0]);
 								let propstats = jsonResponse["propstat"];
 								// 2015.04.27 14:03:55 : href : /remote.php/carddav/addressbooks/11111/contacts/
 								// 2015.04.27 14:03:55 : propstats : [{prop:[{getcontenttype:[null], getetag:[null]}], status:["HTTP/1.1 404 Not Found"]}]
 								// 2015.04.27 14:03:55 : href : /remote.php/carddav/addressbooks/11111/contacts/C68894CF-D340-0001-78C3-1E301B4011F5.vcf
 								// 2015.04.27 14:03:55 : propstats : [{prop:[{getcontenttype:["text/x-vcard"], getetag:["\"6163e30117192647e1967de751fb5467\""]}], status:["HTTP/1.1 200 OK"]}]
-								for each (let propstat in propstats) {
+								for (var prop1 in propstats) {
+									var propstat = propstats[prop1];
 									if (propstat["status"][0].indexOf("HTTP/1.1 200") == 0) {
 										if (propstat["prop"] != null && propstat["prop"] !== undefined && propstat["prop"] != "") {
 											let prop = propstat["prop"][0];
@@ -1351,12 +1380,18 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 
 		validateWithoutDiscovery: function(aConnection, aRootUrl) {
 			var listener_checkpropfind4 = {
-				onDAVQueryComplete: function(status, response) {
+				onDAVQueryComplete: function(status, response, askCertificate) {
 					if (status == 0) {
-						var certificateExceptionAdded = false;
-						var certificateExceptionAdded = cardbookSynchronization.addCertificateException(aRootUrl);
-						if (certificateExceptionAdded) {
-							cardbookSynchronization.validateWithoutDiscovery(aConnection, aRootUrl);
+						if (askCertificate) {
+							var certificateExceptionAdded = false;
+							var certificateExceptionAdded = cardbookSynchronization.addCertificateException(aRootUrl);
+							if (certificateExceptionAdded) {
+								cardbookSynchronization.validateWithoutDiscovery(aConnection, aRootUrl);
+							} else {
+								cardbookUtils.formatStringForOutput("synchronizationFailed", [aConnection.connDescription, "validateWithoutDiscovery", aConnection.connUrl, status]);
+								cardbookRepository.cardbookServerDiscoveryError[aConnection.connPrefId]++;
+								cardbookRepository.cardbookServerSyncResponse[aConnection.connPrefId]++;
+							}
 						} else {
 							cardbookUtils.formatStringForOutput("synchronizationFailed", [aConnection.connDescription, "validateWithoutDiscovery", aConnection.connUrl, status]);
 							cardbookRepository.cardbookServerDiscoveryError[aConnection.connPrefId]++;
@@ -1371,13 +1406,15 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 					} else if (response && response["multistatus"] && (status > 199 && status < 400)) {
 						try {
 							let jsonResponses = response["multistatus"][0]["response"];
-							for each (let jsonResponse in jsonResponses) {
+							for (var prop in jsonResponses) {
+								var jsonResponse = jsonResponses[prop];
 								let href = decodeURIComponent(jsonResponse["href"][0]);
 								if (href[href.length - 1] != '/') {
 									href += '/';
 								}
 								let propstats = jsonResponse["propstat"];
-								for each (let propstat in propstats) {
+								for (var prop1 in propstats) {
+									var propstat = propstats[prop1];
 									if (propstat["status"][0].indexOf("HTTP/1.1 200") == 0) {
 										if (propstat["prop"] != null && propstat["prop"] !== undefined && propstat["prop"] != "") {
 											let prop = propstat["prop"][0];
@@ -1430,12 +1467,18 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 
 		discoverPhase3: function(aConnection, aRootUrl, aOperationType, aParams) {
 			var listener_checkpropfind3 = {
-				onDAVQueryComplete: function(status, response) {
+				onDAVQueryComplete: function(status, response, askCertificate) {
 					if (status == 0) {
-						var certificateExceptionAdded = false;
-						var certificateExceptionAdded = cardbookSynchronization.addCertificateException(aRootUrl);
-						if (certificateExceptionAdded) {
-							cardbookSynchronization.discoverPhase3(aConnection, aRootUrl, aOperationType, aParams);
+						if (askCertificate) {
+							var certificateExceptionAdded = false;
+							var certificateExceptionAdded = cardbookSynchronization.addCertificateException(aRootUrl);
+							if (certificateExceptionAdded) {
+								cardbookSynchronization.discoverPhase3(aConnection, aRootUrl, aOperationType, aParams);
+							} else {
+								cardbookUtils.formatStringForOutput("synchronizationFailed", [aConnection.connDescription, "validateWithoutDiscovery", aConnection.connUrl, status]);
+								cardbookRepository.cardbookServerDiscoveryError[aConnection.connPrefId]++;
+								cardbookRepository.cardbookServerSyncResponse[aConnection.connPrefId]++;
+							}
 						} else {
 							cardbookUtils.formatStringForOutput("synchronizationFailed", [aConnection.connDescription, "validateWithoutDiscovery", aConnection.connUrl, status]);
 							cardbookRepository.cardbookServerDiscoveryError[aConnection.connPrefId]++;
@@ -1452,13 +1495,15 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 							let jsonResponses = response["multistatus"][0]["response"];
 							// first : try to determine if there are multiples addressbooks
 							var allAddressbooks = [];
-							for each (let jsonResponse in jsonResponses) {
+							for (var prop in jsonResponses) {
+								var jsonResponse = jsonResponses[prop];
 								let href = decodeURIComponent(jsonResponse["href"][0]);
 								if (href[href.length - 1] != '/') {
 									href += '/';
 								}
 								let propstats = jsonResponse["propstat"];
-								for each (let propstat in propstats) {
+								for (var prop1 in propstats) {
+									var propstat = propstats[prop1];
 									if (propstat["status"][0].indexOf("HTTP/1.1 200") == 0) {
 										if (propstat["prop"] != null && propstat["prop"] !== undefined && propstat["prop"] != "") {
 											let prop = propstat["prop"][0];
@@ -1487,13 +1532,15 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 								cardbookRepository.cardbookServerDiscoveryError[aConnection.connPrefId]++;
 								cardbookRepository.cardbookServerDiscoveryResponse[aConnection.connPrefId]++;
 							} else {
-								for each (let jsonResponse in jsonResponses) {
+								for (var prop in jsonResponses) {
+									var jsonResponse = jsonResponses[prop];
 									let href = decodeURIComponent(jsonResponse["href"][0]);
 									if (href[href.length - 1] != '/') {
 										href += '/';
 									}
 									let propstats = jsonResponse["propstat"];
-									for each (let propstat in propstats) {
+									for (var prop1 in propstats) {
+										var propstat = propstats[prop1];
 										if (propstat["status"][0].indexOf("HTTP/1.1 200") == 0) {
 											if (propstat["prop"] != null && propstat["prop"] !== undefined && propstat["prop"] != "") {
 												let prop = propstat["prop"][0];
@@ -1553,12 +1600,18 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 
 		discoverPhase2: function(aConnection, aRootUrl, aOperationType, aParams) {
 			var listener_checkpropfind2 = {
-				onDAVQueryComplete: function(status, response) {
+				onDAVQueryComplete: function(status, response, askCertificate) {
 					if (status == 0) {
-						var certificateExceptionAdded = false;
-						var certificateExceptionAdded = cardbookSynchronization.addCertificateException(aRootUrl);
-						if (certificateExceptionAdded) {
-							cardbookSynchronization.discoverPhase2(aConnection, aRootUrl, aOperationType, aParams);
+						if (askCertificate) {
+							var certificateExceptionAdded = false;
+							var certificateExceptionAdded = cardbookSynchronization.addCertificateException(aRootUrl);
+							if (certificateExceptionAdded) {
+								cardbookSynchronization.discoverPhase2(aConnection, aRootUrl, aOperationType, aParams);
+							} else {
+								cardbookUtils.formatStringForOutput("synchronizationFailed", [aConnection.connDescription, "validateWithoutDiscovery", aConnection.connUrl, status]);
+								cardbookRepository.cardbookServerDiscoveryError[aConnection.connPrefId]++;
+								cardbookRepository.cardbookServerSyncResponse[aConnection.connPrefId]++;
+							}
 						} else {
 							cardbookUtils.formatStringForOutput("synchronizationFailed", [aConnection.connDescription, "validateWithoutDiscovery", aConnection.connUrl, status]);
 							cardbookRepository.cardbookServerDiscoveryError[aConnection.connPrefId]++;
@@ -1573,9 +1626,11 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 					} else if (response && response["multistatus"] && (status > 199 && status < 400)) {
 						try {
 							let jsonResponses = response["multistatus"][0]["response"];
-							for each (let jsonResponse in jsonResponses) {
+							for (var prop in jsonResponses) {
+								var jsonResponse = jsonResponses[prop];
 								let propstats = jsonResponse["propstat"];
-								for each (let propstat in propstats) {
+								for (var prop1 in propstats) {
+									var propstat = propstats[prop1];
 									if (propstat["status"][0].indexOf("HTTP/1.1 200") == 0) {
 										if (propstat["prop"] != null && propstat["prop"] !== undefined && propstat["prop"] != "") {
 											let prop = propstat["prop"][0];
@@ -1623,12 +1678,18 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 		discoverPhase1: function(aConnection, aOperationType, aParams) {
 			cardbookUtils.jsInclude(["chrome://cardbook/content/cardbookWebDAV.js"]);
 			var listener_checkpropfind1 = {
-				onDAVQueryComplete: function(status, response) {
+				onDAVQueryComplete: function(status, response, askCertificate) {
 					if (status == 0) {
-						var certificateExceptionAdded = false;
-						var certificateExceptionAdded = cardbookSynchronization.addCertificateException(cardbookSynchronization.getRootUrl(aConnection.connUrl));
-						if (certificateExceptionAdded) {
-							cardbookSynchronization.discoverPhase1(aConnection, aOperationType, aParams);
+						if (askCertificate) {
+							var certificateExceptionAdded = false;
+							var certificateExceptionAdded = cardbookSynchronization.addCertificateException(cardbookSynchronization.getRootUrl(aConnection.connUrl));
+							if (certificateExceptionAdded) {
+								cardbookSynchronization.discoverPhase1(aConnection, aOperationType, aParams);
+							} else {
+								cardbookUtils.formatStringForOutput("synchronizationFailed", [aConnection.connDescription, "validateWithoutDiscovery", aConnection.connUrl, status]);
+								cardbookRepository.cardbookServerDiscoveryError[aConnection.connPrefId]++;
+								cardbookRepository.cardbookServerSyncResponse[aConnection.connPrefId]++;
+							}
 						} else {
 							cardbookUtils.formatStringForOutput("synchronizationFailed", [aConnection.connDescription, "validateWithoutDiscovery", aConnection.connUrl, status]);
 							cardbookRepository.cardbookServerDiscoveryError[aConnection.connPrefId]++;
@@ -1643,9 +1704,11 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 					} else if (response && response["multistatus"] && (status > 199 && status < 400)) {
 						try {
 							let jsonResponses = response["multistatus"][0]["response"];
-							for each (let jsonResponse in jsonResponses) {
+							for (var prop in jsonResponses) {
+								var jsonResponse = jsonResponses[prop];
 								let propstats = jsonResponse["propstat"];
-								for each (let propstat in propstats) {
+								for (var prop1 in propstats) {
+									var propstat = propstats[prop1];
 									if (propstat["status"][0].indexOf("HTTP/1.1 200") == 0) {
 										if (propstat["prop"] != null && propstat["prop"] !== undefined && propstat["prop"] != "") {
 											let prop = propstat["prop"][0];
@@ -1703,7 +1766,7 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 		googleGetAccessToken: function(aConnection, aCode, aOperationType, aParams) {
 			cardbookUtils.jsInclude(["chrome://cardbook/content/cardbookWebDAV.js"]);
 			var listener_getAccessToken = {
-				onDAVQueryComplete: function(status, response) {
+				onDAVQueryComplete: function(status, response, askCertificate) {
 					if (status > 199 && status < 400) {
 						try {
 							cardbookUtils.formatStringForOutput("googleAccessTokenOK", [aConnection.connDescription, response]);
@@ -1742,7 +1805,7 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 		googleGetRefreshToken: function(aConnection, aCode, aCallback) {
 			cardbookUtils.jsInclude(["chrome://cardbook/content/cardbookWebDAV.js"]);
 			var listener_getRefreshToken = {
-				onDAVQueryComplete: function(status, response) {
+				onDAVQueryComplete: function(status, response, askCertificate) {
 					if (status > 199 && status < 400) {
 						try {
 							cardbookUtils.formatStringForOutput("googleRefreshTokenOK", [aConnection.connDescription, response]);
@@ -1855,7 +1918,6 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 		},
 
 		syncAccounts: function () {
-			cardbookUtils.formatStringForOutput("periodicSyncSyncing");
 			if (cardbookRepository.cardbookSyncMode === "NOSYNC") {
 				cardbookUtils.jsInclude(["chrome://cardbook/content/preferences/cardbookPreferences.js"]);
 				var cardbookPrefService = new cardbookPreferenceService();
@@ -1864,7 +1926,9 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 				for (let i = 0; i < result.length; i++) {
 					var myPrefId = result[i];
 					var cardbookPrefService1 = new cardbookPreferenceService(myPrefId);
-					if (cardbookPrefService1.getType() !== "FILE" && cardbookPrefService1.getType() !== "DIRECTORY" && cardbookPrefService1.getType() !== "CACHE" && cardbookPrefService1.getEnabled()) {
+					if (cardbookPrefService1.getType() !== "FILE" && cardbookPrefService1.getType() !== "DIRECTORY" && cardbookPrefService1.getType() !== "CACHE"
+						&& cardbookPrefService1.getType() !== "SEARCH" && cardbookPrefService1.getEnabled()) {
+						cardbookUtils.formatStringForOutput("periodicSyncSyncing");
 						cardbookSynchronization.initSync(myPrefId);
 						cardbookSynchronization.syncAccount(myPrefId);
 					}
@@ -1953,6 +2017,33 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 					}, 1000, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
 		},
 
+		waitForDirFinished: function (aPrefId, aPrefName, aMode) {
+			cardbookRepository.lTimerDirAll[aPrefId] = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+			var lTimerDir = cardbookRepository.lTimerDirAll[aPrefId];
+			lTimerDir.initWithCallback({ notify: function(lTimerDir) {
+						if (cardbookRepository.cardbookServerSyncHandleRemainingDone[aPrefId] == cardbookRepository.cardbookServerSyncHandleRemainingTotal[aPrefId]) {
+							var request = cardbookSynchronization.getRequest(aPrefId, aPrefName) + cardbookSynchronization.getTotal(aPrefId, aPrefName);
+							var response = cardbookSynchronization.getResponse(aPrefId, aPrefName) + cardbookSynchronization.getDone(aPrefId, aPrefName);
+							var cardbookPrefService = new cardbookPreferenceService(aPrefId);
+							var myPrefIdType = cardbookPrefService.getType();
+							if (request == response) {
+								cardbookSynchronization.finishSync(aPrefId, aPrefName, myPrefIdType);
+								cardbookSynchronization.finishMultipleOperations(aPrefId);
+								var total = cardbookSynchronization.getRequest() + cardbookSynchronization.getTotal() + cardbookSynchronization.getResponse() + cardbookSynchronization.getDone();
+								if (total === 0) {
+									cardbookRepository.cardbookSyncMode = "NOSYNC";
+									if (aMode == "INITIAL") {
+										cardbookUtils.jsInclude(["chrome://cardbook/content/birthdays/cardbookBirthdaysUtils.js","chrome://cardbook/content/birthdays/ovl_birthdays.js"]);
+										ovl_birthdays.onLoad();
+									}
+								}
+								lTimerDir.cancel();
+							}
+						}
+					}
+					}, 1000, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
+		},
+
 		waitForLoadCacheFinished: function (aPrefId, aPrefName, aPrefType, aPrefUser, aPrefUrl, aMode) {
 			cardbookRepository.lTimerLoadCacheAll[aPrefId] = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
 			var lTimerLoadCache = cardbookRepository.lTimerLoadCacheAll[aPrefId];
@@ -1974,7 +2065,11 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 								cardbookRepository.cardbookServerSyncRequest[aPrefId]++;
 								cardbookSynchronization.discoverPhase1(connection, "SYNCSERVER", params);
 							}
-							cardbookSynchronization.waitForSyncFinished(aPrefId, aPrefName, aMode);
+							if (aPrefType === "GOOGLE" || aPrefType === "CARDDAV" || aPrefType === "APPLE") {
+								cardbookSynchronization.waitForSyncFinished(aPrefId, aPrefName, aMode);
+							} else {
+								cardbookSynchronization.waitForDirFinished(aPrefId, aPrefName, aMode);
+							}
 							lTimerLoadCache.cancel();
 						}
 					}
@@ -2007,7 +2102,8 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 			cardbookRepository.cardbookDisplayCards = {};
 			cardbookRepository.cardbookFileCacheCards = {};
 			cardbookRepository.cardbookCards = {};
-			cardbookRepository.cardbookCardSearch = [];
+			cardbookRepository.cardbookCardSearch1 = {};
+			cardbookRepository.cardbookCardSearch2 = {};
 	
 			var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 			var initialSync = prefs.getBoolPref("extensions.cardbook.initialSync");
@@ -2025,7 +2121,6 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 			cardbookUtils.jsInclude(["chrome://cardbook/content/wdw_log.js"]);
 			cardbookUtils.jsInclude(["chrome://cardbook/content/cardbookWebDAV.js", "chrome://cardbook/content/cardbookCardParser.js"]);
 			cardbookUtils.jsInclude(["chrome://cardbook/content/preferences/cardbookPreferences.js", "chrome://cardbook/content/cardbookPasswordManager.js"]);
-			cardbookRepository.cardbookSyncMode = "SYNC";
 			var cardbookPrefService1 = new cardbookPreferenceService(aDirPrefId);
 			var myPrefName = cardbookPrefService1.getName();
 			if (myPrefName == "") {
@@ -2046,7 +2141,9 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 			}
 
 			if (myPrefEnabled) {
-				cardbookSynchronization.initSync(aDirPrefId);
+				if (myPrefType !== "SEARCH") {
+					cardbookSynchronization.initSync(aDirPrefId);
+				}
 				if (myPrefType === "GOOGLE" || myPrefType === "CARDDAV" || myPrefType === "APPLE") {
 					cardbookSynchronization.loadCache(aDirPrefId, myPrefName, myPrefType, myPrefUser, myPrefUrl, aSync, aMode);
 				} else if (myPrefType === "FILE") {
@@ -2054,19 +2151,19 @@ if ("undefined" == typeof(cardbookSynchronization)) {
 					var myFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 					myFile.initWithPath(myPrefUrl);
 					cardbookSynchronization.loadFile(myFile, "", aDirPrefId, aMode);
-					cardbookSynchronization.waitForSyncFinished(aDirPrefId, myPrefName, aMode);
+					cardbookSynchronization.waitForDirFinished(aDirPrefId, myPrefName, aMode);
 				} else if (myPrefType === "DIRECTORY") {
 					cardbookRepository.cardbookDirRequest[aDirPrefId]++;
 					var myDir = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 					myDir.initWithPath(myPrefUrl);
 					cardbookSynchronization.loadDir(myDir, "", aDirPrefId, aMode);
-					cardbookSynchronization.waitForSyncFinished(aDirPrefId, myPrefName, aMode);
+					cardbookSynchronization.waitForDirFinished(aDirPrefId, myPrefName, aMode);
 				} else if (myPrefType === "CACHE") {
 					cardbookRepository.cardbookDirRequest[aDirPrefId]++;
 					var myDir = cardbookRepository.getLocalDirectory();
 					myDir.append(cardbookRepository.cardbookCollectedCardsId);
 					cardbookSynchronization.loadDir(myDir, "", aDirPrefId, aMode);
-					cardbookSynchronization.waitForSyncFinished(aDirPrefId, myPrefName, aMode);
+					cardbookSynchronization.waitForDirFinished(aDirPrefId, myPrefName, aMode);
 				}
 			}
 		},

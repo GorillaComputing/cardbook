@@ -50,9 +50,7 @@
 <!ENTITY mailPopularityTabLabel "Oblíbenost e-mailů">
 <!ENTITY technicalTabLabel "Technické">
 <!ENTITY vcardTabLabel "vCard">
-<!ENTITY complexSearchTabLabel "Pokročilé vyhledávání">
 
-<!ENTITY dispnColumnLabel "Jména">
 <!ENTITY lastnameColumnLabel "Příjmení">
 <!ENTITY firstnameColumnLabel "Křestní jméno">
 <!ENTITY othernameColumnLabel "Další jméno">
@@ -137,6 +135,7 @@
 <!ENTITY ccEmailCardFromCardsLabel "Poslat e-mail kontaktům (kopie / cc)">
 <!ENTITY bccEmailCardFromAccountsOrCatsLabel "Poslat e-mail kontaktům (skrytá kopie / bcc)">
 <!ENTITY bccEmailCardFromCardsLabel "Poslat e-mail kontaktům (skrytá kopie / bcc)">
+<!ENTITY findEmailsFromCardsLabel "Najít e-maily kontaktu">
 <!ENTITY localizeCardFromCardsLabel "Vyhledat">
 <!ENTITY openURLCardFromCardsLabel "Otevřít URL kontaktu">
 <!ENTITY cutCardFromAccountsOrCatsLabel "Vyjmout kontakt">
@@ -157,3 +156,5 @@
 <!ENTITY editAccountFromAccountsOrCatsLabel "Upravit adresář">
 <!ENTITY syncAccountFromAccountsOrCatsLabel "Synchronizovat adresář">
 <!ENTITY removeAccountFromAccountsOrCatsLabel "Smazat adresář">
+
+<!ENTITY IMPPMenuLabel "Připojit">

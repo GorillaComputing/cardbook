@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://cardbook/skin/cardbookMain.css" type="text/css"?>
 <?xml-stylesheet href="chrome://cardbook/skin/cardbookButtons.css" type="text/css"?>
 <?xml-stylesheet href="chrome://cardbook/skin/cardbookCheckboxes.css" type="text/css"?>
 <?xml-stylesheet href="chrome://cardbook/skin/cardbookTreeChildrens.css" type="text/css"?>
-<?xml-stylesheet href="chrome://cardbook/skin/cardbookTreeCols.css" type="text/css"?>
-<?xml-stylesheet href="chrome://cardbook/skin/cardbookEditButtons.css" type="text/css"?>
 
 <?xul-overlay href="chrome://cardbook/content/ovl_cardbookStringBundle.xul"?>
 <?xul-overlay href="chrome://cardbook/content/ovl_cardbookBar.xul"?>
@@ -20,8 +19,6 @@
 	<!ENTITY % listsDTD SYSTEM "chrome://cardbook/locale/wdw_lists.dtd"> %listsDTD;
 	<!ENTITY % logDTD SYSTEM "chrome://cardbook/locale/wdw_logEdition.dtd"> %logDTD;
 	<!ENTITY % configurationDTD SYSTEM "chrome://cardbook/locale/wdw_cardbookConfiguration.dtd"> %configurationDTD;
-	<!ENTITY % SearchDialogDTD SYSTEM "chrome://messenger/locale/SearchDialog.dtd"> %SearchDialogDTD;
-	<!ENTITY % searchTermOverlayDTD SYSTEM "chrome://messenger/locale/searchTermOverlay.dtd"> %searchTermOverlayDTD;
 ]>
 
 <overlay id="ovl_cardbookTab" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -45,7 +42,7 @@
 	<script src="chrome://cardbook/content/cardEdition/wdw_imageEdition.js"/>
 	<script src="chrome://cardbook/content/cardEdition/wdw_cardEdition.js"/>
 	<script src="chrome://cardbook/content/complexSearch/cardbookComplexSearch.js"/>
-	
+
 	<tabpanels id="tabpanelcontainer">
 		<vbox id="cardbookTabPanel" flex="1" onkeypress="wdw_cardbook.chooseActionForKey(event);">
 		
@@ -64,23 +61,22 @@
 			<hbox id="mainHbox" flex="1">
 				<vbox id="leftPaneVbox" persist="width collapsed">
 					<tree id="accountsOrCatsTree"
-						class="cardbookTreeChildrenAccountClass cardbookTreeClass"
+						class="cardbookTreeClass cardbookAccountTreeClass"
 						seltype="single"
-						flex="1" editable="true"
-						persist="width" context="accountsOrCatsTreeContextMenu"
+						flex="1" editable="true" context="accountsOrCatsTreeContextMenu" enableColumnDrag="false"
 						hidecolumnpicker="true" onkeyup="wdw_cardbook.selectAccountOrCatInNoSearch();" onkeydown="wdw_cardbook.selectAccountOrCatInNoSearch();">
 						<treecols>
-							<treecol id="accountEnabled" type="checkbox" editable="true" hideheader="true" width="17" tooltiptext="&enableAccountsTooltip;"/>
-							<treecol id="accountColor" editable="false" hideheader="true" width="16" tooltiptext="&colorAccountsTooltip;"/>
+							<treecol id="accountEnabled" type="checkbox" editable="true" width="17" hideheader="true" persist="width ordinal hidden" tooltiptext="&enableAccountsTooltip;"/>
+							<treecol id="accountTypeCheckbox" type="checkbox" editable="false" width="20" hideheader="true" persist="width ordinal hidden"/>
+							<treecol id="accountColor" editable="false" width="17" hideheader="true" persist="width ordinal hidden" tooltiptext="&colorAccountsTooltip;"/>
 							<treecol id="accountName"
-								flex="1"
-								primary="true"
+								flex="1" persist="width ordinal hidden" primary="true"
 								label="&accountsOrCatsTreeLabel;"
 								crop="center"/>
-							<treecol id="accountId" persist="width ordinal hidden" hidden="true"/>
-							<treecol id="accountType" persist="width ordinal hidden" hidden="true"/>
-							<treecol id="accountReadOnly" type="checkbox" hideheader="true" width="17" tooltiptext="&readonlyAccountsTooltip;"/>
-							<treecol id="dummyForScroll" type="checkbox" hideheader="true" width="17"/>
+							<treecol id="accountId" persist="width ordinal hidden" hidden="true" hideheader="true"/>
+							<treecol id="accountType" persist="width ordinal hidden" hidden="true" hideheader="true"/>
+							<treecol id="accountReadOnly" type="checkbox" persist="width ordinal hidden" width="17" hideheader="true" tooltiptext="&readonlyAccountsTooltip;"/>
+							<treecol id="dummyForScroll" type="checkbox" persist="width ordinal hidden" width="17" hideheader="true"/>
 						</treecols>
 						<treechildren id="accountsOrCatsTreeChildren" flex="1" ondragstart="wdw_cardbook.startDrag(event, this);" ondrop="wdw_cardbook.dragCards(event);"
 									 onclick="wdw_cardbook.selectAccountOrCatInNoSearch();" ondblclick="wdw_cardbook.doubleClickAccountOrCat(event);"/>
@@ -91,90 +87,88 @@
 
 				<box id="cardsBox" flex="1">
 					<hbox id="rightPaneUpHbox" flex="1" persist="width height collapsed">
-						<tree id="cardsTree" class="cardbookTreeChildrenCardsClass cardbookTreeClass" context="cardsTreeContextMenu" flex="1" enableColumnDrag="true" persist="height sortDirection sortResource" sortDirection="ascending" sortResource="lastname"
-							onkeyup="wdw_cardbook.selectCard(event);" onkeydown="wdw_cardbook.selectCard(event);">
+						<tree id="cardsTree" class="cardbookTreeClass cardbookCardsTreeClass" context="cardsTreeContextMenu" flex="1" enableColumnDrag="true" persist="height sortDirection sortResource" sortDirection="ascending" sortResource="lastname"
+							onkeyup="wdw_cardbook.selectCard(event);" onkeydown="wdw_cardbook.selectCard(event);" onclick="wdw_cardbook.sortTrees(event);">
 							<treecols>
-								<treecol id="dispn" label="&dispnColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="lastname" label="&lastnameColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="lastname" label="&lastnameColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="firstname" label="&firstnameColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="firstname" label="&firstnameColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="othername" label="&othernameColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="othername" label="&othernameColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="prefixname" label="&prefixnameColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="prefixname" label="&prefixnameColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="suffixname" label="&suffixnameColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="suffixname" label="&suffixnameColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="fn" label="&fnColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="fn" label="&fnColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="nickname" label="&nicknameColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="nickname" label="&nicknameColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="gender" label="&genderColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="gender" label="&genderColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="bday" label="&bdayColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="bday" label="&bdayColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="dispadr" label="&dispadrColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="dispadr" label="&dispadrColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="disphomeadr" label="&disphomeadrColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="disphomeadr" label="&disphomeadrColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="dispworkadr" label="&dispworkadrColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="dispworkadr" label="&dispworkadrColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="disptel" label="&disptelColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="disptel" label="&disptelColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="disphometel" label="&disphometelColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="disphometel" label="&disphometelColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="dispworktel" label="&dispworktelColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="dispworktel" label="&dispworktelColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="dispcelltel" label="&dispcelltelColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="dispcelltel" label="&dispcelltelColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="dispemail" label="&dispemailColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="dispemail" label="&dispemailColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="disphomeemail" label="&disphomeemailColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="disphomeemail" label="&disphomeemailColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="dispworkemail" label="&dispworkemailColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="dispworkemail" label="&dispworkemailColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="mailer" label="&mailerColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="mailer" label="&mailerColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="tz" label="&tzColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="tz" label="&tzColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="geo" label="&geoColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="geo" label="&geoColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="title" label="&titleColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="title" label="&titleColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="role" label="&roleColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="role" label="&roleColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="org" label="&orgColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="org" label="&orgColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="dispcategories" label="&categoriesColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="dispcategories" label="&categoriesColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="note" label="&noteColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="note" label="&noteColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="prodid" label="&prodidColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="prodid" label="&prodidColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="sortstring" label="&sortstringColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="sortstring" label="&sortstringColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="uid" label="&uidColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="uid" label="&uidColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="dispurl" label="&dispurlColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="dispurl" label="&dispurlColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="version" label="&versionColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="version" label="&versionColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="class1" label="&class1ColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="class1" label="&class1ColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="dispimpp" label="&dispimppColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="dispimpp" label="&dispimppColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="dirPrefId" label="&dirPrefIdColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="dirPrefId" label="&dirPrefIdColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="kind" label="&kindColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="kind" label="&kindColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="rev" label="&revColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="rev" label="&revColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="cardurl" label="&cardurlColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 								<splitter class="tree-splitter"/>
-								<treecol id="cardurl" label="&cardurlColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
-								<splitter class="tree-splitter"/>
-								<treecol id="etag" label="&etagColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" onclick="wdw_cardbook.sortCardsTreeColFromCol(event, this);" class="sortDirectionIndicator" sortDirection="ascending"/>
+								<treecol id="etag" label="&etagColumnLabel;" flex="1" persist="width ordinal hidden" style="text-align:left" hidden="true" class="sortDirectionIndicator" sortDirection="ascending"/>
 							</treecols>
-							<treechildren id="cardsTreeChildren" ondragstart="wdw_cardbook.startDrag(event, this);" ondblclick="wdw_cardbook.doubleClickCardsTree(event);" onclick="wdw_cardbook.selectCard(event);"/>
+							<treechildren id="cardsTreeChildren" ondragstart="wdw_cardbook.startDrag(event, this);" ondblclick="wdw_cardbook.doubleClickCardsTree(event);"/>
 						</tree>
 					</hbox>
 					
@@ -188,29 +182,24 @@
 								
 								<tabs>
 									<tab id="generalTab" label="&generalTabLabel;"/>
-									<tab id="noteTab" label="&noteTabLabel;"/>
 									<tab id="listTab" label="&listTabLabel;"/>
 									<tab id="mailPopularityTab" label="&mailPopularityTabLabel;"/>
 									<tab id="technicalTab" label="&technicalTabLabel;"/>
 									<tab id="vcardTab" label="&vcardTabLabel;"/>
-									<tab id="complexSearchTab" label="&complexSearchTabLabel;"/>
 								</tabs>
 								
-								<tabpanels flex="1" class="cardbookBackgroundColorClass">
+								<tabpanels flex="1">
 									<tabpanel orient="vertical" style="overflow:auto">
-										<hbox flex="1" class="cardbookBackgroundColorClass">
-											<vbox align="center" width="170px">
-												<hbox id="imageBox" align="center" height="170px">
-													<html:img id="imageForSizing" hidden="true"/>
-													<image id="defaultCardImage"/>
-												</hbox>
-											</vbox>
+										<hbox flex="1">
 											<vbox flex="1">
 												<hbox align="center" flex="1">
 													<vbox flex="1">
 														<groupbox id="fnGroupbox">
 															<caption id="fnLabel" label="&fnLabel;" class="header"/>
-															<textbox id="fnTextBox"/>
+															<hbox flex="1">
+																<image id="dummyFnPrefBox" class="cardbookNotPrefClass"/>
+																<textbox id="fnTextBox" flex="1"/>
+															</hbox>
 														</groupbox>
 													</vbox>
 												</hbox>
@@ -218,6 +207,7 @@
 													<groupbox id="persGroupbox" flex="1">
 														<caption label="&persTitleLabel;" class="header"/>
 														<hbox flex="1">
+															<image id="dummyPersPrefBox" class="cardbookNotPrefClass"/>
 															<grid align="center" flex="1">
 																<columns>
 																	<column/>
@@ -274,6 +264,7 @@
 													<groupbox id="orgGroupbox" flex="1">
 														<caption label="&orgTitleLabel;" class="header"/>
 														<hbox flex="1">
+															<image id="dummyOrgPrefBox" class="cardbookNotPrefClass"/>
 															<grid align="center" flex="1">
 																<columns>
 																	<column/>
@@ -287,8 +278,21 @@
 												</hbox>
 												<groupbox id="categoriesGroupbox" flex="1">
 													<caption label="&categoriesGroupboxLabel;" class="header"/>
-													<textbox id="categoriesTextBox" flex="1"/>
+													<hbox flex="1">
+														<image id="dummyCatPrefBox" class="cardbookNotPrefClass"/>
+														<textbox id="categoriesTextBox" flex="1"/>
+													</hbox>
 												</groupbox>
+											</vbox>
+											<vbox align="center" width="170px">
+												<hbox id="imageBox" align="center" height="170px">
+													<html:img id="imageForSizing" hidden="true"/>
+													<image id="defaultCardImage"/>
+												</hbox>
+											</vbox>
+										</hbox>
+										<hbox flex="1">
+											<vbox flex="1">
 												<grid align="center" flex="1">
 													<columns>
 														<column/>
@@ -306,15 +310,20 @@
 												</grid>
 											</vbox>
 										</hbox>
+										<hbox flex="1">
+											<groupbox id="noteGroupbox" flex="1">
+												<caption label="&noteTabLabel;" class="header"/>
+												<hbox flex="1">
+													<image id="dummyNotePrefBox" class="cardbookNotPrefClass"/>
+													<vbox flex="1">
+														<textbox id="noteTextBox" multiline="true"/>
+													</vbox>
+												</hbox>
+											</groupbox>
+										</hbox>
 										<spacer flex="100"/>
 									</tabpanel>
 				
-									<tabpanel orient="vertical" style="overflow:auto">
-										<hbox id="noteGroupbox" flex="1">
-											<textbox id="noteTextBox" flex="1" multiline="true" wrap="virtual"/>
-										</hbox>
-									</tabpanel>
-						
 									<tabpanel orient="vertical" style="overflow:auto">
 										<vbox id="listGroupbox" flex="1">
 											<grid align="center" flex="1">
@@ -479,36 +488,6 @@
 									<tabpanel orient="vertical" style="overflow:auto">
 										<textbox id="vcardTextBox" flex="1" multiline="true" wrap="virtual"/>
 									</tabpanel>
-				
-									<tabpanel orient="vertical" style="overflow:auto">
-										<vbox id="searchTerms" flex="3" persist="height">
-											<vbox>
-												<hbox align="center">
-													<label value="&abSearchHeading.label;" accesskey="&abSearchHeading.accesskey;" control="abPopup"/>
-													<menulist id="addressbookMenulist">
-														<menupopup id="addressbookMenupopup"/>
-													</menulist>
-													<spacer flex="10"/>
-													<button id="cardbookComplexSearchButton" oncommand="cardbookComplexSearch.search(event);" default="true"/>
-												</hbox>
-												<hbox align="center">
-													<spacer flex="1"/>
-													<button id="cardbookClearComplexSearchButton" label="&resetButton.label;" oncommand="cardbookComplexSearch.clearSearch();" accesskey="&resetButton.accesskey;"/>
-												</hbox>
-											</vbox>
-											
-											<hbox>
-												<radiogroup id="booleanAndGroup" orient="horizontal" value="and">
-													<radio value="and" label="&matchAll.label;" accesskey="&matchAll.accesskey;"/>
-													<radio value="or" label="&matchAny.label;" accesskey="&matchAny.accesskey;"/>
-												</radiogroup>
-												</hbox>
-											<hbox flex="1">
-												<groupbox id="searchTermsGroupbox" flex="1"/>
-												</hbox>
-												<spacer flex="100"/>
-										</vbox>
-										</tabpanel>
 								</tabpanels>
 							</tabbox>
 						</vbox>

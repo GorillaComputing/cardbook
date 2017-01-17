@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xul-overlay href="chrome://cardbook/content/ovl_cardbookStringBundle.xul"?>
+<!-- for the small-button class -->
+<?xml-stylesheet href="chrome://messenger/skin/searchDialog.css" type="text/css"?>
 <!DOCTYPE window [
 	<!ENTITY % passwordDTD SYSTEM "chrome://cardbook/locale/wdw_password.dtd"> %passwordDTD;
 	<!ENTITY % addressbooksAddDTD SYSTEM "chrome://cardbook/locale/wdw_addressbooksAdd.dtd"> %addressbooksAddDTD;
+	<!ENTITY % SearchDialogDTD SYSTEM "chrome://messenger/locale/SearchDialog.dtd"> %SearchDialogDTD;
+	<!ENTITY % searchTermOverlayDTD SYSTEM "chrome://messenger/locale/searchTermOverlay.dtd"> %searchTermOverlayDTD;
 ]>
 
 <wizard id="addressbook-wizard"
@@ -15,11 +18,14 @@
 	onwizardcancel="wdw_addressbooksAdd.cancelWizard();"
 	onclose="wdw_addressbooksAdd.cancelWizard();"
 	onwizardfinish="wdw_addressbooksAdd.closeWizard();"
-	style="min-height:600px;"
+	style="min-height:600px;min-width:1200px;"
 	persist="screenX screenY">
 
-	<stringbundleset id="stringbundleset"/>
-
+	<stringbundleset id="stringbundleset">
+		<stringbundle id="cardbook-strings" src="chrome://cardbook/locale/cardbook.properties"/>
+		<stringbundle id="bundle_search" src="chrome://messenger/locale/search.properties"/>
+	</stringbundleset>
+	
 	<script src="chrome://cardbook/content/wdw_log.js"/>
 	<script src="chrome://cardbook/content/cardbookUtils.js"/>
 	<script src="chrome://cardbook/content/preferences/cardbookPreferences.js"/>
@@ -27,6 +33,9 @@
 	<script src="chrome://cardbook/content/cardbookPasswordManager.js"/>
 	<script src="chrome://cardbook/content/cardbookSynchronization.js"/>
 	<script src="wdw_newGoogleToken.js"/>
+	<script src="chrome://cardbook/content/cardbookElementTools.js"/>
+	<script src="chrome://cardbook/content/cardbookTypes.js"/>
+	<script src="chrome://cardbook/content/complexSearch/cardbookComplexSearch.js"/>
 	<script src="wdw_addressbooksAdd.js"/>
 
 	<wizardpage pageid="welcomePage"
@@ -46,6 +55,7 @@
 		<radiogroup id="addressbookType" class="indent">
 			<radio value="local" label="&initialpage.computer.label;" selected="true"/>
 			<radio value="remote" label="&initialpage.network.label;"/>
+			<radio value="search" label="&initialpage.search.label;"/>
 		</radiogroup>
    </wizardpage>
 
@@ -170,6 +180,39 @@
 		</groupbox>
 	</wizardpage>
 
+   <wizardpage pageid="searchPage"
+			next="namePage"
+			label="&wizard.label;"
+			description="&locationSearchPage.wizard.description;"
+			onpageshow="wdw_addressbooksAdd.checkSearch();"
+			onpageadvanced="wdw_addressbooksAdd.searchPageAdvance();">
+
+		<groupbox flex="1">
+			<caption label="&locationSearchPage.label;"/>
+				<vbox id="searchTerms" flex="3" persist="height">
+					<vbox>
+						<hbox align="center">
+							<label value="&abSearchHeading.label;" accesskey="&abSearchHeading.accesskey;" control="abPopup"/>
+							<menulist id="addressbookMenulist">
+								<menupopup id="addressbookMenupopup"/>
+							</menulist>
+						</hbox>
+					</vbox>
+					
+					<hbox>
+						<radiogroup id="booleanAndGroup" orient="horizontal" value="and">
+							<radio value="and" label="&matchAll.label;" accesskey="&matchAll.accesskey;"/>
+							<radio value="or" label="&matchAny.label;" accesskey="&matchAny.accesskey;"/>
+						</radiogroup>
+						</hbox>
+					<hbox flex="1">
+						<groupbox id="searchTermsGroupbox" flex="1"/>
+						</hbox>
+						<spacer flex="100"/>
+				</vbox>
+		</groupbox>
+	</wizardpage>
+
 	<wizardpage pageid="namePage"
 			next="finishPage"
 			label="&wizard.label;"
@@ -182,14 +225,14 @@
 				<column flex="1"/>
 			</columns>
 			<rows>
-				<row align="center">
+				<row id="nameRow" align="center">
 					<label value="&namePage.name.label;" control="namePageName"/>
 					<textbox id="namePageName"
 						required="true"
 						oninput="wdw_addressbooksAdd.checkRequired();"/>
 				</row>
 				<separator class="groove-thin"/>
-				<row align="center">
+				<row id="colorRow" align="center">
 					<label value="&namePage.color.label;" control="cardbook-color"/>
 					<hbox align="center">
 						<html:input id="serverColorInput"
@@ -198,7 +241,7 @@
 					</hbox>
 				</row>
 				<separator class="groove-thin"/>
-				<row align="center">
+				<row id="vcardVersionRow" align="center">
 					<label value="&namePage.vCardVersion.label;" control="vCardVersionPageName"/>
 					<hbox align="center" flex="1">
 						<menulist id="vCardVersionPageName">
@@ -210,7 +253,7 @@
 					</hbox>
 				</row>
 				<separator class="groove-thin"/>
-				<row align="center">
+				<row id="readonlyRow" align="center">
 					<label value="&namePage.readonly.label;" control="readonlyPageName"/>
 					<checkbox id="readonlyPageName"/>
 				</row>

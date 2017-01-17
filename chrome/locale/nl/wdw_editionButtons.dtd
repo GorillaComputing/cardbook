@@ -6,6 +6,8 @@
 <!ENTITY createAndReplaceEditionAccesskey "V">
 <!ENTITY saveEditionLabel "Opslaan">
 <!ENTITY saveEditionAccesskey "O">
+<!ENTITY validateEditionLabel "Valideren">
+<!ENTITY validateEditionAccesskey "V">
 <!ENTITY cancelEditionLabel "Annuleren">
 <!ENTITY cancelEditionAccesskey "A">
 <!ENTITY buttonAppendToListLabel "Toevoegen">

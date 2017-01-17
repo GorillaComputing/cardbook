@@ -13,7 +13,7 @@
 	onload="wdw_findDuplicates.load();" resizable="true"
 	onclose="wdw_findDuplicates.cancel();"
 	id="wdw_findDuplicates" title="&wdw_findDuplicatesTitle;"
-	persist="screenX screenY width height" class="cardbookBackgroundColorClass"
+	persist="screenX screenY width height" class="cardbookFindDuplicatesClass"
 	style="min-width:400px;min-height:100px;">
 	
 	<stringbundleset id="stringbundleset"/>

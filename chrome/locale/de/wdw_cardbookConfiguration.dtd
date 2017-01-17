@@ -3,9 +3,9 @@
 <!ENTITY generalTabLabel "Allgemein">
 <!ENTITY editionTabLabel "Bearbeiten">
 <!ENTITY typesTabLabel "Typen">
+<!ENTITY IMPPsTabLabel "IM Adressen">
 <!ENTITY customFieldsTabLabel "Benutzerdefinierte Felder">
 <!ENTITY listsTabLabel "Listen">
-<!ENTITY lookTabLabel "Aussehen">
 <!ENTITY syncTabLabel "Synchronisation">
 <!ENTITY emailTabLabel "Email">
 <!ENTITY birthdaylistTabLabel "Geburtstage">
@@ -82,6 +82,18 @@
 <!ENTITY preferenceValueLabel "Label des Werts des Felds PREF (vCard 4.0)">
 <!ENTITY preferenceValueAccesskey "W">
 
+<!ENTITY IMPPGroupboxWarn "Diese Einstellungen ermöglichen das direkte Öffnen einer IM Adresse mit dem angegebenen Protokoll.">
+<!ENTITY IMPPGroupboxLabel "IM Adressen">
+<!ENTITY IMPPCodeLabel "Code">
+<!ENTITY IMPPLabelLabel "Label">
+<!ENTITY IMPPProtocolLabel "Protokoll">
+<!ENTITY addIMPPLabel "Hinzufügen">
+<!ENTITY addIMPPAccesskey "H">
+<!ENTITY renameIMPPLabel "Bearbeiten">
+<!ENTITY renameIMPPAccesskey "B">
+<!ENTITY deleteIMPPLabel "Löschen">
+<!ENTITY deleteIMPPAccesskey "L">
+
 <!ENTITY customFieldsPanelLabel "Benutzerdefinierte Felder">
 <!ENTITY customFieldName "Feldname">
 <!ENTITY customFieldLabel "Feldlabel">
@@ -94,10 +106,6 @@
 <!ENTITY kindCustomAccesskey "T">
 <!ENTITY memberCustomLabel "Mitglied">
 <!ENTITY memberCustomAccesskey "M">
-
-<!ENTITY lookGroupboxLabel "Aussehen">
-<!ENTITY defaultLookLabel "CardBook-Design (blau)">
-<!ENTITY defaultLookAccesskey "C">
 
 <!ENTITY syncGroupboxLabel "Synchronisieren">
 <!ENTITY syncWarn "Änderungen können nur durch eine Synchronisation auf den Server übertragen werden.">
@@ -120,6 +128,9 @@
 <!ENTITY requestsTimeoutAccesskey "T">
 <!ENTITY multigetLabel "Bei GET-Anfragen Karten gruppieren nach">
 <!ENTITY multigetAccesskey "G">
+<!ENTITY advancedSyncGroupboxLabel "Erweiterte Eigenschaften">
+<!ENTITY decodeReportLabel "Dekodiere URLs für REPORT Anfragen">
+<!ENTITY decodeReportAccesskey "D">
 
 <!ENTITY miscEmailGroupboxLabel "Email-Versand">
 <!ENTITY preferEmailPrefLabel "Adressen mit dem Typ 'pref' bevorzugen">

@@ -50,9 +50,7 @@
 <!ENTITY mailPopularityTabLabel "Popolarità Mail">
 <!ENTITY technicalTabLabel "Tecnico">
 <!ENTITY vcardTabLabel "vCard">
-<!ENTITY complexSearchTabLabel "Ricerca avanzata">
 
-<!ENTITY dispnColumnLabel "Nomi">
 <!ENTITY lastnameColumnLabel "Cognome">
 <!ENTITY firstnameColumnLabel "Nome">
 <!ENTITY othernameColumnLabel "Altro nome">
@@ -137,6 +135,7 @@
 <!ENTITY ccEmailCardFromCardsLabel "Contatti email (in copia/CC)">
 <!ENTITY bccEmailCardFromAccountsOrCatsLabel "Contatti email (in copia nascosta/BCC)">
 <!ENTITY bccEmailCardFromCardsLabel "Contatti email (in copia nascosta/BCC)">
+<!ENTITY findEmailsFromCardsLabel "??Find contact emails??">
 <!ENTITY localizeCardFromCardsLabel "Localizza">
 <!ENTITY openURLCardFromCardsLabel "Apri URL da contatto">
 <!ENTITY cutCardFromAccountsOrCatsLabel "Taglia contatto">
@@ -157,3 +156,5 @@
 <!ENTITY editAccountFromAccountsOrCatsLabel "Modifica rubrica">
 <!ENTITY syncAccountFromAccountsOrCatsLabel "Sincronizza rubrica">
 <!ENTITY removeAccountFromAccountsOrCatsLabel "Elimina rubrica">
+
+<!ENTITY IMPPMenuLabel "Collega">

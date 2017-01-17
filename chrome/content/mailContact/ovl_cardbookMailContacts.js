@@ -9,7 +9,7 @@ if ("undefined" == typeof(ovl_cardbookMailContacts)) {
 				var myTestString = aEmail.toLowerCase();
 				var i = cardbookRepository.cardbookAccounts.length;
 				while (i--) {
-					if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][6]) {
+					if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][5] && (cardbookRepository.cardbookAccounts[i][6] != "SEARCH")) {
 						var myDirPrefId = cardbookRepository.cardbookAccounts[i][4];
 						if (cardbookRepository.cardbookCardEmails[myDirPrefId]) {
 							if (cardbookRepository.cardbookCardEmails[myDirPrefId][myTestString]) {
@@ -33,7 +33,7 @@ if ("undefined" == typeof(ovl_cardbookMailContacts)) {
 		getCardFromEmail: function(aEmail) {
 			var myTestString = aEmail.toLowerCase();
 			for (var i = 0; i < cardbookRepository.cardbookAccounts.length; i++) {
-				if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][6]) {
+				if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][5] && (cardbookRepository.cardbookAccounts[i][6] != "SEARCH")) {
 					var myDirPrefId = cardbookRepository.cardbookAccounts[i][4];
 					if (cardbookRepository.cardbookCardEmails[myDirPrefId]) {
 						if (cardbookRepository.cardbookCardEmails[myDirPrefId][myTestString]) {
@@ -108,7 +108,7 @@ if ("undefined" == typeof(ovl_cardbookMailContacts)) {
 			} else {
 				var count = 0;
 				for (var i = 0; i < cardbookRepository.cardbookAccounts.length; i++) {
-					if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][6] && !cardbookRepository.cardbookAccounts[i][7]) {
+					if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][5] && (cardbookRepository.cardbookAccounts[i][6] != "SEARCH") && !cardbookRepository.cardbookAccounts[i][7]) {
 						count++;
 					}
 				}
@@ -157,7 +157,13 @@ if ("undefined" == typeof(ovl_cardbookMailContacts)) {
 			} else {
 				document.getElementById('editInCardBookMenu').label=strBundle.GetStringFromName("editInCardBookMenuLabel");
 			}
+			
+			cardbookUtils.addCardToIMPPMenuSubMenu(myCard, 'IMPPCardsMenuPopup');
+		} else {
+			cardbookUtils.addCardToIMPPMenuSubMenu(null, 'IMPPCardsMenuPopup');
 		}
+		var emailAddressPlaceHolder = document.getElementById("emailAddressPlaceHolder");
+		emailAddressPlaceHolder.setAttribute("label", MailServices.headerParser.makeMimeAddress(arguments[0].getAttribute("displayName"), arguments[0].getAttribute('emailAddress')));
 		
 		// return the original result
 		return rv;

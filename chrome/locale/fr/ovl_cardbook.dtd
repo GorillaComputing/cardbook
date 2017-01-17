@@ -1,4 +1,5 @@
 <!ENTITY cardbookMenuItemLabel "CardBook">
+<!ENTITY cardbookMenuItemAccesskey "c">
 <!ENTITY cardbookMenuItemTooltip "Aller à l'onglet CardBook">
 
 <!ENTITY cardbookToolbarButtonLabel "CardBook">
@@ -8,12 +9,15 @@
 <!ENTITY cardbookTabButtonTooltip "Aller à l'onglet CardBook">
 
 <!ENTITY addToCardBookMenuLabel "Ajouter à CardBook">
+<!ENTITY addToCardBookMenuAccesskey "j">
 <!ENTITY editInCardBookMenuLabel "Modifier avec CardBook">
+<!ENTITY editInCardBookMenuAccesskey "o">
+<!ENTITY IMPPMenuLabel "Connecter">
+<!ENTITY IMPPMenuAccesskey "n">
 
 <!ENTITY addAllAttachementsToCardBookMenuLabel "Tout dans CardBook...">
 <!ENTITY addAttachementToCardBookMenuLabel "Dans CardBook...">
 
-<!ENTITY statusProgressInformationTooltip "Cliquer ici pour voir les logs">
 <!ENTITY cardbookABPaneItemLabel "Paneau des carnets d'adresses">
 <!ENTITY cardbookABPaneItemAccesskey "A">
 <!ENTITY cardbookContactPaneItemLabel "Paneau du contact">

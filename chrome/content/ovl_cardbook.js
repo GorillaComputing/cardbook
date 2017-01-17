@@ -10,16 +10,21 @@ if ("undefined" == typeof(cardbookTabType)) {
 		onTabClosing: function(aTab) {
 			if (aTab.mode.name == "cardbook") {
 				document.getElementById("cardboookModeBroadcaster").setAttribute("mode", "mail");
+				document.getElementById("unreadMessageCount").hidden=false;
 			}
 		},
 		onTabPersist: function() {},
 		onTabRestored: function() {},
 		onTabSwitched: function(aNewTab, aOldTab) {
+			var strBundle = document.getElementById("cardbook-strings");
 			if (aNewTab.mode.name == "cardbook") {
 				document.getElementById("cardboookModeBroadcaster").setAttribute("mode", "cardbook");
+				document.getElementById("totalMessageCount").setAttribute("tooltiptext", strBundle.getString("statusProgressInformationTooltip"));
 			} else {
-				wdw_cardbook.setElementLabel('statusText', "");
 				document.getElementById("cardboookModeBroadcaster").setAttribute("mode", "mail");
+				document.getElementById("totalMessageCount").removeAttribute("tooltiptext");
+				wdw_cardbook.setElementLabel('statusText', "");
+				document.getElementById("unreadMessageCount").hidden=false;
 			}
 		}
 	};
@@ -101,8 +106,17 @@ if ("undefined" == typeof(cardbookTabType)) {
 if ("undefined" == typeof(ovl_cardbook)) {
 	var ovl_cardbook = {
 		open: function() {
+			var tabmail = document.getElementById("tabmail");
+			if (!tabmail) {
+				// Try opening new tabs in an existing 3pane window
+				let mail3PaneWindow = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator).getMostRecentWindow("mail:3pane");
+				if (mail3PaneWindow) {
+					tabmail = mail3PaneWindow.document.getElementById("tabmail");
+					mail3PaneWindow.focus();
+				}
+			}
 			var strBundle = document.getElementById("cardbook-strings");
-			document.getElementById('tabmail').openTab('cardbook', {title: strBundle.getString("cardbookTitle")});
+			tabmail.openTab('cardbook', {title: strBundle.getString("cardbookTitle")});
 		}
 	};
 };

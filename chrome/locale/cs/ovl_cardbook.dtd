@@ -1,4 +1,5 @@
 <!ENTITY cardbookMenuItemLabel "CardBook">
+<!ENTITY cardbookMenuItemAccesskey "c">
 <!ENTITY cardbookMenuItemTooltip "Jít na záložku CardBooku">
 
 <!ENTITY cardbookToolbarButtonLabel "CardBook">
@@ -8,12 +9,15 @@
 <!ENTITY cardbookTabButtonTooltip "Jít na záložku CardBooku">
 
 <!ENTITY addToCardBookMenuLabel "Přidat do CardBooku">
+<!ENTITY addToCardBookMenuAccesskey "P">
 <!ENTITY editInCardBookMenuLabel "Upravit v CardBooku">
-
+<!ENTITY editInCardBookMenuAccesskey "U">
+<!ENTITY IMPPMenuLabel "Připojit">
+<!ENTITY IMPPMenuAccesskey "i">
+ 
 <!ENTITY addAllAttachementsToCardBookMenuLabel "Vše do CardBooku...">
 <!ENTITY addAttachementToCardBookMenuLabel "Do CardBooku...">
 
-<!ENTITY statusProgressInformationTooltip "Klikněte zde pro zobrazení protokolů">
 <!ENTITY cardbookABPaneItemLabel "Panel adresáře">
 <!ENTITY cardbookABPaneItemAccesskey "A">
 <!ENTITY cardbookContactPaneItemLabel "Panel kontaktu">

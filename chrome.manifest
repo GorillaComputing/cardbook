@@ -18,6 +18,9 @@ style	chrome://global/content/customizeToolbar.xul chrome://cardbook/skin/cardbo
 # support for CardBook, yellow stars, creation from emails, formatting email fields
 overlay	chrome://messenger/content/messenger.xul chrome://cardbook/content/ovl_cardbook.xul
 
+# support for CardBook menu in composition window
+overlay    chrome://messenger/content/messengercompose/messengercompose.xul chrome://cardbook/content/ovl_cardbookComposeMsg.xul
+
 # support for autocompletion in composition window
 overlay    chrome://messenger/content/messengercompose/messengercompose.xul chrome://cardbook/content/autocomplete/ovl_cardbookautocomplete.xul
 
@@ -48,3 +51,6 @@ overlay	chrome://messenger/content/messengercompose/messengercompose.xul chrome:
 
 # support for CardBook Tab
 overlay	chrome://messenger/content/messenger.xul chrome://cardbook/content/ovl_cardbookTab.xul
+
+# support for Contacts sidebar
+overlay	chrome://messenger/content/messengercompose/messengercompose.xul chrome://cardbook/content/contactsSidebar/ovl_cardbookContactsSidebarMain.xul

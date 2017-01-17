@@ -6,6 +6,8 @@
 <!ENTITY createAndReplaceEditionAccesskey "N">
 <!ENTITY saveEditionLabel "Uložit">
 <!ENTITY saveEditionAccesskey "U">
+<!ENTITY validateEditionLabel "Ověřit">
+<!ENTITY validateEditionAccesskey "O">
 <!ENTITY cancelEditionLabel "Zrušit">
 <!ENTITY cancelEditionAccesskey "Z">
 <!ENTITY buttonAppendToListLabel "Přidat">

@@ -8,6 +8,7 @@
 <!ENTITY initialpage.description "Je váš adresář místní nebo vzdálený ? :">
 <!ENTITY initialpage.computer.label "Místní">
 <!ENTITY initialpage.network.label "Vzdálený">
+<!ENTITY initialpage.search.label "Vyhledávání do existujících adresářů">
 
 <!ENTITY locationComputerPage.wizard.description "Typ a umístění nového místního adresáře.">
 <!ENTITY locationComputerPage.type.description "Jaký je typ vašeho místního adresáře ? :">
@@ -33,6 +34,9 @@
 <!ENTITY locationNetworkPage.uri.label "URL">
 <!ENTITY locationNetworkPage.credentials.description "Zadejte přihlašovací údaje pro přístup k vašemu vzdálenému adresáři. Pro Google adresář by mělo být uživatelské jméno váš Google e-mail.">
 <!ENTITY locationNetworkPage.validatebutton.label "Ověřit">
+
+<!ENTITY locationSearchPage.wizard.description "Definice pokročilého vyhledávání.">
+<!ENTITY locationSearchPage.label "Pokročilé vyhledávání">
 
 <!ENTITY googleOauthPage.wizard.description "Autentizace Google">
 

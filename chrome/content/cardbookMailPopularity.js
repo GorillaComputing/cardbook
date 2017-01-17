@@ -70,7 +70,7 @@ if ("undefined" == typeof(cardbookMailPopularity)) {
 					}
 				}
 				cardbookSynchronization.writeFileDataAsync(cacheDir.path, writable.join("\r\n"), function () {
-					wdw_cardbooklog.updateStatusProgressInformationWithDebug2("debug mode : Mail popularity writed to : " + cacheDir.path);
+					wdw_cardbooklog.updateStatusProgressInformationWithDebug2("debug mode : Mail popularity written to : " + cacheDir.path);
 				});
 			}
 		},

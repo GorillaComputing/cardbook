@@ -50,9 +50,7 @@
 <!ENTITY mailPopularityTabLabel "Email popular">
 <!ENTITY technicalTabLabel "Tecnico">
 <!ENTITY vcardTabLabel "vCard">
-<!ENTITY complexSearchTabLabel "Procura avançada">
 
-<!ENTITY dispnColumnLabel "Nomes">
 <!ENTITY lastnameColumnLabel "Nome">
 <!ENTITY firstnameColumnLabel "Apelido">
 <!ENTITY othernameColumnLabel "Outros nomes">
@@ -137,8 +135,9 @@
 <!ENTITY ccEmailCardFromCardsLabel "Enviar cartões por email (cc)">
 <!ENTITY bccEmailCardFromAccountsOrCatsLabel "Enviar cartões por email (bcc)">
 <!ENTITY bccEmailCardFromCardsLabel "Enviar cartões por email (bcc)">
-<!ENTITY localizeCardFromCardsLabel "Localizar">
-<!ENTITY openURLCardFromCardsLabel "Abrir URL do cartão">
+<!ENTITY findEmailsFromCardsLabel "Encontrar emails do contacto">
+<!ENTITY localizeCardFromCardsLabel "Localizar contacto">
+<!ENTITY openURLCardFromCardsLabel "Abrir URL do contacto">
 <!ENTITY cutCardFromAccountsOrCatsLabel "Cortar contacto">
 <!ENTITY cutCardFromCardsLabel "Cortar contacto">
 <!ENTITY copyCardFromAccountsOrCatsLabel "Copiar contacto">
@@ -157,3 +156,5 @@
 <!ENTITY editAccountFromAccountsOrCatsLabel "Editar agenda">
 <!ENTITY syncAccountFromAccountsOrCatsLabel "Sincronizar agenda">
 <!ENTITY removeAccountFromAccountsOrCatsLabel "Fechar agenda">
+
+<!ENTITY IMPPMenuLabel "Ligar">

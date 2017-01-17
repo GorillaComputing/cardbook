@@ -3,16 +3,6 @@ if ("undefined" == typeof(wdw_mergeCards)) {
 		arrayField: {},
 		version: "",
 		
-		validateLook: function (aPrefValue) {
-			if (aPrefValue) {
-				cardbookRepository.unregisterCss("chrome://cardbook/skin/mergeSelectedNull.css");
-				cardbookRepository.reloadCss("chrome://cardbook/skin/mergeSelectedBlue.css");
-			} else {
-				cardbookRepository.unregisterCss("chrome://cardbook/skin/mergeSelectedBlue.css");
-				cardbookRepository.reloadCss("chrome://cardbook/skin/mergeSelectedNull.css");
-			}
-		},
-
 		createCheckBox1: function (aRow, aName, aValue) {
 			var aCheckbox = document.createElement('checkbox');
 			aRow.appendChild(aCheckbox);
@@ -330,9 +320,6 @@ if ("undefined" == typeof(wdw_mergeCards)) {
 
 		load: function () {
 			Components.utils.import("chrome://cardbook/content/cardbookRepository.js");
-			var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-			var defaultLook = prefs.getBoolPref("extensions.cardbook.defaultLook");
-			wdw_mergeCards.validateLook(defaultLook);
 			wdw_mergeCards.setHideCreate();
 			
 			listOfCards = window.arguments[0].cardsIn;
@@ -565,10 +552,6 @@ if ("undefined" == typeof(wdw_mergeCards)) {
 				window.arguments[0].action = myViewResultArgs.cardEditionAction;
 				window.arguments[0].cardsOut = [myViewResultArgs.cardOut];
 				close();
-			} else {
-				var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-				var defaultLook = prefs.getBoolPref("extensions.cardbook.defaultLook");
-				wdw_mergeCards.validateLook(defaultLook);
 			}
 		},
 

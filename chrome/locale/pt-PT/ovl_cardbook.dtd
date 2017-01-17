@@ -1,4 +1,5 @@
 <!ENTITY cardbookMenuItemLabel "CardBook">
+<!ENTITY cardbookMenuItemAccesskey "c">
 <!ENTITY cardbookMenuItemTooltip "Seleccionar tab do CardBook">
 
 <!ENTITY cardbookToolbarButtonLabel "CardBook">
@@ -8,12 +9,15 @@
 <!ENTITY cardbookTabButtonTooltip "Seleccionar tab do CardBook">
 
 <!ENTITY addToCardBookMenuLabel "Adicionar ao CardBook">
+<!ENTITY addToCardBookMenuAccesskey "d">
 <!ENTITY editInCardBookMenuLabel "Modificar com o CardBook">
+<!ENTITY editInCardBookMenuAccesskey "o">
+<!ENTITY IMPPMenuLabel "Ligar">
+<!ENTITY IMPPMenuAccesskey "L">
 
 <!ENTITY addAllAttachementsToCardBookMenuLabel "Adicionar todos ao Carbook...">
 <!ENTITY addAttachementToCardBookMenuLabel "Adicionar ao Carbook">
 
-<!ENTITY statusProgressInformationTooltip "Clique aqui para ver os logs">
 <!ENTITY cardbookABPaneItemLabel "Vista de Agenda">
 <!ENTITY cardbookABPaneItemAccesskey "A">
 <!ENTITY cardbookContactPaneItemLabel "Vista de Contactos">

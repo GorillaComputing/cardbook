@@ -17,38 +17,38 @@ cardbookListConversion.prototype = {
 	},
 	
 	_getEmails: function (aCard, aPrefEmails) {
-		if (cardbookUtils.isMyCardAList(aCard)) {
-			var myList = cardbookUtils.formatFnForEmail(aCard.fn);
+		if (aCard.isAList) {
+			var myList = aCard.fn;
 			if (this._verifyRecursivity(myList)) {
-				this._convert(myList + " <" + myList + ">");
+				this._convert(MailServices.headerParser.makeMimeAddress(myList, myList));
 			}
 		} else {
 			var listOfEmail = []
-			listOfEmail = cardbookUtils.getEmailsFromCards([aCard], aPrefEmails);
-			this.emailResult.push(listOfEmail.join(", "));
+			listOfEmail = cardbookUtils.getMimeEmailsFromCards([aCard]).join(", ");
+			if (listOfEmail != "") {
+				this.emailResult.push(listOfEmail);
+			}
 		}
 	},
 	
 	_convert: function (aEmails) {
-		var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-		var preferEmailPref = prefs.getBoolPref("extensions.cardbook.preferEmailPref");
 		Components.utils.import("chrome://cardbook/content/cardbookRepository.js");
 		var addresses = {}, names = {}, fullAddresses = {};
 		MailServices.headerParser.parseHeadersWithArray(aEmails, addresses, names, fullAddresses);
 		for (var i = 0; i < addresses.value.length; i++) {
 			if (addresses.value[i].indexOf("@") > 0) {
-				this.emailResult.push(fullAddresses.value[i]);
+				this.emailResult.push(MailServices.headerParser.makeMimeAddress(names.value[i], addresses.value[i]));
 			} else {
 				for (j in cardbookRepository.cardbookCards) {
 					var myCard = cardbookRepository.cardbookCards[j];
-					if (cardbookUtils.formatFnForEmail(myCard.fn) == names.value[i]) {
+					if (myCard.fn == names.value[i]) {
 						this.recursiveList.push(names.value[i]);
 						if (myCard.version == "4.0") {
 							for (var k = 0; k < myCard.member.length; k++) {
 								var uid = myCard.member[k].replace("urn:uuid:", "");
 								if (cardbookRepository.cardbookCards[myCard.dirPrefId+"::"+uid]) {
 									var myTargetCard = cardbookRepository.cardbookCards[myCard.dirPrefId+"::"+uid];
-									this._getEmails(myTargetCard, preferEmailPref);
+									this._getEmails(myTargetCard);
 								}
 							}
 						} else if (myCard.version == "3.0") {
@@ -62,7 +62,7 @@ cardbookListConversion.prototype = {
 									if (header == memberCustom) {
 										if (cardbookRepository.cardbookCards[myCard.dirPrefId+"::"+trailer.replace("urn:uuid:", "")]) {
 											var myTargetCard = cardbookRepository.cardbookCards[myCard.dirPrefId+"::"+trailer.replace("urn:uuid:", "")];
-											this._getEmails(myTargetCard, preferEmailPref);
+											this._getEmails(myTargetCard);
 										}
 									}
 								}
@@ -110,6 +110,29 @@ if ("undefined" == typeof(ovl_list)) {
 
 		// return the original result
 		return rv;
+	};
+
+})();
+
+// updateSendLock
+(function() {
+	// Keep a reference to the original function.
+	var _original = updateSendLock;
+	
+	// Override a function.
+	updateSendLock = function() {
+		// Execute original function.
+		// var rv = _original.apply(null, arguments);
+		
+		// Execute some action afterwards.
+		// if (!gSendLocked) {
+		// 	let inputValue = awGetInputElement(row).value.trim();
+		// 	ovl_list.mailListNameExistsInCardBook(inputValue.replace(/ *<.*>/, ""));
+		// }
+        // 
+		// return the original result
+		gSendLocked = false;
+		// return rv;
 	};
 
 })();

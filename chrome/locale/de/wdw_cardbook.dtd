@@ -50,9 +50,7 @@
 <!ENTITY mailPopularityTabLabel "Email Popularität">
 <!ENTITY technicalTabLabel "Technische Details">
 <!ENTITY vcardTabLabel "vCard">
-<!ENTITY complexSearchTabLabel "Erweiterte Suche">
 
-<!ENTITY dispnColumnLabel "Namen">
 <!ENTITY lastnameColumnLabel "Nachname">
 <!ENTITY firstnameColumnLabel "Vorname">
 <!ENTITY othernameColumnLabel "Weiterer Name">
@@ -137,7 +135,8 @@
 <!ENTITY ccEmailCardFromCardsLabel "Email an Kontakt verfassen (Kopie / Cc)">
 <!ENTITY bccEmailCardFromAccountsOrCatsLabel "Email an Kontakt verfassen (Blindkopie / Bcc)">
 <!ENTITY bccEmailCardFromCardsLabel "Email an Kontakt verfassen (Blindkopie / Bcc)">
-<!ENTITY localizeCardFromCardsLabel "Lokalisieren">
+<!ENTITY findEmailsFromCardsLabel "Suche Email-Adressen des Kontakts">
+<!ENTITY localizeCardFromCardsLabel "Kontakt Lokalisieren">
 <!ENTITY openURLCardFromCardsLabel "URL öffnen">
 <!ENTITY cutCardFromAccountsOrCatsLabel "Kontakt ausschneiden">
 <!ENTITY cutCardFromCardsLabel "Kontakt ausschneiden">
@@ -157,3 +156,5 @@
 <!ENTITY editAccountFromAccountsOrCatsLabel "Adressbuch bearbeiten">
 <!ENTITY syncAccountFromAccountsOrCatsLabel "Adressbuch synchronisieren">
 <!ENTITY removeAccountFromAccountsOrCatsLabel "Adressbuch löschen">
+
+<!ENTITY IMPPMenuLabel "Verbinden">

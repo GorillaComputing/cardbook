@@ -50,9 +50,7 @@
 <!ENTITY mailPopularityTabLabel "Populariteit">
 <!ENTITY technicalTabLabel "Technisch">
 <!ENTITY vcardTabLabel "vCard">
-<!ENTITY complexSearchTabLabel "Geavanceerd zoeken">
 
-<!ENTITY dispnColumnLabel "Namen">
 <!ENTITY lastnameColumnLabel "Achternaam">
 <!ENTITY firstnameColumnLabel "Voornaam">
 <!ENTITY othernameColumnLabel "Extra naam">
@@ -131,12 +129,13 @@
 
 <!ENTITY copyCardTreeLabel "Kopieëren entry">
 
-<!ENTITY toEmailCardFromAccountsOrCatsLabel "Email contactpersonen">
-<!ENTITY toEmailCardFromCardsLabel "Email contactpersonen">
-<!ENTITY ccEmailCardFromAccountsOrCatsLabel "Email contactpersonen (copy / cc)">
-<!ENTITY ccEmailCardFromCardsLabel "Email contactpersonen (copy / cc)">
-<!ENTITY bccEmailCardFromAccountsOrCatsLabel "Email contactpersonen (blind copy / bcc)">
-<!ENTITY bccEmailCardFromCardsLabel "Email contactpersonen (blind copy / bcc)">
+<!ENTITY toEmailCardFromAccountsOrCatsLabel "Email contactpersoon">
+<!ENTITY toEmailCardFromCardsLabel "Email contactpersoon">
+<!ENTITY ccEmailCardFromAccountsOrCatsLabel "Email contactpersoon (copy / cc)">
+<!ENTITY ccEmailCardFromCardsLabel "Email contactpersoon (copy / cc)">
+<!ENTITY bccEmailCardFromAccountsOrCatsLabel "Email contactpersoon (blind copy / bcc)">
+<!ENTITY bccEmailCardFromCardsLabel "Email contactpersoon (blind copy / bcc)">
+<!ENTITY findEmailsFromCardsLabel "Zoek e-mails van contactpersoon">
 <!ENTITY localizeCardFromCardsLabel "Localiseren">
 <!ENTITY openURLCardFromCardsLabel "Open URLs van contactpersoon">
 <!ENTITY cutCardFromAccountsOrCatsLabel "Contactpersoon knippen">
@@ -157,3 +156,5 @@
 <!ENTITY editAccountFromAccountsOrCatsLabel "Adresboek bewerken">
 <!ENTITY syncAccountFromAccountsOrCatsLabel "Adresboek synchroniseren">
 <!ENTITY removeAccountFromAccountsOrCatsLabel "Adresboek verwijderen">
+
+<!ENTITY IMPPMenuLabel "Verbinden">

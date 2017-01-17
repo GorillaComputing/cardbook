@@ -1,23 +1,17 @@
 if ("undefined" == typeof(wdw_imageEdition)) {
 	var wdw_imageEdition = {
 
-		purgeImageCache: function (aFileURI) {
-			// for images having the same name we have to clear the cached image
-			var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-			var uri = ios.newURI(aFileURI,null,null);
-			if (uri) {
-				var cache = Components.classes["@mozilla.org/image/tools;1"].getService(Components.interfaces.imgITools).getImgCacheForDocument(null);
-				try {
-					cache.removeEntry(uri);
-				} catch(e) {}
-			}
-		},
-
-		displayImageCard: function (aCard) {
+		displayImageCard: function (aCard, aDisplayDefault) {
 			if (aCard.photo.localURI != null && aCard.photo.localURI !== undefined && aCard.photo.localURI != "") {
+				document.getElementById('imageBox').removeAttribute('hidden');
 				wdw_imageEdition.resizeImageCard(aCard.photo.localURI);
 			} else {
-				wdw_imageEdition.resizeImageCard("chrome://cardbook/skin/missing_photo_200_214.png");
+				if (aDisplayDefault) {
+					document.getElementById('imageBox').removeAttribute('hidden');
+					wdw_imageEdition.resizeImageCard("chrome://cardbook/skin/missing_photo_200_214.png");
+				} else {
+					document.getElementById('imageBox').setAttribute('hidden', 'true');
+				}
 			}
 		},
 
@@ -27,7 +21,6 @@ if ("undefined" == typeof(wdw_imageEdition)) {
 			
 			myImage.src = "";
 			myDummyImage.src = "";
-			wdw_imageEdition.purgeImageCache(aFileURI);
 			myDummyImage.src = aFileURI;
 			myDummyImage.onload = function() {
 				var myImageWidth = 170;
@@ -65,7 +58,7 @@ if ("undefined" == typeof(wdw_imageEdition)) {
 				var myExtensionLower = myExtension.toLowerCase();
 				if (myExtensionLower == "jpg" || myExtensionLower == "jpeg" || myExtensionLower == "png" || myExtensionLower == "gif") {
 					var myCard = window.arguments[0].cardIn;
-					var targetFile = cardbookUtils.getTempFile("CardBookPhotoTemp." + myExtensionLower);
+					var targetFile = cardbookUtils.getEditionPhotoTempFile(myExtensionLower);
 					var ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 					var myFileURISpec = "file:///" + targetFile.path;
 					var myFileURI = ioService.newURI(myFileURISpec, null, null);
@@ -86,7 +79,7 @@ if ("undefined" == typeof(wdw_imageEdition)) {
 				var myExtensionLower = myExtension.toLowerCase();
 				if (myExtensionLower == "jpg" || myExtensionLower == "jpeg" || myExtensionLower == "png" || myExtensionLower == "gif") {
 					var myCard = window.arguments[0].cardIn;
-					var targetFile = cardbookUtils.getTempFile("CardBookPhotoTemp." + myExtensionLower);
+					var targetFile = cardbookUtils.getEditionPhotoTempFile(myExtensionLower);
 					
 					Components.utils.import("resource://gre/modules/Downloads.jsm");
 					Components.utils.import("resource://gre/modules/Task.jsm");
@@ -114,7 +107,7 @@ if ("undefined" == typeof(wdw_imageEdition)) {
 			if (document.getElementById('photolocalURITextBox').value == "") {
 				var myExtensionLower = "png";
 				var myCard = window.arguments[0].cardIn;
-				var targetFile = cardbookUtils.getTempFile("CardBookPhotoTemp." + myExtensionLower);
+				var targetFile = cardbookUtils.getEditionPhotoTempFile(myExtensionLower);
 				var myResult = cardbookUtils.clipboardGetImage(targetFile);
 				if (myResult) {
 					wdw_imageEdition.addImageCard(targetFile, myCard, myExtensionLower);
@@ -132,7 +125,7 @@ if ("undefined" == typeof(wdw_imageEdition)) {
 				window.arguments[0].cardIn.photo.URI = "";
 				window.arguments[0].cardIn.photo.localURI = "file:///" + aFile.path;
 				window.arguments[0].cardIn.photo.extension = aExtension;
-				wdw_imageEdition.displayImageCard(window.arguments[0].cardIn);
+				wdw_imageEdition.displayImageCard(window.arguments[0].cardIn, true);
 			}
 		},
 
@@ -158,7 +151,7 @@ if ("undefined" == typeof(wdw_imageEdition)) {
 			window.arguments[0].cardIn.photo.URI = "";
 			window.arguments[0].cardIn.photo.localURI = "";
 			window.arguments[0].cardIn.photo.extension = "";
-			wdw_imageEdition.displayImageCard(window.arguments[0].cardIn);
+			wdw_imageEdition.displayImageCard(window.arguments[0].cardIn, true);
 		},
 
 		imageCardContextShowing: function () {

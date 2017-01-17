@@ -3,9 +3,9 @@
 <!ENTITY generalTabLabel "Generale">
 <!ENTITY editionTabLabel "Modifiche">
 <!ENTITY typesTabLabel "Tipi">
+<!ENTITY IMPPsTabLabel "Indirizzi di messaggistica istantanea">
 <!ENTITY customFieldsTabLabel "Campi personalizzati">
 <!ENTITY listsTabLabel "Liste">
-<!ENTITY lookTabLabel "Aspetto">
 <!ENTITY syncTabLabel "Sincronizzazione">
 <!ENTITY emailTabLabel "Email">
 <!ENTITY birthdaylistTabLabel "Compleanni">
@@ -82,6 +82,18 @@
 <!ENTITY preferenceValueLabel "Etichetta del valore campo PREF (solo per vCard 4.0)">
 <!ENTITY preferenceValueAccesskey "V">
 
+<!ENTITY IMPPGroupboxWarn "Questa impostazione permette di aprire direttamente un profilo di messaggistica istantanea (IM) utilizzando il protocollo selezionato.">
+<!ENTITY IMPPGroupboxLabel "Indirizzi di messaggistica istantanea">
+<!ENTITY IMPPCodeLabel "Codice">
+<!ENTITY IMPPLabelLabel "Etichetta">
+<!ENTITY IMPPProtocolLabel "Protocollo">
+<!ENTITY addIMPPLabel "Aggiungi">
+<!ENTITY addIMPPAccesskey "A">
+<!ENTITY renameIMPPLabel "Rinomina">
+<!ENTITY renameIMPPAccesskey "R">
+<!ENTITY deleteIMPPLabel "Elimina">
+<!ENTITY deleteIMPPAccesskey "D">
+
 <!ENTITY customFieldsPanelLabel "Scegli i tuoi campi personalizzati.">
 <!ENTITY customFieldName "Nome del campo">
 <!ENTITY customFieldLabel "Etichetta del campo">
@@ -94,10 +106,6 @@
 <!ENTITY kindCustomAccesskey "K">
 <!ENTITY memberCustomLabel "Membro">
 <!ENTITY memberCustomAccesskey "M">
-
-<!ENTITY lookGroupboxLabel "Stile">
-<!ENTITY defaultLookLabel "Stile di CardBook (Azzurro)">
-<!ENTITY defaultLookAccesskey "C">
 
 <!ENTITY syncGroupboxLabel "Sincronizzazione">
 <!ENTITY syncWarn "La sincronizzazione invia le modifiche da Thunderbird a un server remoto e viceversa.">
@@ -120,6 +128,9 @@
 <!ENTITY requestsTimeoutAccesskey "T">
 <!ENTITY multigetLabel "Per le richieste di tipo GET, raggruppa i contatti per">
 <!ENTITY multigetAccesskey "G">
+<!ENTITY advancedSyncGroupboxLabel "Proprietà avanzate">
+<!ENTITY decodeReportLabel "Decodifica gli URL per richieste di tipo REPORT">
+<!ENTITY decodeReportAccesskey "D">
 
 <!ENTITY miscEmailGroupboxLabel "Invio di email">
 <!ENTITY preferEmailPrefLabel "Prediligi gli indirizzi email contrassegnati come PREFeriti">

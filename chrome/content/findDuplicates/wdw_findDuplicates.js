@@ -15,13 +15,14 @@ if ("undefined" == typeof(wdw_findDuplicates)) {
 		},
 
 		createCssTextBoxRules: function (aStyleSheet, aDirPrefId, aColor) {
-			var ruleString = ".cardbookBackgroundColorClass textbox[findDuplicates=color_" + aDirPrefId + "] {-moz-appearance: none !important; background-color: " + aColor + " !important; border: 1px !important;}";
+			var ruleString = ".cardbookFindDuplicatesClass textbox[findDuplicates=color_" + aDirPrefId + "] {-moz-appearance: none !important; background-color: " + aColor + " !important; border: 1px !important;}";
 			var ruleIndex = aStyleSheet.insertRule(ruleString, aStyleSheet.cssRules.length);
 			wdw_findDuplicates.gDynamicCss[aStyleSheet.href].push(ruleIndex);
 		},
 
 		loadCssRules: function () {
-			for each (var styleSheet in document.styleSheets) {
+			for (var prop in document.styleSheets) {
+				var styleSheet = document.styleSheets[prop];
 				if (styleSheet.href == "chrome://cardbook/skin/findDuplicates.css") {
 					wdw_findDuplicates.gDynamicCss[styleSheet.href] = [];
 					wdw_findDuplicates.deleteCssAllRules(styleSheet);
@@ -124,14 +125,14 @@ if ("undefined" == typeof(wdw_findDuplicates)) {
 				if (aDirPrefId != null && aDirPrefId !== undefined && aDirPrefId != "") {
 					for (var i = 0; i < cardbookRepository.cardbookDisplayCards[aDirPrefId].length; i++) {
 						var myCard = cardbookRepository.cardbookDisplayCards[aDirPrefId][i];
-						if (!cardbookUtils.isMyCardAList(myCard)) {
+						if (!myCard.isAList) {
 							myCardArray.push([wdw_findDuplicates.generateCardArray(myCard), myCard, true]);
 						}
 					}
 				} else {
 					for (i in cardbookRepository.cardbookCards) {
 						var myCard = cardbookRepository.cardbookCards[i];
-						if (!cardbookUtils.isMyCardAList(myCard)) {
+						if (!myCard.isAList) {
 							myCardArray.push([wdw_findDuplicates.generateCardArray(myCard), myCard, true]);
 						}
 					}

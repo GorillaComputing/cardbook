@@ -13,31 +13,38 @@ if ("undefined" == typeof(cardbookDirTree)) {
 				if (column.id == "accountColor") return "";
 				else if (column.id == "accountName") return this.visibleData[idx][0];
 				else if (column.id == "accountId") return this.visibleData[idx][4];
-				else if (column.id == "accountType") return this.visibleData[idx][5];
-				else return this.visibleData[idx][0];
+				else if (column.id == "accountType") return this.visibleData[idx][6];
+				else if (column.id == "accountEnabled") return this.visibleData[idx][5];
+				else if (column.id == "accountReadOnly") return this.visibleData[idx][7];
+				else if (column.id == "accountTypeCheckbox") return true;
+				else if (column.id == "dummyForScroll") return true;
 			} else {
 				return false;
 			}
 		},
 		getCellValue: function(idx, column) {
-			if (column.id == "accountEnabled") return this.visibleData[idx][6];
+			if (column.id == "accountEnabled") return this.visibleData[idx][5];
 			else if (column.id == "accountReadOnly") return this.visibleData[idx][7];
+			else if (column.id == "accountTypeCheckbox") return true;
+			else if (column.id == "dummyForScroll") return true;
 		},
 		setCellValue: function(idx, column) {
 			if (cardbookRepository.cardbookSyncMode === "NOSYNC") {
 				if (column.id == "accountEnabled") {
-					wdw_cardbook.enableOrDisableAddressbook(this.visibleData[idx][4], !this.visibleData[idx][6]);
+					wdw_cardbook.enableOrDisableAddressbook(this.visibleData[idx][4], !this.visibleData[idx][5]);
 				}
 			}
 		},
 		getRowProperties: function(idx) { return "" },
 		getColumnProperties: function(column) { return column.id },
 		getCellProperties: function(idx, column) {
-			if (column.id == "accountColor" && this.visibleData[idx][1]) {
+			if (column.id == "accountColor" && this.visibleData[idx][1] && this.visibleData[idx][6] != "SEARCH") {
 				return "color_" + this.visibleData[idx][4];
+			} else if (column.id == "accountTypeCheckbox" && this.visibleData[idx][1]) {
+				return cardbookRepository.getIconType(this.visibleData[idx][6]);
 			}
 		},
-		canDrop: function(idx) { return (this.visibleData[idx][6] && !this.visibleData[idx][7]); },
+		canDrop: function(idx) { return (this.visibleData[idx][5] && !this.visibleData[idx][7] && this.visibleData[idx][6] != "SEARCH"); },
 		isContainer: function(idx) { return this.visibleData[idx][1]; },
 		isContainerOpen: function(idx) { return this.visibleData[idx][2]; },
 		isContainerEmpty: function(idx) { return this.visibleData[idx][3]; },
@@ -85,11 +92,11 @@ if ("undefined" == typeof(cardbookDirTree)) {
 			} else {
 				item[2] = true;
 				var label = this.visibleData[idx][4];
-				var enabled = this.visibleData[idx][6];
+				var enabled = this.visibleData[idx][5];
 				var readonly = this.visibleData[idx][7];
 				var toinsert = this.childData[label];
 				for (var i = 0; i < toinsert.length; i++) {
-					this.visibleData.splice(idx + i + 1, 0, [toinsert[i], false, false, false, label+"::"+toinsert[i], "CAT", enabled, readonly]);
+					this.visibleData.splice(idx + i + 1, 0, [toinsert[i], false, false, false, label+"::"+toinsert[i], enabled, "CAT", readonly]);
 				}
 				this.treeBox.rowCountChanged(idx + 1, toinsert.length);
 			}

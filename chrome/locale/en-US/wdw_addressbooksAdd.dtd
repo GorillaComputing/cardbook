@@ -8,6 +8,7 @@
 <!ENTITY initialpage.description "Is your address book local or remote ? :">
 <!ENTITY initialpage.computer.label "Local">
 <!ENTITY initialpage.network.label "Remote">
+<!ENTITY initialpage.search.label "Search into existing address books">
 
 <!ENTITY locationComputerPage.wizard.description "Type and location of the new local address book.">
 <!ENTITY locationComputerPage.type.description "What is the type of your local address book ? :">
@@ -33,6 +34,9 @@
 <!ENTITY locationNetworkPage.uri.label "URL">
 <!ENTITY locationNetworkPage.credentials.description "Enter the credentials for accessing your address book. For a Google address book, the username should be your Google email.">
 <!ENTITY locationNetworkPage.validatebutton.label "Validate">
+
+<!ENTITY locationSearchPage.wizard.description "Definition of the advanced search.">
+<!ENTITY locationSearchPage.label "Advanced Search">
 
 <!ENTITY googleOauthPage.wizard.description "Google Authentication">
 

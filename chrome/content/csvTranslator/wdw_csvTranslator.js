@@ -91,7 +91,6 @@ if ("undefined" == typeof(wdw_csvTranslator)) {
 
 		load: function () {
 			Components.utils.import("chrome://cardbook/content/cardbookRepository.js");
-			cardbookRepository.validateLook();
 
 			var strBundle = document.getElementById("cardbook-strings");
 			document.title = strBundle.getString(window.arguments[0].mode + "MappingTittle");

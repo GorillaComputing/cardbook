@@ -1,3 +1,4 @@
 <!ENTITY existingDataGroupboxLabel "Données existantes">
 <!ENTITY contactLabel "Ajouter à ce contact">
 <!ENTITY cardbookSwitchButtonTooltip "Inverser le nom et le prénom">
+<!ENTITY cardbookCalendarButtonTooltip "Selectionner une date depuis un calendrier">

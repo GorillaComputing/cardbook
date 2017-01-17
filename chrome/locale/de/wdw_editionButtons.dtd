@@ -3,9 +3,11 @@
 <!ENTITY createEditionLabel "Erstellen">
 <!ENTITY createEditionAccesskey "E">
 <!ENTITY createAndReplaceEditionLabel "Erstellen und Ersetzen">
-<!ENTITY createAndReplaceEditionAccesskey "U">
+<!ENTITY createAndReplaceEditionAccesskey "Z">
 <!ENTITY saveEditionLabel "Speichern">
 <!ENTITY saveEditionAccesskey "S">
+<!ENTITY validateEditionLabel "Übernehmen">
+<!ENTITY validateEditionAccesskey "U">
 <!ENTITY cancelEditionLabel "Abbrechen">
 <!ENTITY cancelEditionAccesskey "A">
 <!ENTITY buttonAppendToListLabel "Ersetzen">

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://cardbook/skin/logEdition.css" type="text/css"?>
 <?xul-overlay href="chrome://cardbook/content/ovl_cardbookStringBundle.xul"?>
 <!DOCTYPE window [
 	<!ENTITY % logDTD SYSTEM "chrome://cardbook/locale/wdw_logEdition.dtd"> %logDTD;
@@ -9,7 +10,7 @@
 	onload="wdw_logEdition.load();" resizable="true"
 	onclose="wdw_logEdition.cancel();"
 	id="wdw_logEdition" title="&wdw_logEditionTitle;"
-	persist="screenX screenY width height" class="cardbookBackgroundColorClass"
+	persist="screenX screenY width height"
 	style="min-width:400px;min-height:100px;">
 	
 	<stringbundleset id="stringbundleset"/>

@@ -20,6 +20,10 @@ if ("undefined" == typeof(wdw_addressbooksAdd)) {
 				wdw_addressbooksAdd.locationComputerPageTypeAdvance();
 				wdw_addressbooksAdd.loadStandardAddressBooks();
 				document.getElementById('addressbook-wizard').goTo("welcomePage");
+			} else if (window.arguments[0].action == "search") {
+				var myRadioGroup = document.getElementById('locationComputerPageType');
+				myRadioGroup.value = "search";
+				document.getElementById('addressbook-wizard').goTo("searchPage");
 			} else {
 				document.getElementById('addressbook-wizard').goTo("initialPage");
 			}
@@ -56,8 +60,10 @@ if ("undefined" == typeof(wdw_addressbooksAdd)) {
 			var page = document.getElementsByAttribute('pageid', 'initialPage')[0];
 			if (type == 'local') {
 				page.next = 'locationComputerPage';
-			} else {
+			} else if (type == 'remote') {
 				page.next = 'locationNetworkPage';
+			} else if (type == 'search') {
+				page.next = 'searchPage';
 			}
 		},
 
@@ -207,6 +213,29 @@ if ("undefined" == typeof(wdw_addressbooksAdd)) {
 
 		locationNetworkPageTypeAdvance: function () {
 			wdw_addressbooksAdd.gType = document.getElementById('locationNetworkPageType').selectedItem.value;
+		},
+
+		searchPageAdvance: function () {
+			wdw_addressbooksAdd.gType = "SEARCH";
+			wdw_addressbooksAdd.gTypeFile = cardbookComplexSearch.getSearch();
+		},
+
+		checkSearch: function () {
+			cardbookComplexSearch.initComplexSearch(window.arguments[0].searchId);
+			if (window.arguments[0].searchId != null && window.arguments[0].searchId !== undefined && window.arguments[0].searchId != "") {
+				document.getElementById('addressbook-wizard').canAdvance = true;
+			} else {
+				document.getElementById('addressbook-wizard').canAdvance = false;
+			}
+			function checkTerms(event) {
+				if (cardbookComplexSearch.getSearch() != "") {
+					document.getElementById('addressbook-wizard').canAdvance = true;
+				} else {
+					document.getElementById('addressbook-wizard').canAdvance = false;
+				}
+			};
+			document.getElementById('searchTerms').addEventListener("input", checkTerms, false);
+			document.getElementById('searchTerms').addEventListener("command", checkTerms, false);
 		},
 
 		showPassword: function () {
@@ -364,17 +393,30 @@ if ("undefined" == typeof(wdw_addressbooksAdd)) {
 
 		loadName: function () {
 			var aTextbox = document.getElementById('namePageName');
-			if (wdw_addressbooksAdd.gType == 'FILE' || wdw_addressbooksAdd.gType == 'DIRECTORY') {
-				aTextbox.value = wdw_addressbooksAdd.gFile.leafName;
-			} else if (wdw_addressbooksAdd.gType == 'GOOGLE') {
-				aTextbox.value = document.getElementById('locationNetworkPageUsername').value;
-			} else {
-				for (var url in cardbookRepository.cardbookServerValidation) {
-					aTextbox.value = cardbookUtils.undefinedToBlank(cardbookRepository.cardbookServerValidation[url][0][0]);
+			if (wdw_addressbooksAdd.gType == 'SEARCH') {
+				document.getElementById('colorRow').setAttribute('hidden', 'true');
+				document.getElementById('vcardVersionRow').setAttribute('hidden', 'true');
+				document.getElementById('readonlyRow').setAttribute('hidden', 'true');
+				if (window.arguments[0].searchId != null && window.arguments[0].searchId !== undefined && window.arguments[0].searchId != "") {
+					var cardbookPrefService = new cardbookPreferenceService(window.arguments[0].searchId);
+					aTextbox.value = cardbookPrefService.getName();
 				}
+			} else {
+				document.getElementById('colorRow').removeAttribute('hidden');
+				document.getElementById('vcardVersionRow').removeAttribute('hidden');
+				document.getElementById('readonlyRow').removeAttribute('hidden');
+				if (wdw_addressbooksAdd.gType == 'FILE' || wdw_addressbooksAdd.gType == 'DIRECTORY') {
+					aTextbox.value = wdw_addressbooksAdd.gFile.leafName;
+				} else if (wdw_addressbooksAdd.gType == 'GOOGLE') {
+					aTextbox.value = document.getElementById('locationNetworkPageUsername').value;
+				} else {
+					for (var url in cardbookRepository.cardbookServerValidation) {
+						aTextbox.value = cardbookUtils.undefinedToBlank(cardbookRepository.cardbookServerValidation[url][0][0]);
+					}
+				}
+				var aTextbox = document.getElementById('serverColorInput');
+				aTextbox.value = cardbookUtils.randomColor(100);
 			}
-			var aTextbox = document.getElementById('serverColorInput');
-			aTextbox.value = cardbookUtils.randomColor(100);
 			wdw_addressbooksAdd.checkRequired();
 		},
 
@@ -508,7 +550,17 @@ if ("undefined" == typeof(wdw_addressbooksAdd)) {
 			var color = document.getElementById('serverColorInput').value;
 			var vCardVersion = document.getElementById('vCardVersionPageName').value;
 			var readonly = document.getElementById('readonlyPageName').checked;
-			if (wdw_addressbooksAdd.gType == 'GOOGLE') {
+			if (wdw_addressbooksAdd.gType == 'SEARCH') {
+				var url = "";
+				if (window.arguments[0].searchId != null && window.arguments[0].searchId !== undefined && window.arguments[0].searchId != "") {
+					dirPrefId = window.arguments[0].searchId;
+					var cardbookPrefService = new cardbookPreferenceService(window.arguments[0].searchId);
+					readonly = cardbookPrefService.getEnabled();
+				} else {
+					readonly = true;
+				}
+				wdw_addressbooksAdd.gFinishParams.push([wdw_addressbooksAdd.gTypeFile, wdw_addressbooksAdd.gFile, url, name, username, color, vCardVersion, readonly, dirPrefId]);
+			} else if (wdw_addressbooksAdd.gType == 'GOOGLE') {
 				var url = cardbookRepository.cardbookgdata.GOOGLE_API;
 				wdw_addressbooksAdd.gFinishParams.push([wdw_addressbooksAdd.gTypeFile, wdw_addressbooksAdd.gFile, url, name, username, color, vCardVersion, readonly, dirPrefId]);
 			} else if (wdw_addressbooksAdd.gType == 'APPLE') {

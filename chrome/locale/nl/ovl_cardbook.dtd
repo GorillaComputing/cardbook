@@ -1,4 +1,5 @@
 <!ENTITY cardbookMenuItemLabel "CardBook">
+<!ENTITY cardbookMenuItemAccesskey "c">
 <!ENTITY cardbookMenuItemTooltip "Ga naar CardBook-tab">
 
 <!ENTITY cardbookToolbarButtonLabel "CardBook">
@@ -8,12 +9,15 @@
 <!ENTITY cardbookTabButtonTooltip "Ga naar CardBook-tab">
 
 <!ENTITY addToCardBookMenuLabel "Toevoegen aan CardBook">
+<!ENTITY addToCardBookMenuAccesskey "o">
 <!ENTITY editInCardBookMenuLabel "Wijzigen met CardBook">
+<!ENTITY editInCardBookMenuAccesskey "i">
+<!ENTITY IMPPMenuLabel "Verbinden">
+<!ENTITY IMPPMenuAccesskey "V">
 
 <!ENTITY addAllAttachementsToCardBookMenuLabel "Alle toevoegen aan CardBook...">
 <!ENTITY addAttachementToCardBookMenuLabel "Toevoegen aan CardBook...">
 
-<!ENTITY statusProgressInformationTooltip "Logbestanden bekijken">
 <!ENTITY cardbookABPaneItemLabel "Adresboek-tab">
 <!ENTITY cardbookABPaneItemAccesskey "A">
 <!ENTITY cardbookContactPaneItemLabel "Contacten-tab">

@@ -3,26 +3,6 @@ if ("undefined" == typeof(wdw_cardbookConfigurationSearchCard)) {
 		
 		contactNotLoaded : true,
 
-		loadAddressBooks: function (aAddressBookId) {
-			var myPopup = document.getElementById("addressbookMenupopup");
-			while (myPopup.hasChildNodes()) {
-				myPopup.removeChild(myPopup.firstChild);
-			}
-			var j = 0;
-			for (var i = 0; i < cardbookRepository.cardbookAccounts.length; i++) {
-				if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][6]) {
-					var menuItem = document.createElement("menuitem");
-					menuItem.setAttribute("label", cardbookRepository.cardbookAccounts[i][0]);
-					menuItem.setAttribute("value", cardbookRepository.cardbookAccounts[i][4]);
-					myPopup.appendChild(menuItem);
-					if (cardbookRepository.cardbookAccounts[i][4] == aAddressBookId) {
-						document.getElementById("addressbookMenulist").selectedIndex = j;
-					}
-					j++;
-				}
-			}
-		},
-				
 		removeContacts: function () {
 			document.getElementById("contactMenulist").selectedIndex = 0;
 			var myPopup = document.getElementById("contactMenupopup");
@@ -66,7 +46,7 @@ if ("undefined" == typeof(wdw_cardbookConfigurationSearchCard)) {
 		load: function () {
 			Components.utils.import("chrome://cardbook/content/cardbookRepository.js");
 			document.getElementById("filenameLabel").value = window.arguments[0].filename
-			wdw_cardbookConfigurationSearchCard.loadAddressBooks();
+			cardbookElementTools.loadAddressBooks("addressbookMenupopup", "addressbookMenulist", null, true, false, true, false);
 		},
 
 		save: function () {

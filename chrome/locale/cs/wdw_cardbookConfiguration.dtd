@@ -3,9 +3,9 @@
 <!ENTITY generalTabLabel "Obecné">
 <!ENTITY editionTabLabel "Úpravy">
 <!ENTITY typesTabLabel "Typy">
+<!ENTITY IMPPsTabLabel "Adresy IM">
 <!ENTITY customFieldsTabLabel "Vlastní pole">
 <!ENTITY listsTabLabel "Seznamy">
-<!ENTITY lookTabLabel "Vzhled">
 <!ENTITY syncTabLabel "Synchronizace">
 <!ENTITY emailTabLabel "E-mail">
 <!ENTITY birthdaylistTabLabel "Narozeniny">
@@ -82,6 +82,18 @@
 <!ENTITY preferenceValueLabel "Popisek hodnotového pole PREF (pouze pro vCard 4.0)">
 <!ENTITY preferenceValueAccesskey "O">
 
+<!ENTITY IMPPGroupboxWarn "Toto nastavení umožňuje přímé otevření adresy IM s použitím správného protokolu.">
+<!ENTITY IMPPGroupboxLabel "Adresy IM">
+<!ENTITY IMPPCodeLabel "Kód">
+<!ENTITY IMPPLabelLabel "Popisek">
+<!ENTITY IMPPProtocolLabel "Protokol">
+<!ENTITY addIMPPLabel "Přidat">
+<!ENTITY addIMPPAccesskey "P">
+<!ENTITY renameIMPPLabel "Upravit">
+<!ENTITY renameIMPPAccesskey "U">
+<!ENTITY deleteIMPPLabel "Smazat">
+<!ENTITY deleteIMPPAccesskey "S">
+
 <!ENTITY customFieldsPanelLabel "Definujte vaše vlastní pole.">
 <!ENTITY customFieldName "Název pole">
 <!ENTITY customFieldLabel "Popisek pole">
@@ -94,10 +106,6 @@
 <!ENTITY kindCustomAccesskey "D">
 <!ENTITY memberCustomLabel "Člen">
 <!ENTITY memberCustomAccesskey "Č">
-
-<!ENTITY lookGroupboxLabel "Styl">
-<!ENTITY defaultLookLabel "Styl CardBooku (modrý)">
-<!ENTITY defaultLookAccesskey "C">
 
 <!ENTITY syncGroupboxLabel "Synch.">
 <!ENTITY syncWarn "Synchronizace zajistí odeslání vašich úprav na server a úprav na serveru k vám.">
@@ -120,6 +128,9 @@
 <!ENTITY requestsTimeoutAccesskey "L">
 <!ENTITY multigetLabel "Velikost skupiny při GET požadavcích">
 <!ENTITY multigetAccesskey "V">
+<!ENTITY advancedSyncGroupboxLabel "Pokročilé vlastnosti">
+<!ENTITY decodeReportLabel "Dekódovat URL pro REPORT požadavky">
+<!ENTITY decodeReportAccesskey "D">
 
 <!ENTITY miscEmailGroupboxLabel "Posílání e-mailů">
 <!ENTITY preferEmailPrefLabel "Upřednostnit e-mailové adresy označené jako PREFerované">

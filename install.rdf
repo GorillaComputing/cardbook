@@ -6,7 +6,7 @@
 	<Description about="urn:mozilla:install-manifest">
 		<em:id>cardbook@vigneau.philippe</em:id>
 		<em:name>CardBook</em:name>
-		<em:version>15.1</em:version>
+		<em:version>16.2</em:version>
 		<em:type>2</em:type>
 		<em:description>vCard Addressbook</em:description>
 		<em:creator>Philippe VIGNEAU</em:creator>
@@ -40,6 +40,19 @@
 				<em:locale>en-US</em:locale>
 				<em:name>CardBook</em:name>
 				<em:description>vCard address book</em:description>
+				<em:contributor>Alexander BERGMANN</em:contributor>
+				<em:contributor>Timothe LITT</em:contributor>
+				<em:contributor>R. Kent JAMES</em:contributor>
+				<em:contributor>Lukáš TYRYCHTR</em:contributor>
+				<em:contributor>Boris PRÜSSMANN</em:contributor>
+				<em:contributor>Christoph MAIR</em:contributor>
+				<em:translator>Timothe LITT (en-US)</em:translator>
+				<em:translator>Philippe VIGNEAU (fr)</em:translator>
+				<em:translator>Oliver SCHUPPE/Markus MAUERER/Alexander BERGMANN (de)</em:translator>
+				<em:translator>André BAÇÃO (pt-PT)</em:translator>
+				<em:translator>Lukáš TYRYCHTR (cs)</em:translator>
+				<em:translator>Han KNOLS (nl)</em:translator>
+				<em:translator>Agnese MORETTINI (it)</em:translator>
 			</Description>
 		</em:localized>
 		
@@ -48,6 +61,19 @@
 				<em:locale>fr</em:locale>
 				<em:name>CardBook</em:name>
 				<em:description>Carnet d'adresses vCard</em:description>
+				<em:contributor>Alexander BERGMANN</em:contributor>
+				<em:contributor>Timothe LITT</em:contributor>
+				<em:contributor>R. Kent JAMES</em:contributor>
+				<em:contributor>Lukáš TYRYCHTR</em:contributor>
+				<em:contributor>Boris PRÜSSMANN</em:contributor>
+				<em:contributor>Christoph MAIR</em:contributor>
+				<em:translator>Timothe LITT (en-US)</em:translator>
+				<em:translator>Philippe VIGNEAU (fr)</em:translator>
+				<em:translator>Oliver SCHUPPE/Markus MAUERER/Alexander BERGMANN (de)</em:translator>
+				<em:translator>André BAÇÃO (pt-PT)</em:translator>
+				<em:translator>Lukáš TYRYCHTR (cs)</em:translator>
+				<em:translator>Han KNOLS (nl)</em:translator>
+				<em:translator>Agnese MORETTINI (it)</em:translator>
 			</Description>
 		</em:localized>
 		
@@ -56,6 +82,19 @@
 				<em:locale>de</em:locale>
 				<em:name>CardBook</em:name>
 				<em:description>vCard Adressbuch</em:description>
+				<em:contributor>Alexander BERGMANN</em:contributor>
+				<em:contributor>Timothe LITT</em:contributor>
+				<em:contributor>R. Kent JAMES</em:contributor>
+				<em:contributor>Lukáš TYRYCHTR</em:contributor>
+				<em:contributor>Boris PRÜSSMANN</em:contributor>
+				<em:contributor>Christoph MAIR</em:contributor>
+				<em:translator>Timothe LITT (en-US)</em:translator>
+				<em:translator>Philippe VIGNEAU (fr)</em:translator>
+				<em:translator>Oliver SCHUPPE/Markus MAUERER/Alexander BERGMANN (de)</em:translator>
+				<em:translator>André BAÇÃO (pt-PT)</em:translator>
+				<em:translator>Lukáš TYRYCHTR (cs)</em:translator>
+				<em:translator>Han KNOLS (nl)</em:translator>
+				<em:translator>Agnese MORETTINI (it)</em:translator>
 			</Description>
 		</em:localized>
 		
@@ -64,6 +103,19 @@
 				<em:locale>pt-PT</em:locale>
 				<em:name>CardBook</em:name>
 				<em:description>Agenda vCard</em:description>
+				<em:contributor>Alexander BERGMANN</em:contributor>
+				<em:contributor>Timothe LITT</em:contributor>
+				<em:contributor>R. Kent JAMES</em:contributor>
+				<em:contributor>Lukáš TYRYCHTR</em:contributor>
+				<em:contributor>Boris PRÜSSMANN</em:contributor>
+				<em:contributor>Christoph MAIR</em:contributor>
+				<em:translator>Timothe LITT (en-US)</em:translator>
+				<em:translator>Philippe VIGNEAU (fr)</em:translator>
+				<em:translator>Oliver SCHUPPE/Markus MAUERER/Alexander BERGMANN (de)</em:translator>
+				<em:translator>André BAÇÃO (pt-PT)</em:translator>
+				<em:translator>Lukáš TYRYCHTR (cs)</em:translator>
+				<em:translator>Han KNOLS (nl)</em:translator>
+				<em:translator>Agnese MORETTINI (it)</em:translator>
 			</Description>
 		</em:localized>
 		
@@ -72,6 +124,19 @@
 				<em:locale>cs</em:locale>
 				<em:name>CardBook</em:name>
 				<em:description>Adresář vCard</em:description>
+				<em:contributor>Alexander BERGMANN</em:contributor>
+				<em:contributor>Timothe LITT</em:contributor>
+				<em:contributor>R. Kent JAMES</em:contributor>
+				<em:contributor>Lukáš TYRYCHTR</em:contributor>
+				<em:contributor>Boris PRÜSSMANN</em:contributor>
+				<em:contributor>Christoph MAIR</em:contributor>
+				<em:translator>Timothe LITT (en-US)</em:translator>
+				<em:translator>Philippe VIGNEAU (fr)</em:translator>
+				<em:translator>Oliver SCHUPPE/Markus MAUERER/Alexander BERGMANN (de)</em:translator>
+				<em:translator>André BAÇÃO (pt-PT)</em:translator>
+				<em:translator>Lukáš TYRYCHTR (cs)</em:translator>
+				<em:translator>Han KNOLS (nl)</em:translator>
+				<em:translator>Agnese MORETTINI (it)</em:translator>
 			</Description>
 		</em:localized>
 		
@@ -80,6 +145,19 @@
 				<em:locale>nl</em:locale>
 				<em:name>CardBook</em:name>
 				<em:description>vCard adresboek</em:description>
+				<em:contributor>Alexander BERGMANN</em:contributor>
+				<em:contributor>Timothe LITT</em:contributor>
+				<em:contributor>R. Kent JAMES</em:contributor>
+				<em:contributor>Lukáš TYRYCHTR</em:contributor>
+				<em:contributor>Boris PRÜSSMANN</em:contributor>
+				<em:contributor>Christoph MAIR</em:contributor>
+				<em:translator>Timothe LITT (en-US)</em:translator>
+				<em:translator>Philippe VIGNEAU (fr)</em:translator>
+				<em:translator>Oliver SCHUPPE/Markus MAUERER/Alexander BERGMANN (de)</em:translator>
+				<em:translator>André BAÇÃO (pt-PT)</em:translator>
+				<em:translator>Lukáš TYRYCHTR (cs)</em:translator>
+				<em:translator>Han KNOLS (nl)</em:translator>
+				<em:translator>Agnese MORETTINI (it)</em:translator>
 			</Description>
 		</em:localized>
 		
@@ -88,6 +166,19 @@
 				<em:locale>it</em:locale>
 				<em:name>CardBook</em:name>
 				<em:description>Rubrica vCard</em:description>
+				<em:contributor>Alexander BERGMANN</em:contributor>
+				<em:contributor>Timothe LITT</em:contributor>
+				<em:contributor>R. Kent JAMES</em:contributor>
+				<em:contributor>Lukáš TYRYCHTR</em:contributor>
+				<em:contributor>Boris PRÜSSMANN</em:contributor>
+				<em:contributor>Christoph MAIR</em:contributor>
+				<em:translator>Timothe LITT (en-US)</em:translator>
+				<em:translator>Philippe VIGNEAU (fr)</em:translator>
+				<em:translator>Oliver SCHUPPE/Markus MAUERER/Alexander BERGMANN (de)</em:translator>
+				<em:translator>André BAÇÃO (pt-PT)</em:translator>
+				<em:translator>Lukáš TYRYCHTR (cs)</em:translator>
+				<em:translator>Han KNOLS (nl)</em:translator>
+				<em:translator>Agnese MORETTINI (it)</em:translator>
 			</Description>
 		</em:localized>
 		

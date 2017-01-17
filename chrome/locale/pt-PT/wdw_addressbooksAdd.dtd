@@ -8,6 +8,7 @@
 <!ENTITY initialpage.description "A agenda é local ou remota?">
 <!ENTITY initialpage.computer.label "Local">
 <!ENTITY initialpage.network.label "Remota">
+<!ENTITY initialpage.search.label "Procurar em agendas existentes">
 
 <!ENTITY locationComputerPage.wizard.description "Tipo e localização de nova agenda local.">
 <!ENTITY locationComputerPage.type.description "Qual o tipo de agenda local?">
@@ -33,6 +34,9 @@
 <!ENTITY locationNetworkPage.uri.label "URL">
 <!ENTITY locationNetworkPage.credentials.description "Coloque as credenciais de acesso à agenda. Para a agenda da Google, o username deverá ser o seu email Google.">
 <!ENTITY locationNetworkPage.validatebutton.label "Validar">
+
+<!ENTITY locationSearchPage.wizard.description "Definição da pesquisa avançada.">
+<!ENTITY locationSearchPage.label "Procura avançada">
 
 <!ENTITY googleOauthPage.wizard.description "Autenticação Google">
 

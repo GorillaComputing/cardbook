@@ -8,6 +8,7 @@
 <!ENTITY initialpage.description "Ist das Adressbuch lokal oder im Netzwerk gespeichert?">
 <!ENTITY initialpage.computer.label "Lokal">
 <!ENTITY initialpage.network.label "Im Netzwerk">
+<!ENTITY initialpage.search.label "Suche in einem existierenden Adressbuch">
 
 <!ENTITY locationComputerPage.wizard.description "Art und Ort des neuen lokalen Adressbuchs.">
 <!ENTITY locationComputerPage.type.description "Welcher Art ist das lokale Adressbuch?">
@@ -33,6 +34,9 @@
 <!ENTITY locationNetworkPage.uri.label "URL">
 <!ENTITY locationNetworkPage.credentials.description "Zugangsdaten für das Adressbuch. Für Google-Adressbücher sollte der Benutzername der Email-Adresse entsprechen.">
 <!ENTITY locationNetworkPage.validatebutton.label "Überprüfen">
+
+<!ENTITY locationSearchPage.wizard.description "Die erweiterte Suche definieren.">
+<!ENTITY locationSearchPage.label "Erweiterte Suche">
 
 <!ENTITY googleOauthPage.wizard.description "Google-Authentifizierung">
 

@@ -3,9 +3,9 @@
 <!ENTITY generalTabLabel "Algemeen">
 <!ENTITY editionTabLabel "Bewerken">
 <!ENTITY typesTabLabel "Types">
+<!ENTITY IMPPsTabLabel "Instant Messenger adressen">
 <!ENTITY customFieldsTabLabel "Eigen rubrieken">
 <!ENTITY listsTabLabel "Lijsten">
-<!ENTITY lookTabLabel "Interface">
 <!ENTITY syncTabLabel "Synchroniseren">
 <!ENTITY emailTabLabel "Email">
 <!ENTITY birthdaylistTabLabel "Geboortedata">
@@ -82,6 +82,18 @@
 <!ENTITY preferenceValueLabel "Naam van de rubriek 'Voorkeur' (uitsluitend voor vCard 4.0)">
 <!ENTITY preferenceValueAccesskey "R">
 
+<!ENTITY IMPPGroupboxWarn "Deze instelling opent een IM-adres met gebruikmaking van het protocol.">
+<!ENTITY IMPPGroupboxLabel "Instant Messenger adressen">
+<!ENTITY IMPPCodeLabel "Code">
+<!ENTITY IMPPLabelLabel "Naam">
+<!ENTITY IMPPProtocolLabel "Protocol">
+<!ENTITY addIMPPLabel "Toevoegen">
+<!ENTITY addIMPPAccesskey "T">
+<!ENTITY renameIMPPLabel "Bewerken">
+<!ENTITY renameIMPPAccesskey "B">
+<!ENTITY deleteIMPPLabel "Verwijderen">
+<!ENTITY deleteIMPPAccesskey "V">
+
 <!ENTITY customFieldsPanelLabel "Definieer eigen rubrieken">
 <!ENTITY customFieldName "Rubriek naam">
 <!ENTITY customFieldLabel "Rubriek label">
@@ -94,10 +106,6 @@
 <!ENTITY kindCustomAccesskey "S">
 <!ENTITY memberCustomLabel "Lid">
 <!ENTITY memberCustomAccesskey "L">
-
-<!ENTITY lookGroupboxLabel "Stijl">
-<!ENTITY defaultLookLabel "CardBook stijl (blauw)">
-<!ENTITY defaultLookAccesskey "C">
 
 <!ENTITY syncGroupboxLabel "Voorrang">
 <!ENTITY syncWarn "Synchroniseren werkt de wijzigingen in CardBook bij naar de server en de wijzigingen op de server naar CardBook.">
@@ -120,6 +128,9 @@
 <!ENTITY requestsTimeoutAccesskey "T">
 <!ENTITY multigetLabel "Bij het ophalen van gegevens, groeperen op">
 <!ENTITY multigetAccesskey "G">
+<!ENTITY advancedSyncGroupboxLabel "Geavanceerde instellingen">
+<!ENTITY decodeReportLabel "URL's ontcijferen voor rapportage-verzoeken">
+<!ENTITY decodeReportAccesskey "O">
 
 <!ENTITY miscEmailGroupboxLabel "Versturen emails">
 <!ENTITY preferEmailPrefLabel "Voorkeur voor email adressen die als 'PREF' gemarkeerd zijn">

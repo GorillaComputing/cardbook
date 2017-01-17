@@ -3,9 +3,9 @@
 <!ENTITY generalTabLabel "General">
 <!ENTITY editionTabLabel "Editing">
 <!ENTITY typesTabLabel "Types">
+<!ENTITY IMPPsTabLabel "Internet Communications">
 <!ENTITY customFieldsTabLabel "Custom Fields">
 <!ENTITY listsTabLabel "Lists">
-<!ENTITY lookTabLabel "Look">
 <!ENTITY syncTabLabel "Sync.">
 <!ENTITY emailTabLabel "Email">
 <!ENTITY birthdaylistTabLabel "Birthdays">
@@ -82,6 +82,18 @@
 <!ENTITY preferenceValueLabel "Label of the PREF value field (only for vCard 4.0)">
 <!ENTITY preferenceValueAccesskey "V">
 
+<!ENTITY IMPPGroupboxWarn "This setup allows Internet communications using the intended protocol.">
+<!ENTITY IMPPGroupboxLabel "Internet Communications">
+<!ENTITY IMPPCodeLabel "Code">
+<!ENTITY IMPPLabelLabel "Label">
+<!ENTITY IMPPProtocolLabel "Protocol">
+<!ENTITY addIMPPLabel "Add">
+<!ENTITY addIMPPAccesskey "A">
+<!ENTITY renameIMPPLabel "Edit">
+<!ENTITY renameIMPPAccesskey "E">
+<!ENTITY deleteIMPPLabel "Delete">
+<!ENTITY deleteIMPPAccesskey "D">
+
 <!ENTITY customFieldsPanelLabel "Define your own custom fields.">
 <!ENTITY customFieldName "Field Name">
 <!ENTITY customFieldLabel "Field Label">
@@ -94,10 +106,6 @@
 <!ENTITY kindCustomAccesskey "K">
 <!ENTITY memberCustomLabel "Member">
 <!ENTITY memberCustomAccesskey "M">
-
-<!ENTITY lookGroupboxLabel "Style">
-<!ENTITY defaultLookLabel "CardBook style (blue)">
-<!ENTITY defaultLookAccesskey "C">
 
 <!ENTITY syncGroupboxLabel "Sync.">
 <!ENTITY syncWarn "Synchronizing propagates your modifications to a remote server and the server's modifications to you.">
@@ -120,6 +128,9 @@
 <!ENTITY requestsTimeoutAccesskey "T">
 <!ENTITY multigetLabel "For GET requests, group contacts by">
 <!ENTITY multigetAccesskey "G">
+<!ENTITY advancedSyncGroupboxLabel "Advanced Properties">
+<!ENTITY decodeReportLabel "Decode URLs for REPORT requests">
+<!ENTITY decodeReportAccesskey "D">
 
 <!ENTITY miscEmailGroupboxLabel "Sending Emails">
 <!ENTITY preferEmailPrefLabel "Prefer email addresses marked PREFerred">

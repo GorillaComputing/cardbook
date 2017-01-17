@@ -25,7 +25,7 @@ if ("undefined" == typeof(ovl_collected)) {
 								if (!cardbookRepository.isEmailRegistered(addresses.value[j])) {
 									for (var k = 0; k < emailsCollectionList.length; k++) {
 										var dirPrefIdName = cardbookUtils.getPrefNameFromPrefId(emailsCollectionList[k]);
-										wdw_cardbooklog.updateStatusProgressInformationWithDebug2(dirPrefIdName + " : debug mode : trying to collect contact " + names.value[j]);
+										wdw_cardbooklog.updateStatusProgressInformationWithDebug2(dirPrefIdName + " : debug mode : trying to collect contact " + addresses.value[j]);
 										cardbookRepository.addCardFromDisplayAndEmail(emailsCollectionList[k], names.value[j], addresses.value[j]);
 									}
 								}

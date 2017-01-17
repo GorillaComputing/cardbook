@@ -26,6 +26,11 @@
 		</broadcasterset>
 	</window>
 
+	<!-- horrible hack to have the CardBookKey defined -->
+	<keyset id="viewZoomKeys">
+		<key id="CardBookKey" key="&cardbookMenuItemAccesskey;" modifiers="accel, shift" oncommand="ovl_cardbook.open();"/>
+	</keyset>
+
 	<menupopup id="view_layout_popup">
 		<menuitem id="cardbookABPaneItem"
 			type="checkbox"
@@ -40,14 +45,16 @@
 	</menupopup>
 	<menupopup id="taskPopup">
 		<menuitem id="cardbookMenuItem"
-			label="&cardbookMenuItemLabel;"
+			label="&cardbookMenuItemLabel;" accesskey="&cardbookMenuItemAccesskey;"
+			key="CardBookKey"
 			tooltiptext="&cardbookMenuItemTooltip;"
 			oncommand="ovl_cardbook.open()"
 			insertafter="addressBook"/>
 	</menupopup>
 	<menupopup id="appmenu_taskPopup">
 		<menuitem id="cardbookAppMenuItem"
-			label="&cardbookMenuItemLabel;"
+			label="&cardbookMenuItemLabel;" accesskey="&cardbookMenuItemAccesskey;"
+			key="CardBookKey"
 			tooltiptext="&cardbookMenuItemTooltip;"
 			oncommand="ovl_cardbook.open()"
 			insertafter="appmenu_addressBook"/>
@@ -78,11 +85,15 @@
 
 	<menupopup id="emailAddressPopup" onpopupshowing="setupEmailAddressPopup(findEmailNodeFromPopupNode(document.popupNode, 'emailAddressPopup'));
 														goUpdateCommand('cmd_createFilterFromPopup')">
-		<menu id="addToCardBookMenu" label="&addToCardBookMenuLabel;" insertbefore="addToAddressBookItem">
+		<menu id="addToCardBookMenu" label="&addToCardBookMenuLabel;" accesskey="&addToCardBookMenuAccesskey;" insertbefore="addToAddressBookItem">
 			<menupopup id="addToCardBookMenuPopup" onpopupshowing="cardbookUtils.addToCardBookMenuSubMenu(this.id, ovl_cardbookMailContacts.addToCardBook)"/>
 		</menu>
-		<menuitem id="editInCardBookMenu" label="&editInCardBookMenuLabel;" insertbefore="editContactItem" onclick="ovl_cardbookMailContacts.editOrViewContact();"/>
+		<menuitem id="editInCardBookMenu" label="&editInCardBookMenuLabel;" accesskey="&editInCardBookMenuAccesskey;" insertbefore="editContactItem" onclick="ovl_cardbookMailContacts.editOrViewContact();"/>
+		<menuseparator id="IMPPSeparator" insertafter="copyNameAndEmailAddressItem"/>
+		<menu id="IMPPCards" label="&IMPPMenuLabel;" accesskey="&IMPPMenuAccesskey;" insertafter="IMPPSeparator">
+			<menupopup id="IMPPCardsMenuPopup"/>
+		</menu>
 	</menupopup>
 
-	<statusbarpanel id="totalMessageCount" onclick="wdw_cardbook.openLogEdition();" tooltiptext="&statusProgressInformationTooltip;"/>
+	<statusbarpanel id="totalMessageCount" onclick="wdw_cardbook.openLogEdition();"/>
 </overlay>

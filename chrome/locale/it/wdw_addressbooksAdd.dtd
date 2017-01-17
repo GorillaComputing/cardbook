@@ -8,6 +8,7 @@
 <!ENTITY initialpage.description "La tua rubrica è locale (situata nel tuo computer) o remota?">
 <!ENTITY initialpage.computer.label "Locale">
 <!ENTITY initialpage.network.label "Remota">
+<!ENTITY initialpage.search.label "Ricerca nelle rubriche esistenti">
 
 <!ENTITY locationComputerPage.wizard.description "Tipo e percorso della nuova rubrica locale.">
 <!ENTITY locationComputerPage.type.description "Di che tipo è la tua rubrica locale?">
@@ -33,6 +34,9 @@
 <!ENTITY locationNetworkPage.uri.label "URL">
 <!ENTITY locationNetworkPage.credentials.description "Inserire le credenziali di accesso alla tua rubrica. Per rubriche Google, il nome utente corrisponde alla tua email su Google.">
 <!ENTITY locationNetworkPage.validatebutton.label "Conferma">
+
+<!ENTITY locationSearchPage.wizard.description "Definizione della ricerca avanzata.">
+<!ENTITY locationSearchPage.label "Ricerca avanzata">
 
 <!ENTITY googleOauthPage.wizard.description "Autenticazione Google">
 

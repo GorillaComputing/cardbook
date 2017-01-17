@@ -3,9 +3,9 @@
 <!ENTITY generalTabLabel "Geral">
 <!ENTITY editionTabLabel "Edição">
 <!ENTITY typesTabLabel "Tipos">
+<!ENTITY IMPPsTabLabel "Endereços de mensagem instantanea">
 <!ENTITY customFieldsTabLabel "Campos customizaveis">
 <!ENTITY listsTabLabel "Listas">
-<!ENTITY lookTabLabel "Aspecto">
 <!ENTITY syncTabLabel "Sinc.">
 <!ENTITY emailTabLabel "Email">
 <!ENTITY birthdaylistTabLabel "Aniversário">
@@ -82,6 +82,18 @@
 <!ENTITY preferenceValueLabel "Etiqueta do campo PREFerido (só para vCard 4.0)">
 <!ENTITY preferenceValueAccesskey "Q">
 
+<!ENTITY IMPPGroupboxWarn "Esta configuração permite abrir uma mensagem instantanea usando o protocolo seleccionado.">
+<!ENTITY IMPPGroupboxLabel "Endereços de mensagem instantanea">
+<!ENTITY IMPPCodeLabel "Codigo">
+<!ENTITY IMPPLabelLabel "Etiqueta">
+<!ENTITY IMPPProtocolLabel "Protocolo">
+<!ENTITY addIMPPLabel "Adicionar">
+<!ENTITY addIMPPAccesskey "A">
+<!ENTITY renameIMPPLabel "Editar">
+<!ENTITY renameIMPPAccesskey "E">
+<!ENTITY deleteIMPPLabel "Apagar">
+<!ENTITY deleteIMPPAccesskey "G">
+
 <!ENTITY customFieldsPanelLabel "Definição de campos customizaveis.">
 <!ENTITY customFieldName "Nome do campo">
 <!ENTITY customFieldLabel "Etiqueta do campo">
@@ -94,10 +106,6 @@
 <!ENTITY kindCustomAccesskey "K">
 <!ENTITY memberCustomLabel "Membro">
 <!ENTITY memberCustomAccesskey "M">
-
-<!ENTITY lookGroupboxLabel "Estilo">
-<!ENTITY defaultLookLabel "Estilo CardBook (azul)">
-<!ENTITY defaultLookAccesskey "C">
 
 <!ENTITY syncGroupboxLabel "Sinc.">
 <!ENTITY syncWarn "A Sincronização vai propagar as modificações para o servidor remoto e as modificações do servidor remoto para local.">
@@ -120,6 +128,9 @@
 <!ENTITY requestsTimeoutAccesskey "T">
 <!ENTITY multigetLabel "Para pedidos GET, agrupar cartões por">
 <!ENTITY multigetAccesskey "G">
+<!ENTITY advancedSyncGroupboxLabel "Propriedades avançadas">
+<!ENTITY decodeReportLabel "Descodificar URLs para pedidos de relatório">
+<!ENTITY decodeReportAccesskey "D">
 
 <!ENTITY miscEmailGroupboxLabel "Envio de emails">
 <!ENTITY preferEmailPrefLabel "Preferir emails marcados como PREFeridos">

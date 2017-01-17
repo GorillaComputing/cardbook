@@ -63,6 +63,7 @@ function cardbookWebDAV(connection, target, etag, asJSON) {
 	this.password = "";
 	this.accessToken = connection.accessToken;
 	this.reportLength = 0;
+	this.askCertificate = false;
 }
 
 cardbookWebDAV.prototype = {
@@ -103,6 +104,159 @@ cardbookWebDAV.prototype = {
 		}
 	},
 
+	_createTCPErrorFromFailedChannel: function (aChannel) {
+		let status = aChannel.channel.QueryInterface(Components.interfaces.nsIRequest).status;
+		let errType;
+		
+		if ((status & 0xff0000) === 0x5a0000) { // Security module
+			const nsINSSErrorsService = Components.interfaces.nsINSSErrorsService;
+			let nssErrorsService = Components.classes['@mozilla.org/nss_errors_service;1'].getService(nsINSSErrorsService);
+			let errorClass;
+			
+			// getErrorClass will throw a generic NS_ERROR_FAILURE if the error code is
+			// somehow not in the set of covered errors.
+			try {
+				errorClass = nssErrorsService.getErrorClass(status);
+			} catch (ex) {
+				//catching security protocol exception
+				errorClass = 'SecurityProtocol';
+			}
+			
+			if (errorClass == nsINSSErrorsService.ERROR_CLASS_BAD_CERT) {
+				errType = 'SecurityCertificate';
+			} else {
+				errType = 'SecurityProtocol';
+			}
+			
+			// NSS_SEC errors (happen below the base value because of negative vals)
+			if ((status & 0xffff) < Math.abs(nsINSSErrorsService.NSS_SEC_ERROR_BASE)) {
+				this.askCertificate = true;
+				// The bases are actually negative, so in our positive numeric space, we
+				// need to subtract the base off our value.
+				let nssErr = Math.abs(nsINSSErrorsService.NSS_SEC_ERROR_BASE) - (status & 0xffff);
+				
+				switch (nssErr) {
+					case 11: // SEC_ERROR_EXPIRED_CERTIFICATE, sec(11)
+						errName = 'SecurityExpiredCertificateError';
+						break;
+					case 12: // SEC_ERROR_REVOKED_CERTIFICATE, sec(12)
+						errName = 'SecurityRevokedCertificateError';
+						break;
+					// per bsmith, we will be unable to tell these errors apart very soon,
+					// so it makes sense to just folder them all together already.
+					case 13: // SEC_ERROR_UNKNOWN_ISSUER, sec(13)
+					case 20: // SEC_ERROR_UNTRUSTED_ISSUER, sec(20)
+					case 21: // SEC_ERROR_UNTRUSTED_CERT, sec(21)
+					case 36: // SEC_ERROR_CA_CERT_INVALID, sec(36)
+						errName = 'SecurityUntrustedCertificateIssuerError';
+						break;
+					case 90: // SEC_ERROR_INADEQUATE_KEY_USAGE, sec(90)
+						errName = 'SecurityInadequateKeyUsageError';
+						break;
+					case 176: // SEC_ERROR_CERT_SIGNATURE_ALGORITHM_DISABLED, sec(176)
+						errName = 'SecurityCertificateSignatureAlgorithmDisabledError';
+						break;
+					default:
+						errName = 'SecurityError';
+						break;
+				}
+			} else {
+				// Calculating the difference 
+				let sslErr = Math.abs(nsINSSErrorsService.NSS_SSL_ERROR_BASE) - (status & 0xffff);
+				switch (sslErr) {
+					case 3: // SSL_ERROR_NO_CERTIFICATE, ssl(3)
+						errName = 'SecurityNoCertificateError';
+						break;
+					case 4: // SSL_ERROR_BAD_CERTIFICATE, ssl(4)
+						errName = 'SecurityBadCertificateError';
+						break;
+					case 8: // SSL_ERROR_UNSUPPORTED_CERTIFICATE_TYPE, ssl(8)
+						errName = 'SecurityUnsupportedCertificateTypeError';
+						break;
+					case 9: // SSL_ERROR_UNSUPPORTED_VERSION, ssl(9)
+						errName = 'SecurityUnsupportedTLSVersionError';
+						break;
+					case 12: // SSL_ERROR_BAD_CERT_DOMAIN, ssl(12)
+						errName = 'SecurityCertificateDomainMismatchError';
+						break;
+					default:
+						errName = 'SecurityError';
+						break;
+				}
+			}
+		} else {
+			errType = 'Network';
+			switch (status) {
+				// connect to host:port failed
+				case 0x804B000C: // NS_ERROR_CONNECTION_REFUSED, network(13)
+					errName = 'ConnectionRefusedError';
+					break;
+				// network timeout error
+				case 0x804B000E: // NS_ERROR_NET_TIMEOUT, network(14)
+					errName = 'NetworkTimeoutError';
+					break;
+				// hostname lookup failed
+				case 0x804B001E: // NS_ERROR_UNKNOWN_HOST, network(30)
+					errName = 'DomainNotFoundError';
+					break;
+				case 0x804B0047: // NS_ERROR_NET_INTERRUPT, network(71)
+					errName = 'NetworkInterruptError';
+					break;
+				default:
+					errName = 'NetworkError';
+					break;
+			}
+		}
+		
+		wdw_cardbooklog.updateStatusProgressInformationWithDebug2(this.logDescription + " : debug mode : Connection status : Failed : " + errName);
+		this._dumpSecurityInfo(aChannel);
+		// XXX: errType goes unused
+	},
+
+	_dumpSecurityInfo: function (aChannel) {
+		let channel = aChannel.channel;
+		try {
+			let secInfo = channel.securityInfo;
+			
+			// Print general connection security state
+			wdw_cardbooklog.updateStatusProgressInformationWithDebug2(this.logDescription + " : debug mode : Security Information :");
+			if (secInfo instanceof Components.interfaces.nsITransportSecurityInfo) {
+				secInfo.QueryInterface(Components.interfaces.nsITransportSecurityInfo);
+				wdw_cardbooklog.updateStatusProgressInformationWithDebug2(this.logDescription + " : debug mode : Security state of connection :");
+				
+				// Check security state flags
+				if ((secInfo.securityState & Components.interfaces.nsIWebProgressListener.STATE_IS_SECURE) == Components.interfaces.nsIWebProgressListener.STATE_IS_SECURE) {
+					wdw_cardbooklog.updateStatusProgressInformationWithDebug2(this.logDescription + " : debug mode : Secure connection");
+				} else if ((secInfo.securityState & Components.interfaces.nsIWebProgressListener.STATE_IS_INSECURE) == Components.interfaces.nsIWebProgressListener.STATE_IS_INSECURE) {
+					wdw_cardbooklog.updateStatusProgressInformationWithDebug2(this.logDescription + " : debug mode : Insecure connection");
+				} else if ((secInfo.securityState & Components.interfaces.nsIWebProgressListener.STATE_IS_BROKEN) == Components.interfaces.nsIWebProgressListener.STATE_IS_BROKEN) {
+					wdw_cardbooklog.updateStatusProgressInformationWithDebug2(this.logDescription + " : debug mode : Unknown");
+					wdw_cardbooklog.updateStatusProgressInformationWithDebug2(this.logDescription + " : debug mode : Security description : " + secInfo.shortSecurityDescription);
+					wdw_cardbooklog.updateStatusProgressInformationWithDebug2(this.logDescription + " : debug mode : Security error message : " + secInfo.errorMessage);
+				}
+			} else {
+				wdw_cardbooklog.updateStatusProgressInformationWithDebug2(this.logDescription + " : debug mode : No security info available for this channel");
+			}
+			
+			// Print SSL certificate details
+			if (secInfo instanceof Components.interfaces.nsISSLStatusProvider) {
+				var cert = secInfo.QueryInterface(Components.interfaces.nsISSLStatusProvider).SSLStatus.QueryInterface(Components.interfaces.nsISSLStatus).serverCert;
+				wdw_cardbooklog.updateStatusProgressInformationWithDebug2(this.logDescription + " : debug mode : Common name (CN) : " + cert.commonName);
+				wdw_cardbooklog.updateStatusProgressInformationWithDebug2(this.logDescription + " : debug mode : Issuer : " + cert.issuerOrganization);
+				wdw_cardbooklog.updateStatusProgressInformationWithDebug2(this.logDescription + " : debug mode : Organisation : " + cert.organization);
+				wdw_cardbooklog.updateStatusProgressInformationWithDebug2(this.logDescription + " : debug mode : SHA1 fingerprint : " + cert.sha1Fingerprint);
+				var validity = cert.validity.QueryInterface(Components.interfaces.nsIX509CertValidity);
+				wdw_cardbooklog.updateStatusProgressInformationWithDebug2(this.logDescription + " : debug mode : Valid from " + validity.notBeforeGMT);
+				wdw_cardbooklog.updateStatusProgressInformationWithDebug2(this.logDescription + " : debug mode : Valid until " + validity.notAfterGMT);
+			}
+		}
+		catch(e) {
+			var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+			var errorTitle = "_dumpSecurityInfo error";
+			prompts.alert(null, errorTitle, e);
+		}
+	},
+
     _sendHTTPRequest: function(method, body, headers, aOverrideMime) {
     	try {
 		let httpChannel = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
@@ -127,9 +281,11 @@ cardbookWebDAV.prototype = {
 
             let this_ = this;
 			httpChannel.onerror = function(aEvent) {
+				this_._createTCPErrorFromFailedChannel(httpChannel);
 				this_._handleHTTPResponse(httpChannel, aEvent.target.status, aEvent.target.responseText.length, aEvent.target.responseText);
 			};
 			httpChannel.ontimeout = function(aEvent) {
+				this_._createTCPErrorFromFailedChannel(httpChannel);
 				this_._handleHTTPResponse(httpChannel, 408, aEvent.target.responseText.length, aEvent.target.responseText);
 			};
 			httpChannel.onload = function(aEvent) {
@@ -197,7 +353,7 @@ cardbookWebDAV.prototype = {
 			}
 		}
 		if (this.target && this.target.onDAVQueryComplete) {
-			this.target.onDAVQueryComplete(status, response, aChannel.getResponseHeader("ETag"), this.reportLength);
+			this.target.onDAVQueryComplete(status, response, this.askCertificate, aChannel.getResponseHeader("ETag"), this.reportLength);
 		}
     },
 
@@ -283,7 +439,8 @@ cardbookWebDAV.prototype = {
 		let nsDict = { "DAV:": "D" };
 		let propPart = "";
 		let nsCount = 0;
-		for each (let prop in props) {
+		for (let property in props) {
+			let prop = props[property];
 			let propParts = prop.split(" ");
 			let ns = propParts[0];
 			let nsS = nsDict[ns];
@@ -315,12 +472,23 @@ cardbookWebDAV.prototype = {
 	},
 
 	_formatRelativeHref: function(aString) {
+		var decodeReport = true;
+		try {
+			var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+			decodeReport = prefs.getBoolPref("extensions.cardbook.decodeReport");
+		} catch (e) {
+			decodeReport = true;
+		}
 		var relative = aString.match("(https?)(://[^/]*)/([^#?]*)");
 		if (relative && relative[3]) {
 			var relativeHrefArray = [];
 			relativeHrefArray = relative[3].split("/");
 			for (var i = 0; i < relativeHrefArray.length; i++) {
-				relativeHrefArray[i] = decodeURIComponent(relativeHrefArray[i]);
+				if (decodeReport) {
+					relativeHrefArray[i] = decodeURIComponent(relativeHrefArray[i]);
+				} else {
+					relativeHrefArray[i] = encodeURIComponent(relativeHrefArray[i]);
+				}
 			}
 			return "/" + relativeHrefArray.join("/");
 		}

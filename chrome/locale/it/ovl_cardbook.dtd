@@ -1,4 +1,5 @@
 <!ENTITY cardbookMenuItemLabel "CardBook">
+<!ENTITY cardbookMenuItemAccesskey "c">
 <!ENTITY cardbookMenuItemTooltip "Vai a CardBook">
 
 <!ENTITY cardbookToolbarButtonLabel "CardBook">
@@ -8,12 +9,15 @@
 <!ENTITY cardbookTabButtonTooltip "Vai a CardBook">
 
 <!ENTITY addToCardBookMenuLabel "Aggiungi a CardBook">
+<!ENTITY addToCardBookMenuAccesskey "g">
 <!ENTITY editInCardBookMenuLabel "Modifica con CardBook">
+<!ENTITY editInCardBookMenuAccesskey "o">
+<!ENTITY IMPPMenuLabel "Collega">
+<!ENTITY IMPPMenuAccesskey "l">
 
 <!ENTITY addAllAttachementsToCardBookMenuLabel "Aggiungi TUTTI a CardBook">
 <!ENTITY addAttachementToCardBookMenuLabel "Aggiungi a CardBook">
 
-<!ENTITY statusProgressInformationTooltip "Clicca qui per visualizzare i registri">
 <!ENTITY cardbookABPaneItemLabel "Pannello Rubrica">
 <!ENTITY cardbookABPaneItemAccesskey "R">
 <!ENTITY cardbookContactPaneItemLabel "Pannello Contatto">

@@ -3,6 +3,7 @@ function cardbookPreferenceService(uniqueId) {
     this.prefCardBookRoot = "extensions.cardbook.";
     this.prefCardBookData = this.prefCardBookRoot + "data.";
     this.prefCardBookTypes = this.prefCardBookRoot + "types.";
+    this.prefCardBookIMPPs = this.prefCardBookRoot + "impps.";
     this.prefCardBookCustoms = this.prefCardBookRoot + "customs.";
     this.prefCardBookMailAccount = this.prefCardBookRoot + "mailAccount.";
     this.prefPath = this.prefCardBookData + uniqueId + ".";
@@ -94,7 +95,7 @@ cardbookPreferenceService.prototype = {
 
     insertImppSeedTypes: function () {
 		this.setTypes("impp",1,"HOME");
-		this.setTypes("impp",1,"WORK");
+		this.setTypes("impp",2,"WORK");
     },
 
     insertTelSeedTypes: function () {
@@ -107,6 +108,16 @@ cardbookPreferenceService.prototype = {
     insertUrlSeedTypes: function () {
 		this.setTypes("url",1,"HOME");
 		this.setTypes("url",2,"WORK");
+    },
+
+    insertIMPPsSeed: function () {
+		var stringBundleService = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
+		var strBundle = stringBundleService.createBundle("chrome://cardbook/locale/cardbook.properties");
+		this.setIMPPs(0,"skype:" + strBundle.GetStringFromName("impp.skype") + ":skype");
+		this.setIMPPs(1,"jabber:" + strBundle.GetStringFromName("impp.jabber") + ":xmpp");
+		this.setIMPPs(2,"googletalk:" + strBundle.GetStringFromName("impp.googletalk") + ":gtalk");
+		this.setIMPPs(3,"qq:" + strBundle.GetStringFromName("impp.qq") + ":qq");
+		this.setIMPPs(4,"yahoo:" + strBundle.GetStringFromName("impp.yahoo") + ":ymsgr");
     },
 
     getAllTypesCategory: function () {
@@ -230,6 +241,32 @@ cardbookPreferenceService.prototype = {
 		}
     },
 
+    getAllIMPPs: function () {
+		try {
+			var count = {};
+			var finalResult = [];
+			var finalResult1 = [];
+			var result = this.mPreferencesService.getChildList(this.prefCardBookIMPPs, count);
+			
+			for (let i = 0; i < result.length; i++) {
+				var prefName = result[i].replace(this.prefCardBookIMPPs, "");
+				finalResult.push(this.getIMPPs(prefName));
+			}
+			finalResult = this._arrayUnique(finalResult);
+			for (let i = 0; i < finalResult.length; i++) {
+				var tmpArray = finalResult[i].split(":");
+				finalResult1.push([tmpArray[0], tmpArray[1], tmpArray[2]]);
+			}
+			finalResult1 = finalResult1.sort(function(a,b) {
+				return a[1].localeCompare(b[1], 'en', {'sensitivity': 'base'});
+			});
+			return finalResult1;
+		}
+		catch(e) {
+			dump("cardbookPreferenceService.getAllIMPPs error : " + e + "\n");
+		}
+    },
+
     getAllCustoms: function () {
 		try {
 			let count = {};
@@ -308,6 +345,36 @@ cardbookPreferenceService.prototype = {
 		}
 		catch(e) {
 			dump("cardbookPreferenceService.delTypes : failed to delete" + this.prefCardBookTypes + aType + "\n" + e + "\n");
+		}
+    },
+
+    getIMPPs: function (prefName) {
+		try {
+			let value = this.mPreferencesService.getComplexValue(this.prefCardBookIMPPs + prefName, Components.interfaces.nsISupportsString).data;
+			return value;
+		}
+		catch(e) {
+			dump("cardbookPreferenceService.getIMPPs : failed to get" + this.prefCardBookIMPPs + prefName + "\n" + e + "\n");
+		}
+    },
+
+    setIMPPs: function (prefName, value) {
+		try {
+			var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+			str.data = value;
+			this.mPreferencesService.setComplexValue(this.prefCardBookIMPPs + prefName, Components.interfaces.nsISupportsString, str);
+		}
+		catch(e) {
+			dump("cardbookPreferenceService.setIMPPs : failed to set" + this.prefCardBookIMPPs + prefName + "\n" + e + "\n");
+		}
+    },
+
+    delIMPPs: function () {
+		try {
+			this.mPreferencesService.deleteBranch(this.prefCardBookIMPPs);
+		}
+		catch(e) {
+			dump("cardbookPreferenceService.delIMPPs : failed to delete" + this.prefCardBookIMPPs + "\n" + e + "\n");
 		}
     },
 
@@ -455,7 +522,7 @@ cardbookPreferenceService.prototype = {
     getUrl: function () {
         let url = this._getPref("url");
         let type = this._getPref("type");
-        if (type !== "FILE" && type !== "CACHE" && type !== "DIRECTORY") {
+        if (type !== "FILE" && type !== "CACHE" && type !== "DIRECTORY" && type !== "SEARCH") {
 			if (url) {
 				if (url[url.length - 1] != '/') {
 					url += '/';
@@ -529,16 +596,6 @@ cardbookPreferenceService.prototype = {
 
     setColor: function (color) {
         this._setPref("color", color);
-    },
-
-    getHideHeaders: function () {
-        let hideheaders = this._getBoolRootPref(this.prefCardBookRoot + "hideheaders");
-        if (hideheaders === true) return true;
-        else return false;
-    },
-
-    setHideHeaders: function (hideheaders) {
-        this._setBoolRootPref(this.prefCardBookRoot + "hideheaders", hideheaders);
     },
 
    getVCard: function () {

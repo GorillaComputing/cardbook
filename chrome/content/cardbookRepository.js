@@ -1,6 +1,8 @@
 var EXPORTED_SYMBOLS = ["cardbookRepository"];
 
 var cardbookRepository = {
+	LIGHTNING_ID : "{e2fda1a4-762b-4020-b5ad-a41df1933103}",
+	
 	allColumns : [ "fn", "prefixname", "firstname", "othername", "lastname", "suffixname", "nickname", "bday",
 					"gender", "org", "title", "role", "note", "version" ],
 	allArrayColumns : [ ["email", ["email"] ],
@@ -13,7 +15,8 @@ var cardbookRepository = {
 	cardbookAccountsCategories : {},
 	cardbookCards : {},
 	cardbookDisplayCards : {},
-	cardbookCardSearch : {},
+	cardbookCardSearch1 : {},
+	cardbookCardSearch2 : {},
 	cardbookCardEmails : {},
 	cardbookFileCacheCards : {},
 
@@ -85,11 +88,13 @@ var cardbookRepository = {
 
 	cardbookSearchMode : "NOSEARCH",
 	cardbookComplexSearchMode : "NOSEARCH",
+	cardbookComplexSearchAB : "allAddressBooks",
+	cardbookComplexMatchAll : true,
 	cardbookComplexRules : [],
-	cardbookComplexMatchAll : false,
 	cardbookSearchValue : "",
 
 	lTimerLoadCacheAll : {},
+	lTimerDirAll : {},
 	lTimerSyncAll : {},
 	lTimerImportAll : {},
 	lTimerNoSyncModeAll : {},
@@ -270,14 +275,11 @@ var cardbookRepository = {
 		if (notfound) {
 			cardbookPrefService.insertAdrSeedTypes();
 		}
-
-	},
-
-	purgeCache: function(aPrefId) {
-		var rootDir = cardbookRepository.getLocalDirectory();
-		rootDir.append(aPrefId);
-		if (rootDir.exists()) {
-			rootDir.remove(true);
+		// for file opened with version <= 15.3
+		var myIMPPs = [];
+		myIMPPs = cardbookPrefService.getAllIMPPs();
+		if (myIMPPs.length == 0) {
+			cardbookPrefService.insertIMPPsSeed();
 		}
 	},
 
@@ -297,23 +299,6 @@ var cardbookRepository = {
 		}
 		catch (e) {
 			return "";
-		}
-	},
-
-	setCache: function() {
-		// for file opened with version <= 5.2
-		var cardbookPrefService = new cardbookPreferenceService();
-		var result = [];
-		result = cardbookPrefService.getAllPrefIds();
-		for (let i = 0; i < result.length; i++) {
-			var cacheDir = cardbookRepository.getLocalDirectory();
-			cacheDir.append(result[i]);
-			if (cacheDir.exists() && cacheDir.isDirectory()) {
-				cacheDir.append("mediacache");
-				if (!(cacheDir.exists() && cacheDir.isDirectory())) {
-					cardbookRepository.purgeCache(result[i]);
-				}
-			}
 		}
 	},
 
@@ -355,23 +340,23 @@ var cardbookRepository = {
 		lResult = lResult + aCard.fn;
 		lResult = lResult + aCard.categories.join();
 		for (let i = 0; i < aCard.adr.length; i++) {
-			lResult = lResult + aCard.adr[i].join();
+			lResult = lResult + aCard.adr[i][0].join();
 		}
 		for (let i = 0; i < aCard.tel.length; i++) {
-			lResult = lResult + aCard.tel[i].join();
+			lResult = lResult + aCard.tel[i][0].join();
 		}
 		for (let i = 0; i < aCard.email.length; i++) {
-			lResult = lResult + aCard.email[i].join();
+			lResult = lResult + aCard.email[i][0].join();
 		}
 		lResult = lResult + aCard.title;
 		lResult = lResult + aCard.role;
 		lResult = lResult + aCard.org;
 		lResult = lResult + aCard.note;
 		for (let i = 0; i < aCard.url.length; i++) {
-			lResult = lResult + aCard.url[i].join();
+			lResult = lResult + aCard.url[i][0].join();
 		}
 		for (let i = 0; i < aCard.impp.length; i++) {
-			lResult = lResult + aCard.impp[i].join();
+			lResult = lResult + aCard.impp[i][0].join();
 		}
 		lResult = lResult.replace(/[\s+\-+\.+\,+\;+]/g, "").toUpperCase();
 		return lResult;
@@ -426,7 +411,7 @@ var cardbookRepository = {
 			cardbookPrefService.setReadOnly(aReadOnly);
 		}
 		
-		cardbookRepository.cardbookAccounts.push([aAccountName, true, aExpanded, true, aAccountId, aAccountType, aEnabled, aReadOnly]);
+		cardbookRepository.cardbookAccounts.push([aAccountName, true, aExpanded, true, aAccountId, aEnabled, aAccountType, aReadOnly]);
 		cardbookRepository.cardbookDisplayCards[aAccountId] = [];
 		cardbookRepository.cardbookAccountsCategories[aAccountId] = [];
 		cardbookUtils.formatStringForOutput("addressbookCreated", [aAccountName]);
@@ -805,6 +790,9 @@ var cardbookRepository = {
 							return (element.uid != aCard.uid);
 						}
 						cardbookRepository.cardbookDisplayCards[aCard.dirPrefId+"::"+aCard.categories[j]] = cardbookRepository.cardbookDisplayCards[aCard.dirPrefId+"::"+aCard.categories[j]].filter(searchCard);
+						if (cardbookRepository.cardbookDisplayCards[aCard.dirPrefId+"::"+aCard.categories[j]].length == 0) {
+							delete cardbookRepository.cardbookDisplayCards[aCard.dirPrefId+"::"+aCard.categories[j]];
+						}
 					}
 				}
 			} else {
@@ -868,6 +856,8 @@ var cardbookRepository = {
 		if (!(aDisplayName != null && aDisplayName !== undefined && aDisplayName != "")) {
 			if (!(aEmail != null && aEmail !== undefined && aEmail != "")) {
 				return;
+			} else {
+				aDisplayName = aEmail;
 			}
 		}
 		this.jsInclude(["chrome://cardbook/content/cardbookCardParser.js"]);
@@ -915,7 +905,7 @@ var cardbookRepository = {
 		if (aEmail != null && aEmail !== undefined && aEmail != "") {
 			var myTestString = aEmail.toLowerCase();
 			for (var i = 0; i < cardbookRepository.cardbookAccounts.length; i++) {
-				if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][6]) {
+				if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][5] && (cardbookRepository.cardbookAccounts[i][6] != "SEARCH")) {
 					var myDirPrefId = cardbookRepository.cardbookAccounts[i][4];
 					if (cardbookRepository.isEmailInPrefIdRegistered(myDirPrefId, aEmail)) {
 						return true;
@@ -941,24 +931,42 @@ var cardbookRepository = {
 	addCardToSearch: function(aCard) {
 		var myText = cardbookRepository.getSearchString(aCard);
 		if (myText != null && myText !== undefined && myText != "") {
-			if (!cardbookRepository.cardbookCardSearch[myText]) {
-				cardbookRepository.cardbookCardSearch[myText] = [];
+			if (!cardbookRepository.cardbookCardSearch1[myText]) {
+				cardbookRepository.cardbookCardSearch1[myText] = [];
 			}
-			cardbookRepository.cardbookCardSearch[myText].push(aCard);
+			cardbookRepository.cardbookCardSearch1[myText].push(aCard);
+			
+			if (!cardbookRepository.cardbookCardSearch2[aCard.dirPrefId]) {
+				cardbookRepository.cardbookCardSearch2[aCard.dirPrefId] = {};
+			}
+			if (!cardbookRepository.cardbookCardSearch2[aCard.dirPrefId][myText]) {
+				cardbookRepository.cardbookCardSearch2[aCard.dirPrefId][myText] = [];
+			}
+			cardbookRepository.cardbookCardSearch2[aCard.dirPrefId][myText].push(aCard);
 		}
 	},
 		
 	removeCardFromSearch: function(aCard) {
 		var myText = cardbookRepository.getSearchString(aCard);
 		if (myText != null && myText !== undefined && myText != "") {
-			if (cardbookRepository.cardbookCardSearch[myText]) {
-				if (cardbookRepository.cardbookCardSearch[myText].length == 1) {
-					delete cardbookRepository.cardbookCardSearch[myText];
+			if (cardbookRepository.cardbookCardSearch1[myText]) {
+				if (cardbookRepository.cardbookCardSearch1[myText].length == 1) {
+					delete cardbookRepository.cardbookCardSearch1[myText];
 				} else {
 					function searchCard(element) {
 						return (element.dirPrefId+"::"+element.uid != aCard.dirPrefId+"::"+aCard.uid);
 					}
-					cardbookRepository.cardbookCardSearch[myText] = cardbookRepository.cardbookCardSearch[myText].filter(searchCard);
+					cardbookRepository.cardbookCardSearch1[myText] = cardbookRepository.cardbookCardSearch1[myText].filter(searchCard);
+				}
+			}
+			if (cardbookRepository.cardbookCardSearch2[aCard.dirPrefId][myText]) {
+				if (cardbookRepository.cardbookCardSearch2[aCard.dirPrefId][myText].length == 1) {
+					delete cardbookRepository.cardbookCardSearch2[aCard.dirPrefId][myText];
+				} else {
+					function searchCard(element) {
+						return (element.dirPrefId+"::"+element.uid != aCard.dirPrefId+"::"+aCard.uid);
+					}
+					cardbookRepository.cardbookCardSearch2[aCard.dirPrefId][myText] = cardbookRepository.cardbookCardSearch2[aCard.dirPrefId][myText].filter(searchCard);
 				}
 			}
 		}
@@ -968,7 +976,7 @@ var cardbookRepository = {
 		var todo = 0;
 		var allRules = false;
 		for (var i = 0; i < cardbookRepository.cardbookAccounts.length; i++) {
-			if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][6]) {
+			if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][5] && (cardbookRepository.cardbookAccounts[i][6] != "SEARCH")) {
 				todo++;
 			}
 			if (todo >= 2) {
@@ -977,6 +985,13 @@ var cardbookRepository = {
 			}
 		}
 		return allRules;
+	},
+
+	getRuleFile: function (aPrefId) {
+		var cacheDir = cardbookRepository.getLocalDirectory();
+		cacheDir.append(aPrefId);
+		cacheDir.append(aPrefId + ".rul");
+		return cacheDir;
 	},
 
 	deleteCssAllRules: function (aStyleSheet) {
@@ -989,24 +1004,24 @@ var cardbookRepository = {
 	},
 
 	createCssAccountRules: function (aStyleSheet, aDirPrefId, aColor) {
-		var ruleString = ".cardbookTreeChildrenAccountClass treechildren::-moz-tree-cell(accountColor container color_" + aDirPrefId + ") {}";
+		var ruleString = ".cardbookAccountTreeClass treechildren::-moz-tree-cell(accountColor odd container color_" + aDirPrefId + ") {}";
+		var ruleIndex = aStyleSheet.insertRule(ruleString, aStyleSheet.cssRules.length);
+		aStyleSheet.cssRules[ruleIndex].style.backgroundColor = aColor;
+		cardbookRepository.cardbookDynamicCssRules[aStyleSheet.href].push(ruleIndex);
+		var ruleString = ".cardbookAccountTreeClass treechildren::-moz-tree-cell(accountColor even container color_" + aDirPrefId + ") {}";
 		var ruleIndex = aStyleSheet.insertRule(ruleString, aStyleSheet.cssRules.length);
 		aStyleSheet.cssRules[ruleIndex].style.backgroundColor = aColor;
 		cardbookRepository.cardbookDynamicCssRules[aStyleSheet.href].push(ruleIndex);
 	},
 
 	createCssCardRules: function (aStyleSheet, aDirPrefId, aColor) {
-		var ruleString = ".cardbookTreeChildrenCardsClass treechildren::-moz-tree-row(SEARCH color_" + aDirPrefId + ") {}";
+		var ruleString = ".cardbookCardsTreeClass treechildren::-moz-tree-row(SEARCH odd color_" + aDirPrefId + ") {}";
 		var ruleIndex = aStyleSheet.insertRule(ruleString, aStyleSheet.cssRules.length);
 		aStyleSheet.cssRules[ruleIndex].style.backgroundColor = aColor;
 		cardbookRepository.cardbookDynamicCssRules[aStyleSheet.href].push(ruleIndex);
-	},
-
-	createCssHeaderRules: function (aStyleSheet) {
-		var ruleString = ".cardbookTreeChildrenCardClass treecols {}";
+		var ruleString = ".cardbookCardsTreeClass treechildren::-moz-tree-row(SEARCH even color_" + aDirPrefId + ") {}";
 		var ruleIndex = aStyleSheet.insertRule(ruleString, aStyleSheet.cssRules.length);
-		aStyleSheet.cssRules[ruleIndex].style.height = "0px";
-		aStyleSheet.cssRules[ruleIndex].style.overflow = "hidden";
+		aStyleSheet.cssRules[ruleIndex].style.backgroundColor = aColor;
 		cardbookRepository.cardbookDynamicCssRules[aStyleSheet.href].push(ruleIndex);
 	},
 
@@ -1029,20 +1044,23 @@ var cardbookRepository = {
 		sss.loadAndRegisterSheet(uri, sss.AUTHOR_SHEET);
 	},
 
-	validateLook: function (aPrefValue) {
-		if (aPrefValue != null && aPrefValue !== undefined && aPrefValue != "") {
-			var myValue = aPrefValue;
-		} else {
-			var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-			var myValue = prefs.getBoolPref("extensions.cardbook.defaultLook");
-		}
-		if (myValue) {
-			cardbookRepository.unregisterCss("chrome://cardbook/skin/null.css");
-			cardbookRepository.reloadCss("chrome://cardbook/skin/blue.css");
-		} else {
-			cardbookRepository.unregisterCss("chrome://cardbook/skin/blue.css");
-			cardbookRepository.reloadCss("chrome://cardbook/skin/null.css");
-		}
+	getIconType: function (aType) {
+		switch(aType) {
+			case "CACHE":
+			case "DIRECTORY":
+			case "FILE":
+				return "local";
+				break;
+			case "APPLE":
+			case "CARDDAV":
+			case "GOOGLE":
+				return "remote";
+				break;
+			case "SEARCH":
+				return "search";
+				break;
+		};
+		return aType;
 	}
 
 };
