@@ -1,5 +1,5 @@
-<!ENTITY categoriesPicker.label "??Category Filter:??">
-<!ENTITY categoriesPicker.accesskey "t">
+<!ENTITY categoriesPicker.label "Filtro della categoria:">
+<!ENTITY categoriesPicker.accesskey "c">
 <!ENTITY editAddrBookCard.label "Modifica">
 <!ENTITY editAddrBookCard.accesskey "M">
 <!ENTITY searchContacts.label "Cerca:">

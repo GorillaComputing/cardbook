@@ -3,5 +3,3 @@
 <!ENTITY existingLabel "Existente">
 <!ENTITY failedLabel "Falha">
 <!ENTITY succeededLabel "Sucesso">
-<!ENTITY closeButtonLabel "Fechar">
-<!ENTITY closeButtonAccesskey "F">

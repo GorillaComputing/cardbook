@@ -1,16 +1,28 @@
 var EXPORTED_SYMBOLS = ["cardbookRepository"];
 
 var cardbookRepository = {
+	cardbookDatabase : {},
+	cardbookDatabaseVersion : "6",
+	cardbookDatabaseName : "CardBook",
+	
 	LIGHTNING_ID : "{e2fda1a4-762b-4020-b5ad-a41df1933103}",
 	
-	allColumns : [ "fn", "prefixname", "firstname", "othername", "lastname", "suffixname", "nickname", "bday",
-					"gender", "org", "title", "role", "note", "version" ],
-	allArrayColumns : [ ["email", ["email"] ],
+	allColumns : { "display": ["fn"],
+					"personal": ["prefixname", "firstname", "othername", "lastname", "suffixname", "nickname", "bday", "gender"],
+					"org": ["org", "title", "role"],
+					"categories": ["categories"],
+					"arrayColumns": [ ["email", ["email"] ],
 						["adr", ["postOffice", "extendedAddr", "street", "locality", "region", "postalCode", "country"] ],
 						["impp", ["impp"] ],
 						["tel", ["tel"] ],
 						["url", ["url"] ] ],
+					"note": ["note"],
+					"technical": ["version"] },
 
+	dateFormats : ["YYYY-MM-DD", "YYYY.MM.DD", "YYYY/MM/DD", "YYYYMMDD", "DD-MM-YYYY", "DD.MM.YYYY", "DD/MM/YYYY", "DDMMYYYY", "MM-DD-YYYY", "MM.DD.YYYY", "MM/DD/YYYY", "MMDDYYYY"],
+
+	preferEmailPref : true,
+	
 	cardbookAccounts : [],
 	cardbookAccountsCategories : {},
 	cardbookCards : {},
@@ -26,7 +38,10 @@ var cardbookRepository = {
 	cardbookDirResponse : {},
 	cardbookFileRequest : {},
 	cardbookFileResponse : {},
-
+	cardbookDBRequest : {},
+	cardbookDBResponse : {},
+	filesFromCacheDB : {},
+	
 	cardbookServerValidation : {},
 
 	cardbookGoogleAccessTokenRequest : {},
@@ -99,6 +114,14 @@ var cardbookRepository = {
 	lTimerImportAll : {},
 	lTimerNoSyncModeAll : {},
 	
+	// used to ensure that the initial load is done only once
+	firstLoad : false,
+
+	// used to remember the choice of overriding or not cards
+	// while importing, dragging, copying or duplicating
+	importConflictChoice : "",
+	importConflictChoicePersist : false,
+
 	cardbookDynamicCssRules : {},
 
 	cardbookUncategorizedCards : "",
@@ -383,13 +406,7 @@ var cardbookRepository = {
 		}
 	},
 	
-	sortCategories: function(aAccountId) {
-		cardbookRepository.cardbookAccountsCategories[aAccountId].sort(function (a, b) {
-				return a.localeCompare(b, 'en', {'sensitivity': 'base'});
-		});
-	},
-	
-	addAccountToRepository: function(aAccountId, aAccountName, aAccountType, aAccountUrl, aAccountUser, aColor, aEnabled, aExpanded, aVCard, aReadOnly, aPrefInsertion) {
+	addAccountToRepository: function(aAccountId, aAccountName, aAccountType, aAccountUrl, aAccountUser, aColor, aEnabled, aExpanded, aVCard, aReadOnly, aDateFormat, aUrnuuid, aDBcached, aPrefInsertion) {
 		var cacheDir = cardbookRepository.getLocalDirectory();
 		cacheDir.append(aAccountId);
 		if (!cacheDir.exists() || !cacheDir.isDirectory()) {
@@ -409,15 +426,17 @@ var cardbookRepository = {
 			cardbookPrefService.setExpanded(aExpanded);
 			cardbookPrefService.setVCard(aVCard);
 			cardbookPrefService.setReadOnly(aReadOnly);
+			cardbookPrefService.setDateFormat(aDateFormat);
+			cardbookPrefService.setUrnuuid(aUrnuuid);
+			cardbookPrefService.setDBCached(aDBcached);
 		}
 		
 		cardbookRepository.cardbookAccounts.push([aAccountName, true, aExpanded, true, aAccountId, aEnabled, aAccountType, aReadOnly]);
 		cardbookRepository.cardbookDisplayCards[aAccountId] = [];
 		cardbookRepository.cardbookAccountsCategories[aAccountId] = [];
-		cardbookUtils.formatStringForOutput("addressbookCreated", [aAccountName]);
 	},
 		
-	removeAccountFromRepository: function(aAccountId) {
+	removeAccountFromRepository: function(aAccountId, aAccountName) {
 		cardbookRepository.removeAccountFromCollected(aAccountId);
 		cardbookRepository.removeAccountFromBirthday(aAccountId);
 
@@ -448,8 +467,8 @@ var cardbookRepository = {
 				if (key.indexOf(aAccountId) >= 0) {
 					cardbookRepository.removeCardFromSearch(cardbookRepository.cardbookCards[key]);
 					cardbookRepository.removeCardFromDisplay(cardbookRepository.cardbookCards[key]);
-					if (cardbookRepository.cardbookCards[key].cacheuri != "") {
-						delete cardbookRepository.cardbookFileCacheCards[cardbookRepository.cardbookCards[key].cacheuri];
+					if (cardbookRepository.cardbookFileCacheCards[aAccountId][cardbookRepository.cardbookCards[key].cacheuri]) {
+						delete cardbookRepository.cardbookFileCacheCards[aAccountId][cardbookRepository.cardbookCards[key].cacheuri];
 					}
 					delete cardbookRepository.cardbookCards[key];
 				}
@@ -476,8 +495,8 @@ var cardbookRepository = {
 			if (cardbookRepository.cardbookCards.hasOwnProperty(key)) {
 				if (key.indexOf(aAccountId) >= 0) {
 					cardbookRepository.removeCardFromSearch(cardbookRepository.cardbookCards[key]);
-					if (cardbookRepository.cardbookCards[key].cacheuri != "") {
-						delete cardbookRepository.cardbookFileCacheCards[cardbookRepository.cardbookCards[key].cacheuri];
+					if (cardbookRepository.cardbookFileCacheCards[aAccountId][cardbookRepository.cardbookCards[key].cacheuri]) {
+						delete cardbookRepository.cardbookFileCacheCards[aAccountId][cardbookRepository.cardbookCards[key].cacheuri];
 					}
 					delete cardbookRepository.cardbookCards[key];
 				}
@@ -579,6 +598,7 @@ var cardbookRepository = {
 			cardbookSynchronization.cachePutMediaCard(aCard, "sound", myDirPrefIdType);
 
 			if (myDirPrefIdType === "DIRECTORY") {
+				aCard.cacheuri = aFileName;
 				var myFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 				myFile.initWithPath(myDirPrefIdUrl);
 				myFile.append(aFileName);
@@ -586,9 +606,22 @@ var cardbookRepository = {
 					cardbookSynchronization.writeCardsToFile(myFile.path, [aCard], true);
 					wdw_cardbooklog.updateStatusProgressInformationWithDebug2(myDirPrefIdName + " : debug mode : Contact " + aCard.fn + " written to directory");
 				}
+			} else if (myDirPrefIdType === "FILE" || myDirPrefIdType === "SEARCH") {
+				return;
+			} else if (myDirPrefIdType === "GOOGLE" || myDirPrefIdType === "APPLE" || myDirPrefIdType === "CARDDAV" || myDirPrefIdType === "LOCALDB") {
 				aCard.cacheuri = aFileName;
-				cardbookRepository.cardbookFileCacheCards[aFileName] = aCard;
-			} else if (aFileName != null && aFileName !== undefined && aFileName != "") {
+				if (cardbookRepository.cardbookFileCacheCards[aCard.dirPrefId]) {
+					cardbookRepository.cardbookFileCacheCards[aCard.dirPrefId][aFileName] = aCard;
+				} else {
+					cardbookRepository.cardbookFileCacheCards[aCard.dirPrefId] = {};
+					cardbookRepository.cardbookFileCacheCards[aCard.dirPrefId][aFileName] = aCard;
+				}
+				if (aMode === "INITIAL") {
+					cardbookIndexedDB.addItemIfMissing(myDirPrefIdName, aCard);
+				} else {
+					cardbookIndexedDB.addItem(myDirPrefIdName, aCard);
+				}
+			} else if (myDirPrefIdType === "CACHE") {
 				var myFile = cardbookRepository.getLocalDirectory();
 				myFile.append(aCard.dirPrefId);
 				myFile.append(aFileName);
@@ -605,7 +638,12 @@ var cardbookRepository = {
 					wdw_cardbooklog.updateStatusProgressInformationWithDebug2(myDirPrefIdName + " : debug mode : Contact " + aCard.fn + " written to cache");
 				}
 				aCard.cacheuri = aFileName;
-				cardbookRepository.cardbookFileCacheCards[aFileName] = aCard;
+				if (cardbookRepository.cardbookFileCacheCards[aCard.dirPrefId]) {
+					cardbookRepository.cardbookFileCacheCards[aCard.dirPrefId][aFileName] = aCard;
+				} else {
+					cardbookRepository.cardbookFileCacheCards[aCard.dirPrefId] = {};
+					cardbookRepository.cardbookFileCacheCards[aCard.dirPrefId][aFileName] = aCard;
+				}
 			}
 		}
 		catch(e) {
@@ -628,19 +666,23 @@ var cardbookRepository = {
 				if (myFile.exists() && myFile.isFile()) {
 					myFile.remove(true);
 					wdw_cardbooklog.updateStatusProgressInformationWithDebug2(myDirPrefIdName + " : debug mode : Contact " + aCard.fn + " deleted from directory");
-					if (cardbookRepository.cardbookFileCacheCards[aCard.cacheuri]) {
-						delete cardbookRepository.cardbookFileCacheCards[aCard.cacheuri];
-					}
 				}
-			} else {
+			} else if (myDirPrefIdType === "FILE" || myDirPrefIdType === "SEARCH") {
+				return;
+			} else if (myDirPrefIdType === "GOOGLE" || myDirPrefIdType === "APPLE" || myDirPrefIdType === "CARDDAV" || myDirPrefIdType === "LOCALDB") {
+				cardbookIndexedDB.removeItem(myDirPrefIdName, aCard);
+				if (cardbookRepository.cardbookFileCacheCards[aCard.dirPrefId][aCard.cacheuri]) {
+					delete cardbookRepository.cardbookFileCacheCards[aCard.dirPrefId][aCard.cacheuri];
+				}
+			} else if (myDirPrefIdType === "CACHE") {
 				var myFile = cardbookRepository.getLocalDirectory();
 				myFile.append(aCard.dirPrefId);
 				myFile.append(aCard.cacheuri);
 				if (myFile.exists() && myFile.isFile()) {
 					myFile.remove(true);
 					wdw_cardbooklog.updateStatusProgressInformationWithDebug2(myDirPrefIdName + " : debug mode : Contact " + aCard.fn + " deleted from cache");
-					if (cardbookRepository.cardbookFileCacheCards[aCard.cacheuri]) {
-						delete cardbookRepository.cardbookFileCacheCards[aCard.cacheuri];
+					if (cardbookRepository.cardbookFileCacheCards[aCard.dirPrefId][aCard.cacheuri]) {
+						delete cardbookRepository.cardbookFileCacheCards[aCard.dirPrefId][aCard.cacheuri];
 					}
 				}
 			}
@@ -657,7 +699,7 @@ var cardbookRepository = {
 			var uncategorizedCards = cardbookRepository.cardbookUncategorizedCards;
 			cardbookRepository.cardbookAccountsCategories[aCard.dirPrefId] = cardbookRepository.arrayUnique(cardbookRepository.cardbookAccountsCategories[aCard.dirPrefId].concat([uncategorizedCards]));
 		}
-		cardbookRepository.sortCategories(aCard.dirPrefId);
+		cardbookRepository.cardbookAccountsCategories[aCard.dirPrefId] = cardbookUtils.sortArrayByString(cardbookRepository.cardbookAccountsCategories[aCard.dirPrefId],-1,1);
 		cardbookRepository.setEmptyContainer(aCard.dirPrefId);
 	},
 		
@@ -684,6 +726,7 @@ var cardbookRepository = {
 				if (cardbookRepository.cardbookDisplayCards[aCard.dirPrefId+"::"+aCard.categories[j]]) {
 					if (cardbookRepository.cardbookDisplayCards[aCard.dirPrefId+"::"+aCard.categories[j]].length === 1) {
 						cardbookRepository.removeCategoryFromAccounts(aCard.dirPrefId+"::"+aCard.categories[j]);
+						cardbookRepository.removeCategoryFromCategories(aCard.dirPrefId, aCard.categories[j]);
 					} else if (cardbookRepository.cardbookDisplayCards[aCard.dirPrefId+"::"+aCard.categories[j]].length === 0) {
 						cardbookRepository.removeCategoryFromDisplay(aCard.dirPrefId+"::"+aCard.categories[j]);
 					}
@@ -724,16 +767,21 @@ var cardbookRepository = {
 		cardbookRepository.cardbookAccountsCategories[aDirPrefId] = cardbookRepository.cardbookAccountsCategories[aDirPrefId].filter(searchCategory);
 	},
 
-	removeCategoryFromCards: function(aCard, aCategoryName) {
+	addCategoryToCard: function(aCard, aCategoryName) {
+		aCard.categories.push(aCategoryName);
+		aCard.categories = cardbookUtils.cleanCategories(aCard.categories);
+	},
+
+	removeCategoryFromCard: function(aCard, aCategoryName) {
 		function searchCategory(element) {
 			return (element !== aCategoryName);
 		}
 		aCard.categories = aCard.categories.filter(searchCategory);
 	},
 
-	renameCategoryFromCards: function(aCard, aOldCategoryName, aNewCategoryName) {
-		cardbookRepository.removeCategoryFromCards(aCard, aOldCategoryName);
-		aCard.categories.push(aNewCategoryName);
+	renameCategoryFromCard: function(aCard, aOldCategoryName, aNewCategoryName) {
+		cardbookRepository.removeCategoryFromCard(aCard, aOldCategoryName);
+		cardbookRepository.addCategoryToCard(aCard, aNewCategoryName);
 	},
 
 	removeCategoryFromDisplay: function(aCategory) {
@@ -852,7 +900,7 @@ var cardbookRepository = {
 		}
 	},
 
-	addCardFromDisplayAndEmail: function (aDirPrefId, aDisplayName, aEmail) {
+	addCardFromDisplayAndEmail: function (aDirPrefId, aDisplayName, aEmail, aCategory) {
 		if (!(aDisplayName != null && aDisplayName !== undefined && aDisplayName != "")) {
 			if (!(aEmail != null && aEmail !== undefined && aEmail != "")) {
 				return;
@@ -869,8 +917,9 @@ var cardbookRepository = {
 		var myDirPrefIdReadOnly = cardbookPrefService.getReadOnly();
 		if (!myDirPrefIdReadOnly) {
 			var myNewCard = new cardbookCardParser();
-			myNewCard.uid = cardbookUtils.getUUID();
 			myNewCard.dirPrefId = aDirPrefId;
+			myNewCard.version = myDirPrefIdVCard;
+			cardbookUtils.setCardUUID(myNewCard);
 			myNewCard.fn = aDisplayName;
 			if (myNewCard.fn == "") {
 				myNewCard.fn = aEmail.substr(0, aEmail.indexOf("@")).replace("."," ").replace("_"," ");
@@ -882,20 +931,12 @@ var cardbookRepository = {
 				myNewCard.firstname = myDisplayNameArray.join(" ");
 			}
 			myNewCard.email = [ [ [aEmail], [] ,"", [] ] ];
-			cardbookUtils.setCalculatedFields(myNewCard);
-			myNewCard.version = myDirPrefIdVCard;
-			if (myDirPrefIdType === "CACHE" || myDirPrefIdType === "DIRECTORY") {
-				cardbookRepository.addCardToRepository(myNewCard, "WINDOW", cardbookUtils.getFileCacheNameFromCard(myNewCard, myDirPrefIdType));
-			} else if (myDirPrefIdType === "FILE") {
-				cardbookRepository.addCardToRepository(myNewCard, "WINDOW");
-				cardbookSynchronization.writeCardsToFile(myDirPrefIdUrl, cardbookRepository.cardbookDisplayCards[myNewCard.dirPrefId], true);
-			} else {
-				cardbookUtils.addTagCreated(myNewCard);
-				cardbookUtils.addEtag(myNewCard, "0");
-				cardbookRepository.addCardToRepository(myNewCard, "WINDOW", cardbookUtils.getFileCacheNameFromCard(myNewCard, myDirPrefIdType));
+			if (aCategory != null && aCategory !== undefined && aCategory != "") {
+				myNewCard.categories.push(aCategory);
 			}
-			cardbookUtils.formatStringForOutput("cardCreatedOK", [myDirPrefIdName, myNewCard.fn]);
-			wdw_cardbooklog.addActivity("cardCreatedOK", [myDirPrefIdName, myNewCard.fn], "addItem");
+			var myNullCard = new cardbookCardParser();
+			cardbookRepository.saveCard(myNullCard, myNewCard, "cardbook.cardAddedIndirect");
+			cardbookRepository.reWriteFiles([aDirPrefId]);
 		} else {
 			cardbookUtils.formatStringForOutput("addressbookReadOnly", [myDirPrefIdName]);
 		}
@@ -968,6 +1009,184 @@ var cardbookRepository = {
 					}
 					cardbookRepository.cardbookCardSearch2[aCard.dirPrefId][myText] = cardbookRepository.cardbookCardSearch2[aCard.dirPrefId][myText].filter(searchCard);
 				}
+			}
+		}
+	},
+
+	saveCard: function(aOldCard, aNewCard, aSource) {
+		try {
+			var cardbookPrefService = new cardbookPreferenceService(aNewCard.dirPrefId);
+			var myDirPrefIdType = cardbookPrefService.getType();
+			var myDirPrefIdName = cardbookPrefService.getName();
+			var myDirPrefIdUrl = cardbookPrefService.getUrl();
+			if (cardbookPrefService.getReadOnly()) {
+				return;
+			}
+
+			var newCats = [];
+			for (var i = 0; i < aNewCard.categories.length; i++) {
+				var found = false;
+				for (var j = 0; !found && j < cardbookRepository.cardbookAccountsCategories[aNewCard.dirPrefId].length; j++) {
+					if (cardbookRepository.cardbookAccountsCategories[aNewCard.dirPrefId][j] == aNewCard.categories[i]) {
+						found = true;
+					}
+				}
+				if (!found) {
+					newCats.push(aNewCard.categories[i]);
+				}
+			}
+
+			cardbookUtils.setCalculatedFields(aNewCard);
+			// Existing card
+			if (cardbookRepository.cardbookCards[aOldCard.dirPrefId+"::"+aNewCard.uid] && aOldCard.dirPrefId == aNewCard.dirPrefId) {
+				var myCard = cardbookRepository.cardbookCards[aOldCard.dirPrefId+"::"+aNewCard.uid];
+				if (myDirPrefIdType === "CACHE" || myDirPrefIdType === "DIRECTORY" || myDirPrefIdType === "LOCALDB") {
+					// if aOldCard and aNewCard have the same cached medias
+					cardbookUtils.changeMediaFromFileToContent(aNewCard);
+					cardbookRepository.removeCardFromRepository(myCard, true);
+					cardbookUtils.nullifyTagModification(aNewCard);
+					cardbookUtils.nullifyEtag(aNewCard);
+					cardbookRepository.addCardToRepository(aNewCard, "WINDOW", cardbookUtils.getFileCacheNameFromCard(aNewCard, myDirPrefIdType));
+				} else if (myDirPrefIdType === "FILE") {
+					// if aOldCard and aNewCard have the same cached medias
+					cardbookUtils.changeMediaFromFileToContent(aNewCard);
+					cardbookRepository.removeCardFromRepository(myCard, true);
+					cardbookUtils.nullifyTagModification(aNewCard);
+					cardbookUtils.nullifyEtag(aNewCard);
+					cardbookRepository.addCardToRepository(aNewCard, "WINDOW");
+				} else {
+					// if aOldCard and aNewCard have the same cached medias
+					cardbookUtils.changeMediaFromFileToContent(aNewCard);
+					if (!(cardbookUtils.searchTagCreated(aNewCard))) {
+						cardbookUtils.addTagUpdated(aNewCard);
+					}
+					cardbookRepository.removeCardFromRepository(myCard, true);
+					cardbookRepository.addCardToRepository(aNewCard, "WINDOW", cardbookUtils.getFileCacheNameFromCard(aNewCard, myDirPrefIdType));
+				}
+				cardbookUtils.formatStringForOutput("cardUpdatedOK", [myDirPrefIdName, aNewCard.fn]);
+				cardbookUtils.notifyObservers(aSource, "cardid:" + aNewCard.dirPrefId + "::" + aNewCard.uid);
+			// Moved card
+			} else if (aOldCard.dirPrefId != "" && cardbookRepository.cardbookCards[aOldCard.dirPrefId+"::"+aNewCard.uid] && aOldCard.dirPrefId != aNewCard.dirPrefId) {
+				var myCard = cardbookRepository.cardbookCards[aOldCard.dirPrefId+"::"+aNewCard.uid];
+				var cardbookPrefService = new cardbookPreferenceService(myCard.dirPrefId);
+				var myDirPrefIdName = cardbookPrefService.getName();
+				var myDirPrefIdType = cardbookPrefService.getType();
+				if (myDirPrefIdType === "FILE") {
+					cardbookRepository.removeCardFromRepository(myCard, false);
+				} else if (myDirPrefIdType === "CACHE" || myDirPrefIdType === "DIRECTORY" || myDirPrefIdType === "LOCALDB") {
+					cardbookRepository.removeCardFromRepository(myCard, true);
+				} else {
+					if (cardbookUtils.searchTagCreated(myCard)) {
+						cardbookRepository.removeCardFromRepository(myCard, true);
+					} else {
+						cardbookUtils.addTagDeleted(myCard);
+						cardbookRepository.addCardToCache(myCard, "WINDOW", cardbookUtils.getFileCacheNameFromCard(myCard));
+						cardbookRepository.removeCardFromRepository(myCard, false);
+					}
+				}
+				cardbookUtils.formatStringForOutput("cardDeletedOK", [myDirPrefIdName, myCard.fn]);
+				wdw_cardbooklog.addActivity("cardDeletedOK", [myDirPrefIdName, myCard.fn], "deleteMail");
+				cardbookUtils.notifyObservers("cardbook.cardRemovedIndirect");
+				
+				var cardbookPrefService = new cardbookPreferenceService(aNewCard.dirPrefId);
+				var myDirPrefIdName = cardbookPrefService.getName();
+				var myDirPrefIdType = cardbookPrefService.getType();
+				aNewCard.cardurl = "";
+				cardbookUtils.setCardUUID(aNewCard);
+				if (myDirPrefIdType === "CACHE" || myDirPrefIdType === "DIRECTORY" || myDirPrefIdType === "LOCALDB") {
+					cardbookUtils.nullifyTagModification(aNewCard);
+					cardbookUtils.nullifyEtag(aNewCard);
+					cardbookRepository.addCardToRepository(aNewCard, "WINDOW", cardbookUtils.getFileCacheNameFromCard(aNewCard, myDirPrefIdType));
+				} else if (myDirPrefIdType === "FILE") {
+					cardbookUtils.nullifyTagModification(aNewCard);
+					cardbookUtils.nullifyEtag(aNewCard);
+					cardbookRepository.addCardToRepository(aNewCard, "WINDOW");
+				} else {
+					cardbookUtils.addTagCreated(aNewCard);
+					cardbookUtils.addEtag(aNewCard, "0");
+					cardbookRepository.addCardToRepository(aNewCard, "WINDOW", cardbookUtils.getFileCacheNameFromCard(aNewCard, myDirPrefIdType));
+				}
+				cardbookUtils.formatStringForOutput("cardCreatedOK", [myDirPrefIdName, aNewCard.fn]);
+				wdw_cardbooklog.addActivity("cardCreatedOK", [myDirPrefIdName, aNewCard.fn], "addItem");
+				cardbookUtils.notifyObservers(aSource, "cardid:" + aNewCard.dirPrefId + "::" + aNewCard.uid);
+			// New card
+			} else {
+				if (aNewCard.uid == "") {
+					cardbookUtils.setCardUUID(aNewCard);
+				}
+				if (myDirPrefIdType === "CACHE" || myDirPrefIdType === "DIRECTORY" || myDirPrefIdType === "LOCALDB") {
+					cardbookUtils.nullifyTagModification(aNewCard);
+					cardbookUtils.nullifyEtag(aNewCard);
+					cardbookRepository.addCardToRepository(aNewCard, "WINDOW", cardbookUtils.getFileCacheNameFromCard(aNewCard, myDirPrefIdType));
+				} else if (myDirPrefIdType === "FILE") {
+					cardbookUtils.nullifyTagModification(aNewCard);
+					cardbookUtils.nullifyEtag(aNewCard);
+					cardbookRepository.addCardToRepository(aNewCard, "WINDOW");
+				} else {
+					cardbookUtils.addTagCreated(aNewCard);
+					cardbookUtils.addEtag(aNewCard, "0");
+					cardbookRepository.addCardToRepository(aNewCard, "WINDOW", cardbookUtils.getFileCacheNameFromCard(aNewCard, myDirPrefIdType));
+				}
+				cardbookUtils.formatStringForOutput("cardCreatedOK", [myDirPrefIdName, aNewCard.fn]);
+				wdw_cardbooklog.addActivity("cardCreatedOK", [myDirPrefIdName, aNewCard.fn], "addItem");
+				cardbookUtils.notifyObservers(aSource, "cardid:" + aNewCard.dirPrefId + "::" + aNewCard.uid);
+			}
+			delete aOldCard;
+			for (var i = 0; i < newCats.length; i++) {
+				cardbookUtils.formatStringForOutput("categoryCreatedOK", [myDirPrefIdName, newCats[i]]);
+				wdw_cardbooklog.addActivity("categoryCreatedOK", [myDirPrefIdName, newCats[i]], "addItem");
+				cardbookUtils.notifyObservers("cardbook.catAddedIndirect", "accountid:" + aNewCard.dirPrefId+"::"+newCats[i]);
+			}
+		}
+		catch (e) {
+			wdw_cardbooklog.updateStatusProgressInformation("cardbookRepository.saveCard error : " + e, "Error");
+		}
+	},
+
+	deleteCards: function (aListOfCards, aSource) {
+		try {
+			var listOfFileToRewrite = [];
+			for (var i = 0; i < aListOfCards.length; i++) {
+				if (!cardbookUtils.isMyAccountReadOnly(aListOfCards[i].dirPrefId)) {
+					var cardbookPrefService = new cardbookPreferenceService(aListOfCards[i].dirPrefId);
+					var myDirPrefIdName = cardbookPrefService.getName();
+					var myDirPrefIdType = cardbookPrefService.getType();
+					if (myDirPrefIdType === "FILE") {
+						cardbookRepository.removeCardFromRepository(aListOfCards[i], false);
+						listOfFileToRewrite.push(aListOfCards[i].dirPrefId);
+					} else if (myDirPrefIdType === "CACHE" || myDirPrefIdType === "DIRECTORY" || myDirPrefIdType === "LOCALDB") {
+						cardbookRepository.removeCardFromRepository(aListOfCards[i], true);
+					} else {
+						if (cardbookUtils.searchTagCreated(aListOfCards[i])) {
+							cardbookRepository.removeCardFromRepository(aListOfCards[i], true);
+						} else {
+							cardbookUtils.addTagDeleted(aListOfCards[i]);
+							cardbookRepository.addCardToCache(aListOfCards[i], "WINDOW", cardbookUtils.getFileCacheNameFromCard(aListOfCards[i]));
+							cardbookRepository.removeCardFromRepository(aListOfCards[i], false);
+						}
+					}
+					cardbookUtils.formatStringForOutput("cardDeletedOK", [myDirPrefIdName, aListOfCards[i].fn]);
+					wdw_cardbooklog.addActivity("cardDeletedOK", [myDirPrefIdName, aListOfCards[i].fn], "deleteMail");
+					// performance reason
+					// update the UI only at the end
+					if (i == aListOfCards.length - 1) {
+						cardbookUtils.notifyObservers(aSource);
+					}
+				}
+			}
+			cardbookRepository.reWriteFiles(listOfFileToRewrite);
+		}
+		catch (e) {
+			wdw_cardbooklog.updateStatusProgressInformation("cardbookRepository.deleteCards error : " + e, "Error");
+		}
+	},
+
+	reWriteFiles: function (aListOfFiles) {
+		listOfFilesToRewrite = cardbookRepository.arrayUnique(aListOfFiles);
+		for (var i = 0; i < listOfFilesToRewrite.length; i++) {
+			var cardbookPrefService = new cardbookPreferenceService(listOfFilesToRewrite[i]);
+			if (cardbookPrefService.getType() === "FILE" && !cardbookPrefService.getReadOnly()) {
+				cardbookSynchronization.writeCardsToFile(cardbookPrefService.getUrl(), cardbookRepository.cardbookDisplayCards[listOfFilesToRewrite[i]], true);
 			}
 		}
 	},
@@ -1049,6 +1268,7 @@ var cardbookRepository = {
 			case "CACHE":
 			case "DIRECTORY":
 			case "FILE":
+			case "LOCALDB":
 				return "local";
 				break;
 			case "APPLE":
@@ -1068,6 +1288,7 @@ var cardbookRepository = {
 cardbookRepository.jsInclude(["chrome://cardbook/content/preferences/cardbookPreferences.js"]);
 cardbookRepository.jsInclude(["chrome://cardbook/content/wdw_log.js"]);
 cardbookRepository.jsInclude(["chrome://cardbook/content/cardbookUtils.js"]);
+cardbookRepository.jsInclude(["chrome://cardbook/content/cardbookIndexedDB.js"]);
 cardbookRepository.jsInclude(["chrome://cardbook/content/cardbookSynchronization.js"]);
 cardbookRepository.jsInclude(["chrome://cardbook/content/complexSearch/cardbookComplexSearch.js"]);
 

@@ -10,6 +10,8 @@
 <!ENTITY validateEditionAccesskey "V">
 <!ENTITY cancelEditionLabel "Cancelar">
 <!ENTITY cancelEditionAccesskey "C">
+<!ENTITY closeEditionLabel "Fechar">
+<!ENTITY closeEditionAccesskey "F">
 <!ENTITY buttonAppendToListLabel "Adicionar">
 <!ENTITY buttonAppendToListAccesskey "A">
 <!ENTITY buttonRemoveFromListLabel "Remover">

@@ -2,6 +2,7 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xul-overlay href="chrome://cardbook/content/ovl_cardbookStringBundle.xul"?>
 <!DOCTYPE window [
+	<!ENTITY % configurationDTD SYSTEM "chrome://cardbook/locale/wdw_cardbookConfiguration.dtd"> %configurationDTD;
 	<!ENTITY % passwordDTD SYSTEM "chrome://cardbook/locale/wdw_password.dtd"> %passwordDTD;
 	<!ENTITY % addressbooksAddDTD SYSTEM "chrome://cardbook/locale/wdw_addressbooksAdd.dtd"> %addressbooksAddDTD;
 	<!ENTITY % buttonsDTD SYSTEM "chrome://cardbook/locale/wdw_editionButtons.dtd"> %buttonsDTD;
@@ -17,7 +18,8 @@
 	
 	<stringbundleset id="stringbundleset"/>
 
-	<script src="wdw_serverEdition.js"/>
+	<script src="chrome://cardbook/content/cardbookElementTools.js"/>
+	<script src="chrome://cardbook/content/wdw_serverEdition.js"/>
 
 	<keyset id="wdw_serverEdition-keys">
 		<key keycode="VK_ESCAPE" oncommand="wdw_serverEdition.cancel();"/>
@@ -37,18 +39,32 @@
 						<label id="serverNameLabel" value="&namePage.name.label;" control="serverNameTextBox"/>
 						<textbox id="serverNameTextBox"/>
 					</row>
+					<separator class="thin"/>
 					<row align="center">
-						<label id="serverTypeLabel" value="&locationNetworkPage.type.label;" control="serverTypeTextBox"/>
+						<label id="serverTypeLabel" value="&remotePage.type.label;" control="serverTypeTextBox"/>
 						<textbox id="serverTypeTextBox" disabled="true"/>
 					</row>
+					<separator class="thin"/>
 					<row align="center">
-						<label id="serverUrlLabel" value="&locationNetworkPage.uri.label;" control="serverUrlTextBox"/>
+						<label id="serverUrlLabel" value="&remotePage.uri.label;" control="serverUrlTextBox"/>
 						<textbox id="serverUrlTextBox" disabled="true"/>
 					</row>
+					<separator class="thin"/>
 					<row align="center">
 						<label id="serverUserLabel" value="&usernameLabel;" control="serverUserTextBox"/>
 						<textbox id="serverUserTextBox" disabled="true"/>
 					</row>
+					<separator class="thin"/>
+					<row align="center">
+						<label id="serverReadOnlyLabel" value="&namePage.readonly.label;" control="serverReadOnlyCheckBox"/>
+						<checkbox id="serverReadOnlyCheckBox"/>
+					</row>
+					<separator class="thin"/>
+					<row align="center">
+						<label value="&namePage.urnuuid.label;" control="serverUrnuuidCheckBox"/>
+						<checkbox id="serverUrnuuidCheckBox" disabled="true"/>
+					</row>
+					<separator class="thin"/>
 					<row align="center">
 						<label value="&namePage.color.label;" control="cardbook-color"/>
 						<hbox align="center">
@@ -57,9 +73,10 @@
 								type="color"/>
 						</hbox>
 					</row>
+					<separator class="thin"/>
 					<row align="center">
 						<label value="&namePage.vCardVersion.label;" control="serverVCardVersionMenu"/>
-						<hbox align="center" flex="1">
+						<hbox align="center">
 							<menulist id="serverVCardVersionMenu">
 								<menupopup id="serverVCardVersionMenupopup">
 									<menuitem label="3.0" value="3.0"/>
@@ -68,9 +85,14 @@
 							</menulist>
 						</hbox>
 					</row>
+					<separator class="thin"/>
 					<row align="center">
-						<label id="serverReadOnlyLabel" value="&namePage.readonly.label;" control="serverReadOnlyCheckBox"/>
-						<checkbox id="serverReadOnlyCheckBox"/>
+						<label value="&dateFormatLabel;" control="dateFormatMenuList"/>
+						<hbox align="center">
+							<menulist id="dateFormatMenuList">  
+								<menupopup id="dateFormatMenuPopup"/>
+							</menulist>    
+						</hbox>
 					</row>
 				</rows>
 			</grid>

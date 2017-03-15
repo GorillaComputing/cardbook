@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css" ?>
 <?xml-stylesheet href="chrome://cardbook/skin/cardbookMain.css" type="text/css"?>
 <?xml-stylesheet href="chrome://cardbook/skin/cardbookButtons.css" type="text/css"?>
 <?xml-stylesheet href="chrome://cardbook/skin/cardbookCheckboxes.css" type="text/css"?>
@@ -31,6 +31,7 @@
 	<script src="chrome://cardbook/content/preferences/cardbookPreferences.js"/>
 	<script src="cardbookSynchronization.js"/>
 	<script src="cardbookUtils.js"/>
+	<script src="cardbookObserver.js"/>
 	<script src="wdw_log.js"/>
 	<script src="cardbookCardParser.js"/>
 	<script src="cardbookDirTree.js"/>
@@ -42,6 +43,7 @@
 	<script src="chrome://cardbook/content/cardEdition/wdw_imageEdition.js"/>
 	<script src="chrome://cardbook/content/cardEdition/wdw_cardEdition.js"/>
 	<script src="chrome://cardbook/content/complexSearch/cardbookComplexSearch.js"/>
+	<script src="chrome://cardbook/content/mailContact/ovl_cardbookMailContacts.js"/>
 
 	<tabpanels id="tabpanelcontainer">
 		<vbox id="cardbookTabPanel" flex="1" onkeypress="wdw_cardbook.chooseActionForKey(event);">
@@ -176,9 +178,9 @@
 
 					<splitter id="resultsSplitterModern" collapse="after" orient="vertical" persist="state orient" class="cardbookHorizontalSplitterClass" oncommand="ovl_cardbookLayout.changeResizePanes('viewABContact', true);"/>
 
-					<hbox id="rightPaneDownHbox" flex="1" context="" persist="width height collapsed">
+					<hbox id="rightPaneDownHbox" flex="1" context="" persist="width height collapsed" class="cardbookBackgroundColorClass">
 						<vbox flex="1">
-							<tabbox id="cardbookTabbox" flex="1" class="cardbookBackgroundColorClass">
+							<tabbox id="cardbookTabbox" flex="1">
 								
 								<tabs>
 									<tab id="generalTab" label="&generalTabLabel;"/>
@@ -276,13 +278,6 @@
 														</hbox>
 													</groupbox>
 												</hbox>
-												<groupbox id="categoriesGroupbox" flex="1">
-													<caption label="&categoriesGroupboxLabel;" class="header"/>
-													<hbox flex="1">
-														<image id="dummyCatPrefBox" class="cardbookNotPrefClass"/>
-														<textbox id="categoriesTextBox" flex="1"/>
-													</hbox>
-												</groupbox>
 											</vbox>
 											<vbox align="center" width="170px">
 												<hbox id="imageBox" align="center" height="170px">
@@ -301,6 +296,13 @@
 														<column flex="1"/>
 													</columns>
 													<rows>
+														<groupbox id="categoriesGroupbox" flex="1">
+															<caption label="&categoriesGroupboxLabel;" class="header"/>
+															<hbox flex="1">
+																<image id="dummyCatPrefBox" class="cardbookNotPrefClass"/>
+																<textbox id="categoriesTextBox" flex="1"/>
+															</hbox>
+														</groupbox>
 														<groupbox id="emailGroupbox" flex="1"/>
 														<groupbox id="telGroupbox" flex="1"/>
 														<groupbox id="adrGroupbox" flex="1"/>
@@ -457,10 +459,10 @@
 																<label id="cardurlLabel" value="&cardurlLabel;" control="cardurlTextBox" class="header"/>
 																<textbox id="cardurlTextBox"/>
 															</row>
-															<row id="cacheuriRow" align="center">
-																<label id="cacheuriLabel" value="&cacheuriLabel;" control="cacheuriTextBox" class="header"/>
-																<textbox id="cacheuriTextBox"/>
-															</row>
+															<!-- <row id="cacheuriRow" align="center"> -->
+																<!-- <label id="cacheuriLabel" value="&cacheuriLabel;" control="cacheuriTextBox" class="header"/> -->
+																<!-- <textbox id="cacheuriTextBox"/> -->
+															<!-- </row> -->
 															<row id="revRow" align="center">
 																<label id="revLabel" value="&revLabel;" control="revTextBox" class="header"/>
 																<textbox id="revTextBox"/>

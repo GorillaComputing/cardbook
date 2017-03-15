@@ -10,12 +10,16 @@
 	<stringbundleset id="stringbundleset"/>
 
 	<script src="wdw_log.js"/>
+	<script src="cardbookObserver.js"/>
 	<script src="cardbookUtils.js"/>
 	<script src="cardbookSynchronization.js"/>
+	<script src="cardbookIndexedDB.js"/>
 	<script src="ovl_synchro.js"/>
 	<script src="cardbookMailPopularity.js"/>
 	<script src="ovl_mailPopularity.js"/>
 	<script src="chrome://cardbook/content/preferences/cardbookPreferences.js"/>
+	<script src="cardbookElementTools.js"/>
+	<script src="wdw_cardbook.js"/>
 	<script src="chrome://cardbook/content/mailContact/ovl_cardbookMailContacts.js"/>
 	<script src="chrome://cardbook/content/layout/ovl_cardbookLayout.js"/>
 	<script src="ovl_cardbook.js"/>
@@ -31,6 +35,10 @@
 		<key id="CardBookKey" key="&cardbookMenuItemAccesskey;" modifiers="accel, shift" oncommand="ovl_cardbook.open();"/>
 	</keyset>
 
+	<menupopup id="menu_NewPopup">
+		<menuitem id="newCardBookCardMenu" label="&newCardBookCardMenuLabel;" accesskey="&newCardBookCardMenuAccesskey;"
+				insertafter="menu_newCard" oncommand="ovl_cardbookMailContacts.newInCardBook();"/>
+	</menupopup>
 	<menupopup id="view_layout_popup">
 		<menuitem id="cardbookABPaneItem"
 			type="checkbox"
@@ -82,18 +90,6 @@
 			tooltiptext="&cardbookTabButtonTooltip;"
 			command="cardbookTabButtonOpen"/>
 	</toolbar>
-
-	<menupopup id="emailAddressPopup" onpopupshowing="setupEmailAddressPopup(findEmailNodeFromPopupNode(document.popupNode, 'emailAddressPopup'));
-														goUpdateCommand('cmd_createFilterFromPopup')">
-		<menu id="addToCardBookMenu" label="&addToCardBookMenuLabel;" accesskey="&addToCardBookMenuAccesskey;" insertbefore="addToAddressBookItem">
-			<menupopup id="addToCardBookMenuPopup" onpopupshowing="cardbookUtils.addToCardBookMenuSubMenu(this.id, ovl_cardbookMailContacts.addToCardBook)"/>
-		</menu>
-		<menuitem id="editInCardBookMenu" label="&editInCardBookMenuLabel;" accesskey="&editInCardBookMenuAccesskey;" insertbefore="editContactItem" onclick="ovl_cardbookMailContacts.editOrViewContact();"/>
-		<menuseparator id="IMPPSeparator" insertafter="copyNameAndEmailAddressItem"/>
-		<menu id="IMPPCards" label="&IMPPMenuLabel;" accesskey="&IMPPMenuAccesskey;" insertafter="IMPPSeparator">
-			<menupopup id="IMPPCardsMenuPopup"/>
-		</menu>
-	</menupopup>
 
 	<statusbarpanel id="totalMessageCount" onclick="wdw_cardbook.openLogEdition();"/>
 </overlay>

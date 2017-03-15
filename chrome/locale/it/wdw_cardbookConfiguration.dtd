@@ -20,6 +20,8 @@
 <!ENTITY exclusiveTooltip "Se disabilitata, questa opzione permette di recuperare i contatti nelle rubriche standard di Thunderbird per le stelline gialle, il nome mostrato nell'email e l'autocompletamento dell'email.">
 <!ENTITY emailsCollectionLabel "Raccogli indirizzi email in uscita">
 <!ENTITY emailsCollectionAccesskey "C">
+<!ENTITY emailsCollectionCatLabel "Aggiungi questa categoria ai contatti collezionati">
+<!ENTITY emailsCollectionCatAccesskey "q">
 <!ENTITY emailsCollectionTooltip "Estende la funzionalità standard di raccolta degli indirizzi email in uscrita di Thunderbird. Se questa funzione è abilitata, gli indirizzi email non presenti in nessuna rubrica di CardBook saranno aggiunti alle rubriche selezionate.">
 
 <!ENTITY logGroupboxLabel "Registro">

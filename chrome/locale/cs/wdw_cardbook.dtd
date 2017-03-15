@@ -37,6 +37,8 @@
 <!ENTITY cardbookToolbarEditButtonTooltip "Dovoluje úpravu kontaktu">
 <!ENTITY cardbookToolbarRemoveButtonLabel "Smazat kontakt">
 <!ENTITY cardbookToolbarRemoveButtonTooltip "Umožňuje smazání kontaktu">
+<!ENTITY cardbookToolbarPrintButtonLabel "Náhled tisku">
+<!ENTITY cardbookToolbarPrintButtonTooltip "Umožňue tisknout výběr">
 <!ENTITY cardbookToolbarAppMenuButtonLabel "Menu CardBooku">
 <!ENTITY cardbookToolbarAppMenuButtonTooltip "Menu CardBooku">
 <!ENTITY cardbookToolbarSearchBoxLabel "Hledání v kontaktech">
@@ -124,7 +126,9 @@
 <!ENTITY localizeadrTreeLabel "Vyhledat">
 <!ENTITY toEmailEmailTreeLabel "Poslat e-mail">
 <!ENTITY ccEmailEmailTreeLabel "Poslat e-mail (kopie / cc)">
-<!ENTITY bccemailemailTree "Poslat e-mail (skrytá kopie / bcc)">
+<!ENTITY bccemailemailTreeLabel "Poslat e-mail (skrytá kopie / bcc)">
+<!ENTITY findemailemailTreeLabel "Najít e-maily vztahující se k této e-mailové adrese">
+<!ENTITY findeventemailTreeLabel "Najít v kalendáři události vztahující se k této e-mailové adrese">
 <!ENTITY openURLTreeLabel "Otevřít URL">
 
 <!ENTITY copyCardTreeLabel "Kopírovat záznam">
@@ -135,7 +139,9 @@
 <!ENTITY ccEmailCardFromCardsLabel "Poslat e-mail kontaktům (kopie / cc)">
 <!ENTITY bccEmailCardFromAccountsOrCatsLabel "Poslat e-mail kontaktům (skrytá kopie / bcc)">
 <!ENTITY bccEmailCardFromCardsLabel "Poslat e-mail kontaktům (skrytá kopie / bcc)">
+<!ENTITY categoryLabel "Kategorie">
 <!ENTITY findEmailsFromCardsLabel "Najít e-maily kontaktu">
+<!ENTITY findEventsFromCardsLabel "Najít v kalendáři události vztahující se k tomuto kontaktu">
 <!ENTITY localizeCardFromCardsLabel "Vyhledat">
 <!ENTITY openURLCardFromCardsLabel "Otevřít URL kontaktu">
 <!ENTITY cutCardFromAccountsOrCatsLabel "Vyjmout kontakt">

@@ -86,9 +86,7 @@ if ("undefined" == typeof(cardbookTypes)) {
 				}
 			}
 			cardbookTypes.allIMPPs = JSON.parse(JSON.stringify(myPrefResults));
-			cardbookTypes.allIMPPs = cardbookTypes.allIMPPs.sort(function(a,b) {
-				return a[1].localeCompare(b[1], 'en', {'sensitivity': 'base'});
-			});
+			cardbookTypes.allIMPPs = cardbookUtils.sortArrayByString(cardbookTypes.allIMPPs,1,1);
 		},
 
 		validateDynamicTypes: function () {
@@ -801,8 +799,16 @@ if ("undefined" == typeof(cardbookTypes)) {
 				cardbookElementTools.addTextbox(aRow, aType + '_' + aIndex + '_valueBox', cardbookUtils.cleanArray(aCardValue).join(" "), {context: aType + 'TreeContextMenu', flex: '1'});
 				if (aType == "url" || aType == "email" || aType == "adr") {
 					document.getElementById(aType + '_' + aIndex + '_valueBox').setAttribute('link', 'true');
-				} else {
-					document.getElementById(aType + '_' + aIndex + '_valueBox').setAttribute('readonly', 'true');
+				} else if (aType == "tel") {
+					var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+					var telProtocol = "";
+					try {
+						var telProtocol = prefs.getComplexValue("extensions.cardbook.tels.0", Components.interfaces.nsISupportsString).data;
+						document.getElementById(aType + '_' + aIndex + '_valueBox').setAttribute('link', 'true');
+					}
+					catch(e) {
+						document.getElementById(aType + '_' + aIndex + '_valueBox').setAttribute('readonly', 'true');
+					}
 				}
 			}
 		},

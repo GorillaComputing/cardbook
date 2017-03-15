@@ -1,2 +1,3 @@
 <!ENTITY categoriesListboxLabel "Huidige categorieën">
-<!ENTITY categoryTextboxLabel "Nieuwe categorie">
+<!ENTITY categoryMenuLabel "Nieuwe categorie">
+<!ENTITY categoryTextboxLabel "Een nieuwe categorie toevoegen">

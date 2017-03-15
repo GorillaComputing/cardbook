@@ -30,7 +30,7 @@ if ("undefined" == typeof(ovl_filters)) {
 				var addresses = {}, names = {}, fullAddresses = {};
 				MailServices.headerParser.parseHeadersWithArray(hdr[aField], addresses, names, fullAddresses);
 				for (var j = 0; j < addresses.value.length; j++) {
-					cardbookRepository.addCardFromDisplayAndEmail(aActionValue, names.value[j], addresses.value[j]);
+					cardbookRepository.addCardFromDisplayAndEmail(aActionValue, names.value[j], addresses.value[j], "");
 				}
 			}
 		},

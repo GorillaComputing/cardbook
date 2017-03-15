@@ -1,2 +1,3 @@
 <!ENTITY categoriesListboxLabel "Categorias existentes">
-<!ENTITY categoryTextboxLabel "Nova categoria">
+<!ENTITY categoryMenuLabel "Nova categoria">
+<!ENTITY categoryTextboxLabel "Adicionar nova categoria">

@@ -26,6 +26,7 @@
 	<script src="cardbookSynchronization.js"/>
 	<script src="chrome://cardbook/content/layout/ovl_cardbookLayout.js"/>
 	<script src="chrome://cardbook/content/birthdays/cardbookBirthdaysUtils.js"/>
+	<script src="chrome://cardbook/content/cardbookElementTools.js"/>
 
 	<prefpane id="sw2-stock-pane" label="Stock Settings">
 
@@ -36,6 +37,8 @@
 				name="extensions.cardbook.exclusive" type="bool"/>
 			<preference id="extensions.cardbook.emailsCollection"
 				name="extensions.cardbook.emailsCollection" type="string"/>
+			<preference id="extensions.cardbook.emailsCollectionCat"
+				name="extensions.cardbook.emailsCollectionCat" type="string"/>
 			<preference id="extensions.cardbook.requestsTimeout"
 				name="extensions.cardbook.requestsTimeout" type="string"/>
 			<preference id="extensions.cardbook.debugMode"
@@ -156,6 +159,15 @@
 							<checkbox id="emailsCollectionCheckbox" oncommand="wdw_cardbookConfiguration.changeAddressBooksPref(this.id);" label="&emailsCollectionLabel;" accesskey="&emailsCollectionAccesskey;" tooltiptext="&emailsCollectionTooltip;"/>
 						</caption>
 						<listbox rows="4" id="emailsCollectionListbox"/>
+						<separator class="thin"/>
+						<hbox align="center">
+							<label value="&emailsCollectionCatLabel;"
+								accesskey="&emailsCollectionCatAccesskey;"
+								control="emailsCollectionCatTextBox"
+								id="emailsCollectionCat"/>
+							<textbox id="emailsCollectionCatTextBox"
+								preference="extensions.cardbook.emailsCollectionCat"/>
+						</hbox>
 					</groupbox>
 
 					<groupbox>
@@ -166,6 +178,7 @@
 								tooltiptext = "&debugModeTooltip;"
 								preference="extensions.cardbook.debugMode"/>
 						</hbox>
+						<separator class="thin"/>
 						<hbox align="center">
 							<label value="&statusInformationLineNumberLabel;"
 								accesskey="&statusInformationLineNumberAccesskey;"
@@ -301,6 +314,13 @@
 					<separator class="thin"/>
 					<groupbox flex="1">
 						<caption label="&IMPPGroupboxLabel;"/>
+						<hbox align="center">
+							<radiogroup id="imppsCategoryRadiogroup" orient="horizontal" onselect="wdw_cardbookConfiguration.selectIMPPsCategory();">
+								<radio value="impp" label="&typesCategoryImppLabel;" accesskey="&typesCategoryImppAccesskey;" selected="true"/>
+								<radio value="tel" label="&typesCategoryTelLabel;" accesskey="&typesCategoryTelAccesskey;"/>
+							</radiogroup>
+						</hbox>
+						
 						<hbox flex="1">
 							<vbox flex="1">
 								<hbox flex="1">
@@ -595,20 +615,7 @@
 								control="dateFormatMenuList"
 								id="dateFormatLabel"/>
 							<menulist id="dateFormatMenuList" preference="extensions.cardbook.dateFormatMenu">  
-								<menupopup id="dateFormatMenuPopup">
-									<menuitem label="YYYY-MM-DD" value="YYYY-MM-DD"/>
-									<menuitem label="YYYY.MM.DD" value="YYYY.MM.DD"/>
-									<menuitem label="YYYY/MM/DD" value="YYYY/MM/DD"/>
-									<menuitem label="YYYYMMDD" value="YYYYMMDD"/>
-									<menuitem label="DD-MM-YYYY" value="DD-MM-YYYY"/>
-									<menuitem label="DD.MM.YYYY" value="DD.MM.YYYY"/>
-									<menuitem label="DD/MM/YYYY" value="DD/MM/YYYY"/>
-									<menuitem label="DDMMYYYY" value="DDMMYYYY"/>
-									<menuitem label="MM-DD-YYYY" value="MM-DD-YYYY"/>
-									<menuitem label="MM.DD.YYYY" value="MM.DD.YYYY"/>
-									<menuitem label="MM/DD/YYYY" value="MM/DD/YYYY"/>
-									<menuitem label="MMDDYYYY" value="MMDDYYYY"/>
-								</menupopup>
+								<menupopup id="dateFormatMenuPopup"/>
 							</menulist>    
 						</hbox>
 					</groupbox>

@@ -21,9 +21,7 @@ if ("undefined" == typeof(wdw_birthdayList)) {
 			var strBundle = document.getElementById("cardbook-strings");
 			var maxDaysUntilNextBirthday = cardbookBirthdaysUtils.getPref("extensions.cardbook.numberOfDaysForSearching");
 			cardbookBirthdaysUtils.loadBirthdays(maxDaysUntilNextBirthday);
-			cardbookBirthdaysUtils.lBirthdayList = cardbookBirthdaysUtils.lBirthdayList.sort(function(a,b) {
-					return a[0] > b[0];
-			});
+			cardbookBirthdaysUtils.lBirthdayList = cardbookUtils.sortArrayByNumber(cardbookBirthdaysUtils.lBirthdayList,0,1);
 
 			// if there are no birthdays in the configured timespan
 			if (cardbookBirthdaysUtils.lBirthdayList.length == 0) {

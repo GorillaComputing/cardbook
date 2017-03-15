@@ -26,9 +26,7 @@ if ("undefined" == typeof(wdw_cardbookConfigurationSearchCard)) {
 					var myCard = cardbookRepository.cardbookDisplayCards[myAddressBookId][i];
 					mySortedContacts.push([myCard.fn, myCard.uid]);
 				}
-				mySortedContacts = mySortedContacts.sort(function(a,b) {
-					return a[0].localeCompare(b[0], 'en', {'sensitivity': 'base'});
-				});
+				mySortedContacts = cardbookUtils.sortArrayByString(mySortedContacts,0,1);
 				for (var i = 0; i < mySortedContacts.length; i++) {
 					var menuItem = document.createElement("menuitem");
 					menuItem.setAttribute("label", mySortedContacts[i][0]);

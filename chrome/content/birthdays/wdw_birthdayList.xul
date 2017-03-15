@@ -3,6 +3,7 @@
 <?xul-overlay href="chrome://cardbook/content/ovl_cardbookStringBundle.xul"?>
 <!DOCTYPE window [
 	<!ENTITY % birthdayListDTD SYSTEM "chrome://cardbook/locale/wdw_birthdayList.dtd"> %birthdayListDTD;
+	<!ENTITY % buttonsDTD SYSTEM "chrome://cardbook/locale/wdw_editionButtons.dtd"> %buttonsDTD;
 ]>
 
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -19,6 +20,7 @@
 
 	<script src="chrome://messenger/content/dateFormat.js"/>
 	<script src="chrome://cardbook/content/cardbookUtils.js"/>
+	<script src="chrome://cardbook/content/preferences/cardbookPreferences.js"/>
 	<script src="chrome://cardbook/content/birthdays/cardbookBirthdaysUtils.js"/>
 	<script src="chrome://cardbook/content/birthdays/wdw_birthdayList.js"/>
 	<script src="chrome://cardbook/content/birthdays/wdw_birthdaySync.js"/>
@@ -49,6 +51,6 @@
 		<button id="sendEmailLabel" label="&sendEmailLabel;" accesskey="&sendEmailAccesskey;" oncommand="wdw_birthdayList.sendEmail();"/>
 		<button id="syncLightningMenuItemLabel" label="&syncLightningMenuItemLabel;" accesskey="&syncLightningMenuAccesskey;" oncommand="wdw_birthdayList.displaySyncList();"/>
 		<button id="configurationButtonLabel" label="&configurationButtonLabel;" accesskey="&configurationButtonAccesskey;" oncommand="wdw_birthdayList.configure();"/>
-		<button id="closeButtonLabel" label="&closeButtonLabel;" accesskey="&closeButtonAccesskey;" oncommand="wdw_birthdayList.do_close();"/>
+		<button id="closeEditionLabel" label="&closeEditionLabel;" accesskey="&closeEditionAccesskey;" oncommand="wdw_birthdayList.do_close();"/>
 	</hbox>
 </window>

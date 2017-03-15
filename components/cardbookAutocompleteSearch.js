@@ -17,8 +17,6 @@ cardbookAutocompleteResult.prototype = {
     defaultIndex: -1,
     errorDescription: null,
 
-    fireOnce: 0,
-
     get matchCount() {
         return this._searchResults.length;
     },
@@ -44,20 +42,7 @@ cardbookAutocompleteResult.prototype = {
     },
 
     getFinalCompleteValueAt: function(aIndex) {
-    	// dont know why thunderbird fires this multiple times
-    	// only the first is correct
-    	if (this.fireOnce === 0) {
-		var loader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Components.interfaces.mozIJSSubScriptLoader);
-		loader.loadSubScript("chrome://cardbook/content/cardbookSynchronization.js");
-		loader.loadSubScript("chrome://cardbook/content/cardbookMailPopularity.js");
-		loader.loadSubScript("chrome://cardbook/content/wdw_log.js");
-
-			var result = this.getValueAt(aIndex);
-			cardbookMailPopularity.updateMailPopularity(result);
-
-			this.fireOnce = 1;
-			return result;
-		}
+    	return this.getValueAt(aIndex);
     },
 
     removeValueAt: function removeValueAt(aRowIndex, aRemoveFromDB) {

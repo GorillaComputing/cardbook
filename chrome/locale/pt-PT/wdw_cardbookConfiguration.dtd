@@ -19,7 +19,9 @@
 <!ENTITY exclusiveAccesskey "U">
 <!ENTITY exclusiveTooltip "Se não seleccionado, a opção pertmite que sejam utilizados contactos das agendas do próprio Thunderbird.">
 <!ENTITY emailsCollectionLabel "Endereços recolhidos de emails enviados">
-<!ENTITY emailsCollectionAccesskey "C">
+<!ENTITY emailsCollectionAccesskey "E">
+<!ENTITY emailsCollectionCatLabel "Adicionar esta categoria à agenda de contactos">
+<!ENTITY emailsCollectionCatAccesskey "C">
 <!ENTITY emailsCollectionTooltip "Melhorar a colecção de emails do Thunderbird. Quando activo, se o email não estiver presente em nenhuma agenda, será adicionado à agenda seleccionada.">
 
 <!ENTITY logGroupboxLabel "Log">

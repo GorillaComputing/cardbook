@@ -37,6 +37,8 @@
 <!ENTITY cardbookToolbarEditButtonTooltip "Contactpersoon wijzigen toestaan">
 <!ENTITY cardbookToolbarRemoveButtonLabel "Contactpersoon verwijderen">
 <!ENTITY cardbookToolbarRemoveButtonTooltip "Contactpersoon verwijderen toestaan">
+<!ENTITY cardbookToolbarPrintButtonLabel "Afdrukvoorbeeld">
+<!ENTITY cardbookToolbarPrintButtonTooltip "Selectie afdrukken">
 <!ENTITY cardbookToolbarAppMenuButtonLabel "CardBook menu">
 <!ENTITY cardbookToolbarAppMenuButtonTooltip "CardBook menu">
 <!ENTITY cardbookToolbarSearchBoxLabel "Contactpersonen zoeken">
@@ -124,7 +126,9 @@
 <!ENTITY localizeadrTreeLabel "Localiseren">
 <!ENTITY toEmailEmailTreeLabel "Email entry">
 <!ENTITY ccEmailEmailTreeLabel "Email entry (copy / cc)">
-<!ENTITY bccemailemailTree "Email entry (blind copy / bcc)">
+<!ENTITY bccemailemailTreeLabel "Email entry (blind copy / bcc)">
+<!ENTITY findemailemailTreeLabel "Zoek e-mails gerelateerd aan dit e-mail adres">
+<!ENTITY findeventemailTreeLabel "Zoek agenda-gebeurtenissen gerelateerd aan dit e-mail adres">
 <!ENTITY openURLTreeLabel "Open URL">
 
 <!ENTITY copyCardTreeLabel "Kopieëren entry">
@@ -135,7 +139,9 @@
 <!ENTITY ccEmailCardFromCardsLabel "Email contactpersoon (copy / cc)">
 <!ENTITY bccEmailCardFromAccountsOrCatsLabel "Email contactpersoon (blind copy / bcc)">
 <!ENTITY bccEmailCardFromCardsLabel "Email contactpersoon (blind copy / bcc)">
+<!ENTITY categoryLabel "Categorie">
 <!ENTITY findEmailsFromCardsLabel "Zoek e-mails van contactpersoon">
+<!ENTITY findEventsFromCardsLabel "Zoek agenda-gebeurtenissen van contactpersoon">
 <!ENTITY localizeCardFromCardsLabel "Localiseren">
 <!ENTITY openURLCardFromCardsLabel "Open URLs van contactpersoon">
 <!ENTITY cutCardFromAccountsOrCatsLabel "Contactpersoon knippen">

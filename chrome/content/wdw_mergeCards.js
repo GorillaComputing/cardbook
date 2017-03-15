@@ -460,6 +460,7 @@ if ("undefined" == typeof(wdw_mergeCards)) {
 			listOfCards = window.arguments[0].cardsIn;
 			aCard.version = wdw_mergeCards.version;
 			aCard.dirPrefId = listOfCards[0].dirPrefId;
+			cardbookUtils.setCardUUID(aCard);
 			listOfFields = [ 'dirPrefId' ];
 			for (var i in listOfFields) {
 				for (var j = 0; j < listOfCards.length; j++) {
@@ -566,9 +567,9 @@ if ("undefined" == typeof(wdw_mergeCards)) {
 		},
 
 		save: function () {
-			var myNewCard = new cardbookCardParser();
-			wdw_mergeCards.calculateResult(myNewCard);
-			window.arguments[0].cardsOut = [myNewCard];
+			var myOutCard = new cardbookCardParser();
+			wdw_mergeCards.calculateResult(myOutCard);
+			window.arguments[0].cardsOut = [myOutCard];
 			close();
 		},
 

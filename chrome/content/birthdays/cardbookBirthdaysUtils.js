@@ -515,15 +515,15 @@ if ("undefined" == typeof(cardbookBirthdaysUtils)) {
 			var loader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Components.interfaces.mozIJSSubScriptLoader);
 			loader.loadSubScript("chrome://cardbook/content/wdw_log.js");
 			loader.loadSubScript("chrome://cardbook/content/cardbookUtils.js");
-			var dateFormat=cardbookBirthdaysUtils.getPref("extensions.cardbook.dateFormatMenu");
 			var myContact = cardbookBirthdaysUtils.getPref("extensions.cardbook.addressBooksNameList");
 			var searchInNote = cardbookBirthdaysUtils.getPref("extensions.cardbook.searchInNote");
-			var dateFormat = cardbookBirthdaysUtils.getPref("extensions.cardbook.dateFormatMenu");
 			cardbookBirthdaysUtils.lBirthdayList = [];
 			
 			for (var i = 0; i < cardbookRepository.cardbookAccounts.length; i++) {
 				if (cardbookRepository.cardbookAccounts[i][1] && cardbookRepository.cardbookAccounts[i][5] && (cardbookRepository.cardbookAccounts[i][6] != "SEARCH")) {
 					var myDirPrefId = cardbookRepository.cardbookAccounts[i][4];
+					var cardbookPrefService = new cardbookPreferenceService(myDirPrefId);
+					var dateFormat = cardbookPrefService.getDateFormat();
 					if ((myContact.indexOf(myDirPrefId) >= 0 ) || (myContact === "allAddressBooks")) {
 						var myDirPrefName = cardbookUtils.getPrefNameFromPrefId(myDirPrefId);
 						for (var j = 0; j < cardbookRepository.cardbookDisplayCards[myDirPrefId].length; j++) {

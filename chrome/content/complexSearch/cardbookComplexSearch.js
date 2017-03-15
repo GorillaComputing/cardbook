@@ -89,7 +89,7 @@ if ("undefined" == typeof(cardbookComplexSearch)) {
 					}
 				}
 			}
-			wdw_cardbook.selectAccountOrCat();
+			wdw_cardbook.displaySearch(aParams.aListOfCards);
 		},
 
 		buildEngine: function (aData) {
@@ -261,7 +261,7 @@ if ("undefined" == typeof(cardbookComplexSearch)) {
 			}
 		},
 
-		startComplexSearch: function (aPrefId) {
+		startComplexSearch: function (aPrefId, aListOfCards) {
 			cardbookRepository.cardbookSearchValue=cardbookRepository.cardbookComplexSearchMode;
 			cardbookRepository.cardbookDisplayCards[cardbookRepository.cardbookSearchValue] = [];
 			var myFile = cardbookRepository.getRuleFile(aPrefId);
@@ -269,6 +269,7 @@ if ("undefined" == typeof(cardbookComplexSearch)) {
 				var params = {};
 				params["showError"] = true;
 				params["aPrefId"] = aPrefId;
+				params["aListOfCards"] = aListOfCards;
 				cardbookSynchronization.getFileDataAsync(myFile.path, cardbookComplexSearch.searchEngine, params);
 			}
 		},

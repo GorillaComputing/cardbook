@@ -20,6 +20,8 @@
 <!ENTITY exclusiveTooltip "Falls deaktiviert, ermöglicht diese Einstellung die Zuordnung von Kontakten aus den Standardadressbüchern von Thunderbird für die Gelben Sterne, die Anzeigenamen und die Autovervollständigung.">
 <!ENTITY emailsCollectionLabel "Sammlung ausgehender Email-Adressen">
 <!ENTITY emailsCollectionAccesskey "S">
+<!ENTITY emailsCollectionCatLabel "Füge diese Kategorie zu den gesammelten Kontakten hinzu">
+<!ENTITY emailsCollectionCatAccesskey "K">
 <!ENTITY emailsCollectionTooltip "Erweitert die standardmäßige Sammlung ausgehender Email-Adressen in Thunderbird. Falls aktiviert, werden Email-Adressen, die nicht in einem Adressbuch von Cardbook vorhanden sind, automatisch den ausgewählten Adressbüchern hinzufügt.">
 
 <!ENTITY logGroupboxLabel "Log">

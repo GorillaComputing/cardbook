@@ -37,6 +37,8 @@
 <!ENTITY cardbookToolbarEditButtonTooltip "Permetti la modifica dei contatti">
 <!ENTITY cardbookToolbarRemoveButtonLabel "Elimina contatto">
 <!ENTITY cardbookToolbarRemoveButtonTooltip "Permetti l'eliminazione dei contatti">
+<!ENTITY cardbookToolbarPrintButtonLabel "Anteprima di stampa">
+<!ENTITY cardbookToolbarPrintButtonTooltip "Stampare la selezione">
 <!ENTITY cardbookToolbarAppMenuButtonLabel "Menu CardBook">
 <!ENTITY cardbookToolbarAppMenuButtonTooltip "Menu CardBook">
 <!ENTITY cardbookToolbarSearchBoxLabel "Ricerca contatti">
@@ -124,7 +126,9 @@
 <!ENTITY localizeadrTreeLabel "Localizza">
 <!ENTITY toEmailEmailTreeLabel "Usa email">
 <!ENTITY ccEmailEmailTreeLabel "Usa email (in copia/CC)">
-<!ENTITY bccemailemailTree "Usa email (in copia nascosta/BCC)">
+<!ENTITY bccemailemailTreeLabel "Usa email (in copia nascosta/BCC)">
+<!ENTITY findemailemailTreeLabel "Trova email collegate a questo indirizzo email">
+<!ENTITY findeventemailTreeLabel "Trova eventi del calendario collegati a questo indirizzo email">
 <!ENTITY openURLTreeLabel "Apri URL">
 
 <!ENTITY copyCardTreeLabel "Usa in copia">
@@ -135,7 +139,9 @@
 <!ENTITY ccEmailCardFromCardsLabel "Contatti email (in copia/CC)">
 <!ENTITY bccEmailCardFromAccountsOrCatsLabel "Contatti email (in copia nascosta/BCC)">
 <!ENTITY bccEmailCardFromCardsLabel "Contatti email (in copia nascosta/BCC)">
-<!ENTITY findEmailsFromCardsLabel "??Find contact emails??">
+<!ENTITY categoryLabel "Categoria">
+<!ENTITY findEmailsFromCardsLabel "Trova email collegate a questo contatto">
+<!ENTITY findEventsFromCardsLabel "Trova eventi del calendario collegati a questo contatto">
 <!ENTITY localizeCardFromCardsLabel "Localizza">
 <!ENTITY openURLCardFromCardsLabel "Apri URL da contatto">
 <!ENTITY cutCardFromAccountsOrCatsLabel "Taglia contatto">

@@ -68,6 +68,8 @@
 									accesskey="&buttonAppendToListAccesskey;" oncommand="wdw_csvTranslator.modifyLists(this);"/>
 							<button class="cardbookButtonClass" id="deletelistaddedColumnsTreeButton" label="&buttonRemoveFromListLabel;"
 									accesskey="&buttonRemoveFromListAccesskey;" oncommand="wdw_csvTranslator.modifyLists(this);"/>
+							<button class="cardbookButtonClass" id="upAddedColumnsTreeButton" label="↑" oncommand="wdw_csvTranslator.upColumns();"/>
+							<button class="cardbookButtonClass" id="downAddedColumnsTreeButton" label="↓" oncommand="wdw_csvTranslator.downColumns(this);"/>
 						</vbox>
 					</hbox>
 				</vbox>

@@ -164,62 +164,6 @@ if ("undefined" == typeof(wdw_findDuplicates)) {
 			}
 		},
 		
-		saveCard: function (aCard) {
-			var cardbookPrefService = new cardbookPreferenceService(aCard.dirPrefId);
-			var myDirPrefIdName = cardbookPrefService.getName();
-			var myDirPrefIdType = cardbookPrefService.getType();
-			var myDirPrefIdUrl = cardbookPrefService.getUrl();
-			aCard.uid = cardbookUtils.getUUID();
-			cardbookUtils.setCalculatedFields(aCard);
-
-			if (myDirPrefIdType === "CACHE" || myDirPrefIdType === "DIRECTORY") {
-				cardbookRepository.addCardToRepository(aCard, "WINDOW", cardbookUtils.getFileCacheNameFromCard(aCard, myDirPrefIdType));
-			} else if (myDirPrefIdType === "FILE") {
-				cardbookRepository.addCardToRepository(aCard, "WINDOW");
-				cardbookSynchronization.writeCardsToFile(myDirPrefIdUrl, cardbookRepository.cardbookDisplayCards[aCard.dirPrefId], true);
-			} else {
-				cardbookUtils.addTagCreated(aCard);
-				cardbookUtils.addEtag(aCard, "0");
-				cardbookRepository.addCardToRepository(aCard, "WINDOW", cardbookUtils.getFileCacheNameFromCard(aCard, myDirPrefIdType));
-			}
-			cardbookUtils.formatStringForOutput("cardCreatedOK", [myDirPrefIdName, aCard.fn]);
-			wdw_cardbooklog.addActivity("cardCreatedOK", [myDirPrefIdName, aCard.fn], "addItem");
-		},
-
-		deleteCards: function (aCardList) {
-			var listOfFileToRewrite = [];
-
-			for (var i = 0; i < aCardList.length; i++) {
-				cardbookUtils.jsInclude(["chrome://cardbook/content/preferences/cardbookPreferences.js"]);
-				var cardbookPrefService = new cardbookPreferenceService(aCardList[i].dirPrefId);
-				var myDirPrefIdName = cardbookPrefService.getName();
-				var myDirPrefIdType = cardbookPrefService.getType();
-				if (myDirPrefIdType === "FILE") {
-					cardbookRepository.removeCardFromRepository(aCardList[i], false);
-					listOfFileToRewrite.push(aCardList[i].dirPrefId);
-				} else if (myDirPrefIdType === "CACHE" || myDirPrefIdType === "DIRECTORY") {
-					cardbookRepository.removeCardFromRepository(aCardList[i], true);
-				} else {
-					if (cardbookUtils.searchTagCreated(aCardList[i])) {
-						cardbookRepository.removeCardFromRepository(aCardList[i], true);
-					} else {
-						cardbookUtils.addTagDeleted(aCardList[i]);
-						cardbookRepository.addCardToCache(aCardList[i], "WINDOW", cardbookUtils.getFileCacheNameFromCard(aCardList[i]));
-						cardbookRepository.removeCardFromRepository(aCardList[i], false);
-					}
-				}
-				cardbookUtils.formatStringForOutput("cardDeletedOK", [myDirPrefIdName, aCardList[i].fn]);
-				wdw_cardbooklog.addActivity("cardDeletedOK", [myDirPrefIdName, aCardList[i].fn], "deleteMail");
-			}
-			
-			listOfFileToRewrite = cardbookRepository.arrayUnique(listOfFileToRewrite);
-			for (var i = 0; i < listOfFileToRewrite.length; i++) {
-				var cardbookPrefService = new cardbookPreferenceService(listOfFileToRewrite[i]);
-				var myDirPrefIdUrl = cardbookPrefService.getUrl();
-				cardbookSynchronization.writeCardsToFile(myDirPrefIdUrl, cardbookRepository.cardbookDisplayCards[listOfFileToRewrite[i]], true);
-			}
-		},
-
 		createRow: function (aParent) {
 			var aRow = document.createElement('row');
 			aParent.appendChild(aRow);
@@ -248,10 +192,14 @@ if ("undefined" == typeof(wdw_findDuplicates)) {
 				var myArgs = {cardsIn: wdw_findDuplicates.gResults[this.id], cardsOut: [], hideCreate: false, action: ""};
 				var myWindow = window.openDialog("chrome://cardbook/content/wdw_mergeCards.xul", "", "chrome,modal,resizable,centerscreen", myArgs);
 				if (myArgs.action == "CREATE") {
-					wdw_findDuplicates.saveCard(myArgs.cardsOut[0]);
+					var myNullCard = new cardbookCardParser();
+					cardbookRepository.saveCard(myNullCard, myArgs.cardsOut[0], "cardbook.cardAddedIndirect");
+					cardbookRepository.reWriteFiles([myArgs.cardsOut[0].dirPrefId]);
 				} else if (myArgs.action == "CREATEANDREPLACE") {
-					wdw_findDuplicates.saveCard(myArgs.cardsOut[0]);
-					wdw_findDuplicates.deleteCards(myArgs.cardsIn);
+					var myNullCard = new cardbookCardParser();
+					cardbookRepository.deleteCards(myArgs.cardsIn);
+					cardbookRepository.saveCard(myNullCard, myArgs.cardsOut[0], "cardbook.cardAddedIndirect");
+					cardbookRepository.reWriteFiles([myArgs.cardsOut[0].dirPrefId]);
 				}
 				wdw_findDuplicates.load();
 			};

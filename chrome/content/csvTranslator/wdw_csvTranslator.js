@@ -3,6 +3,90 @@ if ("undefined" == typeof(wdw_csvTranslator)) {
 
 		cardbookeditlists : {},
 		blankColumn : "",
+		nIntervId : "",
+
+		getSelectedLines: function (aTreeName) {
+			var myTree = document.getElementById(aTreeName + 'Tree');
+			var listOfSelected = {};
+			var numRanges = myTree.view.selection.getRangeCount();
+			var start = new Object();
+			var end = new Object();
+			var count = 0;
+			for (var i = 0; i < numRanges; i++) {
+				myTree.view.selection.getRangeAt(i,start,end);
+				for (var j = start.value; j <= end.value; j++){
+					listOfSelected[j] = true;
+					count++;
+				}
+			}
+			return {lines: listOfSelected, total: count};
+		},
+
+		upColumns: function () {
+			var myTreeName = "addedColumns";
+			var myTree = document.getElementById(myTreeName + 'Tree');
+			var listOfSelected = {};
+			listOfSelected = wdw_csvTranslator.getSelectedLines(myTreeName);
+			var first = true;
+			var found = false;
+			for (var i = 0; i < wdw_csvTranslator.cardbookeditlists[myTreeName].length; i++) {
+				if (listOfSelected.lines[i]) {
+					if (!first) {
+						var temp = wdw_csvTranslator.cardbookeditlists[myTreeName][i-1];
+						wdw_csvTranslator.cardbookeditlists[myTreeName][i-1] = wdw_csvTranslator.cardbookeditlists[myTreeName][i];
+						wdw_csvTranslator.cardbookeditlists[myTreeName][i] = temp;
+						found = true;
+					}
+				} else {
+					first = false;
+				}
+			}
+			wdw_csvTranslator.displayListTrees(myTreeName);
+			for (var i = 0; i < wdw_csvTranslator.cardbookeditlists[myTreeName].length; i++) {
+				if (!found && listOfSelected.lines[i]) {
+					myTree.view.selection.rangedSelect(i,i,true);
+				} else {
+					if (listOfSelected.lines[i] && i == 0) {
+						myTree.view.selection.rangedSelect(i,i,true);
+					} else if (listOfSelected.lines[i]) {
+						myTree.view.selection.rangedSelect(i-1,i-1,true);
+					}
+				}
+			}
+		},
+
+		downColumns: function () {
+			var myTreeName = "addedColumns";
+			var myTree = document.getElementById(myTreeName + 'Tree');
+			var listOfSelected = {};
+			listOfSelected = wdw_csvTranslator.getSelectedLines(myTreeName);
+			var first = true;
+			var found = false;
+			for (var i = wdw_csvTranslator.cardbookeditlists[myTreeName].length-1; i >= 0; i--) {
+				if (listOfSelected.lines[i]) {
+					if (!first) {
+						var temp = wdw_csvTranslator.cardbookeditlists[myTreeName][i+1];
+						wdw_csvTranslator.cardbookeditlists[myTreeName][i+1] = wdw_csvTranslator.cardbookeditlists[myTreeName][i];
+						wdw_csvTranslator.cardbookeditlists[myTreeName][i] = temp;
+						found = true;
+					}
+				} else {
+					first = false;
+				}
+			}
+			wdw_csvTranslator.displayListTrees(myTreeName);
+			for (var i = 0; i < wdw_csvTranslator.cardbookeditlists[myTreeName].length; i++) {
+				if (!found && listOfSelected.lines[i]) {
+					myTree.view.selection.rangedSelect(i,i,true);
+				} else {
+					if (listOfSelected.lines[i] && i == wdw_csvTranslator.cardbookeditlists[myTreeName].length-1) {
+						myTree.view.selection.rangedSelect(i,i,true);
+					} else if (listOfSelected.lines[i]) {
+						myTree.view.selection.rangedSelect(i+1,i+1,true);
+					}
+				}
+			}
+		},
 
 		displayListTrees: function (aTreeName) {
 			var availableCardsTreeView = {
@@ -89,11 +173,33 @@ if ("undefined" == typeof(wdw_csvTranslator)) {
 			wdw_csvTranslator.displayListTrees("foundColumns");
 		},
 
+		windowControlShowing: function () {
+			var myTreeName = "addedColumns";
+			var listOfSelected = {};
+			listOfSelected = wdw_csvTranslator.getSelectedLines("addedColumns");
+			if (listOfSelected.total > 0) {
+				document.getElementById('upAddedColumnsTreeButton').disabled = false;
+				document.getElementById('downAddedColumnsTreeButton').disabled = false;
+			} else {
+				document.getElementById('upAddedColumnsTreeButton').disabled = true;
+				document.getElementById('downAddedColumnsTreeButton').disabled = true;
+			}
+		},
+
+		setSyncControl: function () {
+			wdw_csvTranslator.nIntervId = setInterval(wdw_csvTranslator.windowControlShowing, 500);
+		},
+
+		clearSyncControl: function () {
+			clearInterval(wdw_csvTranslator.nIntervId);
+		},
+
 		load: function () {
 			Components.utils.import("chrome://cardbook/content/cardbookRepository.js");
+			wdw_csvTranslator.setSyncControl();
 
 			var strBundle = document.getElementById("cardbook-strings");
-			document.title = strBundle.getString(window.arguments[0].mode + "MappingTittle");
+			document.title = strBundle.getString(window.arguments[0].mode + "MappingTitle");
 			document.getElementById('availableColumnsGroupboxLabel').label = strBundle.getString(window.arguments[0].mode + "availableColumnsGroupboxLabel");
 			document.getElementById('addedColumnsGroupboxLabel').label = strBundle.getString(window.arguments[0].mode + "addedColumnsGroupboxLabel");
 			document.getElementById('columnSeparatorLabel').value = strBundle.getString("columnSeparatorLabel");
@@ -137,11 +243,16 @@ if ("undefined" == typeof(wdw_csvTranslator)) {
 					return;
 				}
 			}
-			close();
+			wdw_csvTranslator.close();
 		},
 
 		cancel: function () {
 			window.arguments[0].action = "CANCEL";
+			wdw_csvTranslator.close();
+		},
+
+		close: function () {
+			wdw_csvTranslator.clearSyncControl();
 			close();
 		}
 

@@ -20,6 +20,8 @@
 <!ENTITY exclusiveTooltip "Si décochée, cette option permet la recherche des contacts dans les carnets d'adresses standards de Thunderbird pour les étoiles jaunes, pour le nom affiché des emails et la suggestion d'emails.">
 <!ENTITY emailsCollectionLabel "Collecte des emails sortants">
 <!ENTITY emailsCollectionAccesskey "C">
+<!ENTITY emailsCollectionCatLabel "Ajouter cette catégorie aux contacts collectés">
+<!ENTITY emailsCollectionCatAccesskey "t">
 <!ENTITY emailsCollectionTooltip "S'ajoute à la collecte d'emails standard. Si active, les emails, qui ne sont pas présents dans les carnets d'adresses CardBook, vont être ajoutés dans le ou les carnet d'adresses choisi(s).">
 
 <!ENTITY logGroupboxLabel "Log">

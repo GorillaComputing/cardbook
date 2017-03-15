@@ -20,6 +20,8 @@
 <!ENTITY exclusiveTooltip "Pokud je zakázáno, tato možnost dovolí Thunderbirdu získat údaje pro žluté hvězdy, zobrazované jméno e-mailů a dokončování z standardního adresáře.">
 <!ENTITY emailsCollectionLabel "Sbírat odchozí e-mail">
 <!ENTITY emailsCollectionAccesskey "S">
+<!ENTITY emailsCollectionCatLabel "Ke sesbíraným kontaktům přidat tuto kategorii">
+<!ENTITY emailsCollectionCatAccesskey "K">
 <!ENTITY emailsCollectionTooltip "Rozšiřuje standardní sběr odchozích adres Thunderbirdu. Pokud je povoleno, e-mailové adresy nevyskytující se v žádném adresáři CardBooku budou přidány do vybraného adresáře(ů).">
 
 <!ENTITY logGroupboxLabel "Protokol">

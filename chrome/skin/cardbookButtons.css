@@ -38,6 +38,14 @@ toolbar[iconsize="small"] #cardbookToolbarRemoveButton {
 	list-style-image: url("chrome://cardbook/skin/remove_16_16.png");
 }
 
+#cardbookToolbarPrintButton {
+	list-style-image: url("chrome://cardbook/skin/print_24_24.png");
+}
+
+toolbar[iconsize="small"] #cardbookToolbarPrintButton {
+	list-style-image: url("chrome://cardbook/skin/print_16_16.png");
+}
+
 #cardbookToolbarEditButton {
 	list-style-image: url("chrome://cardbook/skin/edit_24_24.png");
 }

@@ -97,9 +97,7 @@ if ("undefined" == typeof(cardbookElementTools)) {
 					sortedAddressBooks.push([contact.dirName, contact.dirPrefId]);
 				}
 			}
-			sortedAddressBooks = sortedAddressBooks.sort(function(a,b) {
-				return a[0].localeCompare(b[0], 'en', {'sensitivity': 'base'});
-			});
+			sortedAddressBooks = cardbookUtils.sortArrayByString(sortedAddressBooks,0,1);
 			for (var i = 0; i < sortedAddressBooks.length; i++) {
 				var menuItem = document.createElement("menuitem");
 				menuItem.setAttribute("label", sortedAddressBooks[i][0]);
@@ -160,15 +158,31 @@ if ("undefined" == typeof(cardbookElementTools)) {
 					sortedCategories.push([cardbookRepository.cardbookAccountsCategories[aDefaultPrefId][i], aDefaultPrefId+"::"+cardbookRepository.cardbookAccountsCategories[aDefaultPrefId][i]]);
 				}
 			}
-			sortedCategories = sortedCategories.sort(function(a,b) {
-				return a[0].localeCompare(b[0], 'en', {'sensitivity': 'base'});
-			});
+			sortedCategories = cardbookUtils.sortArrayByString(sortedCategories,0,1);
 			for (var i = 0; i < sortedCategories.length; i++) {
 				var menuItem = document.createElement("menuitem");
 				menuItem.setAttribute("label", sortedCategories[i][0]);
 				menuItem.setAttribute("value", sortedCategories[i][1]);
 				myPopup.appendChild(menuItem);
 				if (sortedCategories[i][1] == aDefaultCatId) {
+					defaultIndex=j;
+				}
+				j++;
+			}
+			document.getElementById(aMenuName).selectedIndex = defaultIndex;
+		},
+
+		loadDateFormats: function (aPopupName, aMenuName, aDefaultValue) {
+			var myPopup = document.getElementById(aPopupName);
+			cardbookElementTools.deleteRows(aPopupName);
+			var defaultIndex = 0;
+			var j = 0;
+			for (var i = 0; i < cardbookRepository.dateFormats.length; i++) {
+				var menuItem = document.createElement("menuitem");
+				menuItem.setAttribute("label", cardbookRepository.dateFormats[i]);
+				menuItem.setAttribute("value", cardbookRepository.dateFormats[i]);
+				myPopup.appendChild(menuItem);
+				if (cardbookRepository.dateFormats[i] == aDefaultValue) {
 					defaultIndex=j;
 				}
 				j++;
@@ -322,7 +336,7 @@ if ("undefined" == typeof(cardbookElementTools)) {
 			aEditButton.setAttribute('class', 'small-button');
 			aEditButton.setAttribute('tooltiptext', strBundle.getString(aButtonType + "EntryTooltip"));
 			aEditButton.addEventListener("click", aFunction, false);
-			aEditButton.addEventListener("input", aFunction, false);
+			aEditButton.addEventListener("command", aFunction, false);
 		}
 	};
 

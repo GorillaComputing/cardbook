@@ -3,5 +3,3 @@
 <!ENTITY existingLabel "Huidig">
 <!ENTITY failedLabel "Mislukt">
 <!ENTITY succeededLabel "Gelukt">
-<!ENTITY closeButtonLabel "Sluiten">
-<!ENTITY closeButtonAccesskey "S">

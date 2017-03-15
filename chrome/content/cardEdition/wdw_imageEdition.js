@@ -55,19 +55,17 @@ if ("undefined" == typeof(wdw_imageEdition)) {
 			if (document.getElementById('photolocalURITextBox').value == "") {
 				var myFile = cardbookUtils.callFilePicker("imageSelectionTitle", "OPEN", "IMAGES");
 				var myExtension = cardbookUtils.getExtension(myFile.path);
-				var myExtensionLower = myExtension.toLowerCase();
-				if (myExtensionLower == "jpg" || myExtensionLower == "jpeg" || myExtensionLower == "png" || myExtensionLower == "gif") {
-					var myCard = window.arguments[0].cardIn;
-					var targetFile = cardbookUtils.getEditionPhotoTempFile(myExtensionLower);
+				if (myExtension != "") {
+					var myCard = wdw_cardEdition.workingCard;
+					myExtension = cardbookUtils.formatExtension(myExtension, myCard.version);
+					var targetFile = cardbookUtils.getEditionPhotoTempFile(myExtension);
 					var ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 					var myFileURISpec = "file:///" + targetFile.path;
 					var myFileURI = ioService.newURI(myFileURISpec, null, null);
 					var myFile1 = myFileURI.QueryInterface(Components.interfaces.nsIFileURL).file;
-					myFile.copyToFollowingLinks(myFile1.parent,myFile1.leafName);
+					myFile.copyToFollowingLinks(myFile1.parent, myFile1.leafName);
 					cardbookUtils.formatStringForOutput("imageSavedToFile", [myFile1.path]);
-					wdw_imageEdition.addImageCard(myFile1, myCard, myExtensionLower);
-				} else {
-					cardbookUtils.formatStringForOutput("imageWrongFormat", [myUrlExtension]);
+					wdw_imageEdition.addImageCard(myFile1, myCard, myExtension);
 				}
 			}
 		},
@@ -76,10 +74,10 @@ if ("undefined" == typeof(wdw_imageEdition)) {
 			if (document.getElementById('photolocalURITextBox').value == "") {
 				var myUrl = cardbookUtils.clipboardGet();
 				var myExtension = cardbookUtils.getExtension(myUrl);
-				var myExtensionLower = myExtension.toLowerCase();
-				if (myExtensionLower == "jpg" || myExtensionLower == "jpeg" || myExtensionLower == "png" || myExtensionLower == "gif") {
-					var myCard = window.arguments[0].cardIn;
-					var targetFile = cardbookUtils.getEditionPhotoTempFile(myExtensionLower);
+				if (myExtension != "") {
+					var myCard = wdw_cardEdition.workingCard;
+					myExtension = cardbookUtils.formatExtension(myExtension, myCard.version);
+					var targetFile = cardbookUtils.getEditionPhotoTempFile(myExtension);
 					
 					Components.utils.import("resource://gre/modules/Downloads.jsm");
 					Components.utils.import("resource://gre/modules/Task.jsm");
@@ -91,26 +89,24 @@ if ("undefined" == typeof(wdw_imageEdition)) {
 							
 							// Do something with the saved files.
 							cardbookUtils.formatStringForOutput("urlDownloaded", [myUrl]);
-							wdw_imageEdition.addImageCard(targetFile, myCard, myExtensionLower);
+							wdw_imageEdition.addImageCard(targetFile, myCard, myExtension);
 						});
 					}
 					catch(e) {
 						cardbookUtils.formatStringForOutput("imageErrorWithMessage", [e]);
 					}
-				} else {
-					cardbookUtils.formatStringForOutput("imageWrongFormat", [myUrlExtension]);
 				}
 			}
 		},
 
 		addImageCardFromClipboard: function () {
 			if (document.getElementById('photolocalURITextBox').value == "") {
-				var myExtensionLower = "png";
-				var myCard = window.arguments[0].cardIn;
-				var targetFile = cardbookUtils.getEditionPhotoTempFile(myExtensionLower);
+				var myExtension = "png";
+				var myCard = wdw_cardEdition.workingCard;
+				var targetFile = cardbookUtils.getEditionPhotoTempFile(myExtension);
 				var myResult = cardbookUtils.clipboardGetImage(targetFile);
 				if (myResult) {
-					wdw_imageEdition.addImageCard(targetFile, myCard, myExtensionLower);
+					wdw_imageEdition.addImageCard(targetFile, myCard, myExtension);
 				} else {
 					cardbookUtils.formatStringForOutput("imageError");
 				}
@@ -119,13 +115,18 @@ if ("undefined" == typeof(wdw_imageEdition)) {
 
 		addImageCard: function (aFile, aCard, aExtension) {
 			if (aFile != null && aFile !== undefined && aFile != "") {
+				if (aCard.version === "4.0") {
+					aExtension = aExtension.toLowerCase();
+				} else {
+					aExtension = aExtension.toUpperCase();
+				}
 				document.getElementById('photoURITextBox').value = "";
 				document.getElementById('photolocalURITextBox').value = "file:///" + aFile.path;
 				document.getElementById('photoExtensionTextBox').value = aExtension;
-				window.arguments[0].cardIn.photo.URI = "";
-				window.arguments[0].cardIn.photo.localURI = "file:///" + aFile.path;
-				window.arguments[0].cardIn.photo.extension = aExtension;
-				wdw_imageEdition.displayImageCard(window.arguments[0].cardIn, true);
+				wdw_cardEdition.workingCard.photo.URI = "";
+				wdw_cardEdition.workingCard.photo.localURI = "file:///" + aFile.path;
+				wdw_cardEdition.workingCard.photo.extension = aExtension;
+				wdw_imageEdition.displayImageCard(wdw_cardEdition.workingCard, true);
 			}
 		},
 
@@ -148,10 +149,10 @@ if ("undefined" == typeof(wdw_imageEdition)) {
 			document.getElementById('defaultCardImage').src = "chrome://cardbook/skin/missing_photo_200_214.png";
 			document.getElementById('photolocalURITextBox').value = "";
 			document.getElementById('photoURITextBox').value = "";
-			window.arguments[0].cardIn.photo.URI = "";
-			window.arguments[0].cardIn.photo.localURI = "";
-			window.arguments[0].cardIn.photo.extension = "";
-			wdw_imageEdition.displayImageCard(window.arguments[0].cardIn, true);
+			wdw_cardEdition.workingCard.photo.URI = "";
+			wdw_cardEdition.workingCard.photo.localURI = "";
+			wdw_cardEdition.workingCard.photo.extension = "";
+			wdw_imageEdition.displayImageCard(wdw_cardEdition.workingCard, true);
 		},
 
 		imageCardContextShowing: function () {

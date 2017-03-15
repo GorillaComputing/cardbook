@@ -37,6 +37,8 @@
 <!ENTITY cardbookToolbarEditButtonTooltip "Permet la modification d'un contact">
 <!ENTITY cardbookToolbarRemoveButtonLabel "Supprimer le contact">
 <!ENTITY cardbookToolbarRemoveButtonTooltip "Permet la suppression d'un contact">
+<!ENTITY cardbookToolbarPrintButtonLabel "Aperçu avant impression">
+<!ENTITY cardbookToolbarPrintButtonTooltip "Permet d'imprimer la sélection">
 <!ENTITY cardbookToolbarAppMenuButtonLabel "Menu CardBook">
 <!ENTITY cardbookToolbarAppMenuButtonTooltip "Menu CardBook">
 <!ENTITY cardbookToolbarSearchBoxLabel "Recherche des contacts">
@@ -92,7 +94,7 @@
 <!ENTITY etagColumnLabel "Etag">
 
 <!ENTITY categoriesGroupboxLabel "Catégories">
-<!ENTITY noteTabLabel "Note">
+<!ENTITY noteTabLabel "Notes">
 
 <!ENTITY miscGroupboxLabel "Divers">
 <!ENTITY othersGroupboxLabel "Autres">
@@ -124,7 +126,9 @@
 <!ENTITY localizeadrTreeLabel "Localiser">
 <!ENTITY toEmailEmailTreeLabel "Envoyer un email">
 <!ENTITY ccEmailEmailTreeLabel "Envoyer un email (copie / cc)">
-<!ENTITY bccemailemailTree "Envoyer un email (copie cachée / bcc)">
+<!ENTITY bccemailemailTreeLabel "Envoyer un email (copie cachée / bcc)">
+<!ENTITY findemailemailTreeLabel "Trouver les emails de cette adresse email">
+<!ENTITY findeventemailTreeLabel "Trouver les rendez-vous de cette adresse email">
 <!ENTITY openURLTreeLabel "Ouvrir l'URL">
 
 <!ENTITY copyCardTreeLabel "Copier cette ligne">
@@ -135,7 +139,9 @@
 <!ENTITY ccEmailCardFromCardsLabel "Envoyer des emails (copie / cc)">
 <!ENTITY bccEmailCardFromAccountsOrCatsLabel "Envoyer des emails (copie cachée / bcc)">
 <!ENTITY bccEmailCardFromCardsLabel "Envoyer des emails (copie cachée / bcc)">
+<!ENTITY categoryLabel "Catégorie">
 <!ENTITY findEmailsFromCardsLabel "Trouver les emails du contact">
+<!ENTITY findEventsFromCardsLabel "Trouver les rendez-vous du contact">
 <!ENTITY localizeCardFromCardsLabel "Localiser le contact">
 <!ENTITY openURLCardFromCardsLabel "Ouvrir les URLs du contact">
 <!ENTITY cutCardFromAccountsOrCatsLabel "Couper le contact">
@@ -157,4 +163,4 @@
 <!ENTITY syncAccountFromAccountsOrCatsLabel "Synchroniser le carnet d'adresses">
 <!ENTITY removeAccountFromAccountsOrCatsLabel "Supprimer le carnet d'adresses">
 
-<!ENTITY IMPPMenuLabel "Connecter">
+<!ENTITY IMPPMenuLabel "Connecter à">

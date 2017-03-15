@@ -10,7 +10,9 @@
 <!ENTITY validateEditionAccesskey "V">
 <!ENTITY cancelEditionLabel "Annuleren">
 <!ENTITY cancelEditionAccesskey "A">
-<!ENTITY buttonAppendToListLabel "Toevoegen">
-<!ENTITY buttonAppendToListAccesskey "T">
+<!ENTITY closeEditionLabel "Sluiten">
+<!ENTITY closeEditionAccesskey "S">
+<!ENTITY buttonAppendToListLabel "Afdrukken">
+<!ENTITY buttonAppendToListAccesskey "A">
 <!ENTITY buttonRemoveFromListLabel "Verwijderen">
 <!ENTITY buttonRemoveFromListAccesskey "W">

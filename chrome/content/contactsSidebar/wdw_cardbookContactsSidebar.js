@@ -1,4 +1,126 @@
 if ("undefined" == typeof(wdw_cardbookContactsSidebar)) {
+	var CardBookResultsPaneObserver = {
+		onDragStart: function (aEvent, aXferData, aDragAction) {
+			var listOfEmails = wdw_cardbookContactsSidebar.getSelectedEmails();
+			aXferData.data = new TransferData();
+			aXferData.data.addDataForFlavour("text/x-moz-address", listOfEmails.join(", "));
+			aXferData.data.addDataForFlavour("text/unicode", listOfEmails.join(", "));
+			aDragAction.action = Components.interfaces.nsIDragService.DRAGDROP_ACTION_COPY;
+		},
+	
+		onDrop: function (aEvent, aXferData, aDragSession) {},
+		onDragExit: function (aEvent, aDragSession) {},
+		onDragOver: function (aEvent, aFlavour, aDragSession) {},
+		getSupportedFlavours: function () {
+			return null;
+		}
+	};
+	
+	var myCardBookObserver = {
+		register: function() {
+			var observerService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+			observerService.addObserver(this, "cardbook.catModifiedIndirect", false);
+			observerService.addObserver(this, "cardbook.catModifiedDirect", false);
+			observerService.addObserver(this, "cardbook.catRemovedIndirect", false);
+			observerService.addObserver(this, "cardbook.catRemovedDirect", false);
+			observerService.addObserver(this, "cardbook.catAddedIndirect", false);
+			observerService.addObserver(this, "cardbook.catAddedDirect", false);
+
+			observerService.addObserver(this, "cardbook.ABAddedDirect", false);
+			observerService.addObserver(this, "cardbook.ABRemovedDirect", false);
+			observerService.addObserver(this, "cardbook.ABModifiedDirect", false);
+
+			observerService.addObserver(this, "cardbook.cardAddedIndirect", false);
+			observerService.addObserver(this, "cardbook.cardAddedDirect", false);
+			observerService.addObserver(this, "cardbook.cardRemovedIndirect", false);
+			observerService.addObserver(this, "cardbook.cardRemovedDirect", false);
+			observerService.addObserver(this, "cardbook.cardModifiedIndirect", false);
+			observerService.addObserver(this, "cardbook.cardModifiedDirect", false);
+
+			observerService.addObserver(this, "cardbook.syncRunning", false);
+			observerService.addObserver(this, "cardbook.cardPasted", false);
+			observerService.addObserver(this, "cardbook.cardDragged", false);
+			observerService.addObserver(this, "cardbook.cardImportedFromFile", false);
+		},
+		
+		unregister: function() {
+			var observerService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+			observerService.removeObserver(this, "cardbook.catModifiedIndirect");
+			observerService.removeObserver(this, "cardbook.catModifiedDirect");
+			observerService.removeObserver(this, "cardbook.catRemovedIndirect");
+			observerService.removeObserver(this, "cardbook.catRemovedDirect");
+			observerService.removeObserver(this, "cardbook.catAddedIndirect");
+			observerService.removeObserver(this, "cardbook.catAddedDirect");
+
+			observerService.removeObserver(this, "cardbook.ABAddedDirect");
+			observerService.removeObserver(this, "cardbook.ABRemovedDirect");
+			observerService.removeObserver(this, "cardbook.ABModifiedDirect");
+
+			observerService.removeObserver(this, "cardbook.cardAddedIndirect");
+			observerService.removeObserver(this, "cardbook.cardAddedDirect");
+			observerService.removeObserver(this, "cardbook.cardRemovedIndirect");
+			observerService.removeObserver(this, "cardbook.cardRemovedDirect");
+			observerService.removeObserver(this, "cardbook.cardModifiedIndirect");
+			observerService.removeObserver(this, "cardbook.cardModifiedDirect");
+
+			observerService.removeObserver(this, "cardbook.syncRunning");
+			observerService.removeObserver(this, "cardbook.cardPasted");
+			observerService.removeObserver(this, "cardbook.cardDragged");
+			observerService.removeObserver(this, "cardbook.cardImportedFromFile");
+		},
+		
+		observe: function(aSubject, aTopic, aData) {
+			switch (aTopic) {
+				case "cardbook.catAddedIndirect":
+				case "cardbook.cardAddedIndirect":
+				case "cardbook.cardRemovedIndirect":
+				case "cardbook.cardRemovedDirect":
+				case "cardbook.cardModifiedIndirect":
+				case "cardbook.syncRunning":
+				case "cardbook.cardPasted":
+				case "cardbook.cardDragged":
+				case "cardbook.cardImportedFromFile":
+				case "cardbook.catAddedDirect":
+				case "cardbook.catRemovedIndirect":
+				case "cardbook.catRemovedDirect":
+				case "cardbook.catModifiedIndirect":
+				case "cardbook.catModifiedDirect":
+				case "cardbook.ABAddedDirect":
+				case "cardbook.ABRemovedDirect":
+				case "cardbook.ABModifiedDirect":
+				case "cardbook.cardAddedDirect":
+				case "cardbook.cardModifiedDirect":
+					wdw_cardbookContactsSidebar.onABChange();
+					break;
+			}
+		}
+	};
+
+	var myCardBookPrefObserver = {
+		register: function() {
+			this.branch = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.cardbook.");
+			if (!("addObserver" in this.branch)) {
+				this.branch.QueryInterface(Components.interfaces.nsIPrefBranch2);
+			}
+			this.branch.addObserver("", this, false);
+		},
+		
+		unregister: function() {
+			this.branch.removeObserver("", this);
+		},
+		
+		observe: function(aSubject, aTopic, aData) {
+			switch (aData) {
+				case "exclusive":
+					wdw_cardbookContactsSidebar.loadAB();
+					break;
+				case "preferEmailPref":
+					wdw_cardbookContactsSidebar.onABChange();
+					break;
+			}
+		}
+	};
+
 	var wdw_cardbookContactsSidebar = {
 		mutationObs: null,
 		searchResults: [],
@@ -58,11 +180,7 @@ if ("undefined" == typeof(wdw_cardbookContactsSidebar)) {
 			var myData = wdw_cardbookContactsSidebar.searchResults;
 
 			if (myData && myData.length) {
-				myData.sort(function(a,b) {
-					if (a[columnArray].toUpperCase() > b[columnArray].toUpperCase()) return 1 * order;
-					if (a[columnArray].toUpperCase() < b[columnArray].toUpperCase()) return -1 * order;
-					return 0;
-				});
+				myData = cardbookUtils.sortArrayByString(myData,columnArray,order);
 			}
 
 			//setting these will make the sort option persist
@@ -486,10 +604,10 @@ if ("undefined" == typeof(wdw_cardbookContactsSidebar)) {
 			var listOfUid = wdw_cardbookContactsSidebar.getSelectedCards();
 			for (var i = 0; i < listOfUid.length; i++) {
 				if (listOfUid[i][0] === "CARDCARDBOOK" || listOfUid[i][0] === "LISTCARDBOOK") {
-					wdw_cardbook.deleteCardsAndValidate([listOfUid[i][1]]);
+					wdw_cardbook.deleteCardsAndValidate("cardbook.cardRemovedIndirect", [listOfUid[i][1]]);
 				} else if (listOfUid[i][0] === "CATCARDBOOK") {
 					var myCatArray = listOfUid[i][1].split("::");
-					wdw_cardbook.removeCategory(myCatArray[0], myCatArray[1]);
+					wdw_cardbook.removeCategory(myCatArray[0], myCatArray[1], "cardbook.catRemovedIndirect", false);
 				} else if (listOfUid[i][0] === "CARDCORE" || listOfUid[i][0] === "LISTCORE") {
 					var myCard = listOfUid[i][1];
 					gAddressBookBundle = document.getElementById("bundle_addressBook");
@@ -521,7 +639,7 @@ if ("undefined" == typeof(wdw_cardbookContactsSidebar)) {
 				if (cardbookPrefService.getReadOnly()) {
 					cardbookUtils.openEditionWindow(myOutCard, "ViewCard");
 				} else {
-					cardbookUtils.openEditionWindow(myOutCard, "EditCard");
+					cardbookUtils.openEditionWindow(myOutCard, "EditCard", "cardbook.cardModifiedIndirect");
 				}
 			} else if (listOfUid[0][0] === "CARDCORE") {
 				var myCard = listOfUid[0][1];
@@ -535,7 +653,7 @@ if ("undefined" == typeof(wdw_cardbookContactsSidebar)) {
 				}
 			} else if (listOfUid[0][0] === "CATCARDBOOK") {
 				var myCatArray = listOfUid[0][1].split("::");
-				wdw_cardbook.renameCategory(myCatArray[0], myCatArray[1]);
+				wdw_cardbook.renameCategory(myCatArray[0], myCatArray[1], "cardbook.catModifiedIndirect", false);
 			}
 			wdw_cardbookContactsSidebar.search();
 		},
@@ -591,8 +709,19 @@ if ("undefined" == typeof(wdw_cardbookContactsSidebar)) {
 		},
 
 		loadPanel: function () {
+			myCardBookObserver.register();
+			myCardBookPrefObserver.register();
 			document.title = parent.document.getElementById("sidebar-title").value;
 			Components.utils.import("chrome://cardbook/content/cardbookRepository.js");
+			wdw_cardbookContactsSidebar.loadAB();
+		},
+		
+		unloadPanel: function () {
+			myCardBookObserver.unregister();
+			myCardBookPrefObserver.unregister();
+		},
+		
+		loadAB: function () {
 			var ABList = document.getElementById('CardBookABMenulist');
 			if (ABList.value != null && ABList.value !== undefined && ABList.value != "") {
 				var ABDefaultValue = ABList.value;
@@ -645,22 +774,5 @@ if ("undefined" == typeof(wdw_cardbookContactsSidebar)) {
 			wdw_cardbookContactsSidebar.search();
 		}
 		
-	}
-};
-
-var abResultsPaneObserver = {
-	onDragStart: function (aEvent, aXferData, aDragAction) {
-		var listOfEmails = wdw_cardbookContactsSidebar.getSelectedEmails();
-		aXferData.data = new TransferData();
-		aXferData.data.addDataForFlavour("text/x-moz-address", listOfEmails.join(", "));
-		aXferData.data.addDataForFlavour("text/unicode", listOfEmails.join(", "));
-		aDragAction.action = Components.interfaces.nsIDragService.DRAGDROP_ACTION_COPY;
-	},
-
-	onDrop: function (aEvent, aXferData, aDragSession) {},
-	onDragExit: function (aEvent, aDragSession) {},
-	onDragOver: function (aEvent, aFlavour, aDragSession) {},
-	getSupportedFlavours: function () {
-		return null;
 	}
 };

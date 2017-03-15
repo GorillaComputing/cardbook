@@ -20,6 +20,8 @@
 <!ENTITY exclusiveTooltip "Als deze optie ingeschakeld is, dan wordt bij het typen uitsluitend naar email adressen in CardBook gezocht; als de optie uit staat, dan wordt ook in de Thunderbird-boeken gezocht.">
 <!ENTITY emailsCollectionLabel "Contactpersoon toevoegen bij uitgaande berichten">
 <!ENTITY emailsCollectionAccesskey "C">
+<!ENTITY emailsCollectionCatLabel "Categorie koppelen aan verzamelde contactpersonen">
+<!ENTITY emailsCollectionCatAccesskey "C">
 <!ENTITY emailsCollectionTooltip "Contactpersoon toevoegen bij uitgaande berichten als het email adres nog niet in CardBook voorkomt.">
 
 <!ENTITY logGroupboxLabel "Logbestand">
@@ -133,7 +135,7 @@
 <!ENTITY decodeReportAccesskey "O">
 
 <!ENTITY miscEmailGroupboxLabel "Versturen emails">
-<!ENTITY preferEmailPrefLabel "Voorkeur voor email adressen die als 'PREF' gemarkeerd zijn">
+<!ENTITY preferEmailPrefLabel "Voorkeur voor email adressen die als 'Voorkeur' gemarkeerd zijn">
 <!ENTITY preferEmailPrefAccesskey "V">
 <!ENTITY preferEmailPrefWarn "Als er geen email adres gemarkeerd is, dan worden berichten naar alle adressen van de betreffende contactpersoon verstuurd.">
 <!ENTITY attachvCardWarn "Selecteer voor elke email-account een vCard om aan alle uitgaande berichten van die account(s) de betreffende vCard toe te voegen. Dit gebeurt automatisch als deze voorziening ingeschakeld is in de instellingen.">

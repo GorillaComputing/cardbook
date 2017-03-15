@@ -69,6 +69,9 @@ if ("undefined" == typeof(cardbookTabType)) {
 					switch (aCommand) {
 						case "cmd_viewClassicMailLayout":
 						case "cmd_viewVerticalMailLayout":
+						case "cmd_printSetup":
+						case "cmd_print":
+						case "cmd_printpreview":
 							return true;
 						default:
 							return false;
@@ -79,6 +82,9 @@ if ("undefined" == typeof(cardbookTabType)) {
 					switch (aCommand) {
 						case "cmd_viewClassicMailLayout":
 						case "cmd_viewVerticalMailLayout":
+						case "cmd_printSetup":
+						case "cmd_print":
+						case "cmd_printpreview":
 							return true;
 						default:
 							return false;
@@ -90,6 +96,13 @@ if ("undefined" == typeof(cardbookTabType)) {
 						case "cmd_viewClassicMailLayout":
 						case "cmd_viewVerticalMailLayout":
 							ovl_cardbookLayout.changeOrientPanes(aCommand);
+							break;
+						case "cmd_printSetup":
+							PrintUtils.showPageSetup();
+							break;
+						case "cmd_print":
+						case "cmd_printpreview":
+							wdw_cardbook.print();
 							break;
 					}
 				},
@@ -115,8 +128,9 @@ if ("undefined" == typeof(ovl_cardbook)) {
 					mail3PaneWindow.focus();
 				}
 			}
-			var strBundle = document.getElementById("cardbook-strings");
-			tabmail.openTab('cardbook', {title: strBundle.getString("cardbookTitle")});
+			var stringBundleService = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
+			var strBundle = stringBundleService.createBundle("chrome://cardbook/locale/cardbook.properties");
+			tabmail.openTab('cardbook', {title: strBundle.GetStringFromName("cardbookTitle")});
 		}
 	};
 };
@@ -149,6 +163,16 @@ window.addEventListener("load", function(e) {
 			}
 		}
 		prefs.setBoolPref("extensions.cardbook.firstRun", false);
+	}
+
+	if (document.getElementById("addressBook")) {
+		document.getElementById("addressBook").removeAttribute("key");
+	}
+	if (document.getElementById("appmenu_addressBook")) {
+		document.getElementById("appmenu_addressBook").removeAttribute("key");
+	}
+	if (document.getElementById("key_addressbook")) {
+		document.getElementById("key_addressbook").setAttribute("key", "");
 	}
 
 	window.removeEventListener('load', arguments.callee, true);

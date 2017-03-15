@@ -57,7 +57,7 @@ if ("undefined" == typeof(cardbookMailPopularity)) {
 					var lowerMail = mail.toLowerCase();
 					sortable.push([lowerMail, cardbookRepository.cardbookMailPopularityIndex[lowerMail]]);
 				}
-				sortable.sort(function(a, b) {return b[1] - a[1]});
+				sortable = cardbookUtils.sortArrayByNumber(sortable,1,-1);
 
 				var writable = [];
 				for (var i = 0; i < sortable.length; i++) {

@@ -3,6 +3,7 @@ function cardbookPreferenceService(uniqueId) {
     this.prefCardBookRoot = "extensions.cardbook.";
     this.prefCardBookData = this.prefCardBookRoot + "data.";
     this.prefCardBookTypes = this.prefCardBookRoot + "types.";
+    this.prefCardBookTels = this.prefCardBookRoot + "tels.";
     this.prefCardBookIMPPs = this.prefCardBookRoot + "impps.";
     this.prefCardBookCustoms = this.prefCardBookRoot + "customs.";
     this.prefCardBookMailAccount = this.prefCardBookRoot + "mailAccount.";
@@ -62,6 +63,16 @@ cardbookPreferenceService.prototype = {
 		}
     },
 
+    _getRootPref: function (prefName) {
+		try {
+			let value = this.mPreferencesService.getComplexValue(prefName, Components.interfaces.nsISupportsString).data;
+			return value;
+		}
+		catch(e) {
+			return "";
+		}
+    },
+
     _getPref: function (prefName) {
 		try {
 			let value = this.mPreferencesService.getComplexValue(this.prefPath + prefName, Components.interfaces.nsISupportsString).data;
@@ -80,6 +91,17 @@ cardbookPreferenceService.prototype = {
 		}
 		catch(e) {
 			dump("cardbookPreferenceService._setPref : failed to set" + this.prefPath + prefName + "\n" + e + "\n");
+		}
+    },
+
+    _setRootPref: function (prefName, value) {
+		try {
+			var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+			str.data = value;
+			this.mPreferencesService.setComplexValue(prefName, Components.interfaces.nsISupportsString, str);
+		}
+		catch(e) {
+			dump("cardbookPreferenceService._setRootPref : failed to set" + prefName + "\n" + e + "\n");
 		}
     },
 
@@ -122,6 +144,8 @@ cardbookPreferenceService.prototype = {
 
     getAllTypesCategory: function () {
 		try {
+			var loader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Components.interfaces.mozIJSSubScriptLoader);
+			loader.loadSubScript("chrome://cardbook/content/cardbookUtils.js");
 			var count = {};
 			var finalResult = [];
 			var result = this.mPreferencesService.getChildList(this.prefCardBookTypes, count);
@@ -130,9 +154,7 @@ cardbookPreferenceService.prototype = {
 				finalResult.push(result[i].replace(this.prefCardBookTypes,""));
 			}
 			finalResult = this._arrayUnique(finalResult);
-			finalResult = finalResult.sort(function(a,b) {
-				return a[0].localeCompare(b[0], 'en', {'sensitivity': 'base'});
-			});
+			finalResult = cardbookUtils.sortArrayByString(finalResult,0,1);
 			return finalResult;
 		}
 		catch(e) {
@@ -142,6 +164,8 @@ cardbookPreferenceService.prototype = {
 
     getAllTypesByType: function (aType) {
 		try {
+			var loader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Components.interfaces.mozIJSSubScriptLoader);
+			loader.loadSubScript("chrome://cardbook/content/cardbookUtils.js");
 			var count = {};
 			var finalResult = [];
 			var finalResult1 = [];
@@ -183,9 +207,7 @@ cardbookPreferenceService.prototype = {
 					}
 				}
 			}
-			finalResult1 = finalResult1.sort(function(a,b) {
-				return a[1].localeCompare(b[1], 'en', {'sensitivity': 'base'});
-			});
+			finalResult1 = cardbookUtils.sortArrayByString(finalResult1,1,1);
 			return finalResult1;
 		}
 		catch(e) {
@@ -243,6 +265,8 @@ cardbookPreferenceService.prototype = {
 
     getAllIMPPs: function () {
 		try {
+			var loader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Components.interfaces.mozIJSSubScriptLoader);
+			loader.loadSubScript("chrome://cardbook/content/cardbookUtils.js");
 			var count = {};
 			var finalResult = [];
 			var finalResult1 = [];
@@ -257,13 +281,37 @@ cardbookPreferenceService.prototype = {
 				var tmpArray = finalResult[i].split(":");
 				finalResult1.push([tmpArray[0], tmpArray[1], tmpArray[2]]);
 			}
-			finalResult1 = finalResult1.sort(function(a,b) {
-				return a[1].localeCompare(b[1], 'en', {'sensitivity': 'base'});
-			});
+			finalResult1 = cardbookUtils.sortArrayByString(finalResult1,1,1);
 			return finalResult1;
 		}
 		catch(e) {
 			dump("cardbookPreferenceService.getAllIMPPs error : " + e + "\n");
+		}
+    },
+
+    getAllTels: function () {
+		try {
+			var loader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Components.interfaces.mozIJSSubScriptLoader);
+			loader.loadSubScript("chrome://cardbook/content/cardbookUtils.js");
+			var count = {};
+			var finalResult = [];
+			var finalResult1 = [];
+			var result = this.mPreferencesService.getChildList(this.prefCardBookTels, count);
+			
+			for (let i = 0; i < result.length; i++) {
+				var prefName = result[i].replace(this.prefCardBookTels, "");
+				finalResult.push(this.getTels(prefName));
+			}
+			finalResult = this._arrayUnique(finalResult);
+			for (let i = 0; i < finalResult.length; i++) {
+				var tmpArray = finalResult[i].split(":");
+				finalResult1.push([tmpArray[0], tmpArray[1], tmpArray[2]]);
+			}
+			finalResult1 = cardbookUtils.sortArrayByString(finalResult1,1,1);
+			return finalResult1;
+		}
+		catch(e) {
+			dump("cardbookPreferenceService.getAllTels error : " + e + "\n");
 		}
     },
 
@@ -375,6 +423,36 @@ cardbookPreferenceService.prototype = {
 		}
 		catch(e) {
 			dump("cardbookPreferenceService.delIMPPs : failed to delete" + this.prefCardBookIMPPs + "\n" + e + "\n");
+		}
+    },
+
+    getTels: function (prefName) {
+		try {
+			let value = this.mPreferencesService.getComplexValue(this.prefCardBookTels + prefName, Components.interfaces.nsISupportsString).data;
+			return value;
+		}
+		catch(e) {
+			dump("cardbookPreferenceService.getTels : failed to get" + this.prefCardBookTels + prefName + "\n" + e + "\n");
+		}
+    },
+
+    setTels: function (prefName, value) {
+		try {
+			var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+			str.data = value;
+			this.mPreferencesService.setComplexValue(this.prefCardBookTels + prefName, Components.interfaces.nsISupportsString, str);
+		}
+		catch(e) {
+			dump("cardbookPreferenceService.setTels : failed to set" + this.prefCardBookTels + prefName + "\n" + e + "\n");
+		}
+    },
+
+    delTels: function () {
+		try {
+			this.mPreferencesService.deleteBranch(this.prefCardBookTels);
+		}
+		catch(e) {
+			dump("cardbookPreferenceService.delTels : failed to delete" + this.prefCardBookTels + "\n" + e + "\n");
 		}
     },
 
@@ -522,7 +600,7 @@ cardbookPreferenceService.prototype = {
     getUrl: function () {
         let url = this._getPref("url");
         let type = this._getPref("type");
-        if (type !== "FILE" && type !== "CACHE" && type !== "DIRECTORY" && type !== "SEARCH") {
+        if (type !== "FILE" && type !== "CACHE" && type !== "DIRECTORY" && type !== "SEARCH" && type !== "LOCALDB") {
 			if (url) {
 				if (url[url.length - 1] != '/') {
 					url += '/';
@@ -598,12 +676,20 @@ cardbookPreferenceService.prototype = {
         this._setPref("color", color);
     },
 
-   getVCard: function () {
+    getDBCached: function () {
+        return this._getBoolPref("DBcached", false);
+    },
+
+    setDBCached: function (DBcached) {
+        this._setBoolPref("DBcached", DBcached);
+    },
+
+    getVCard: function () {
         let vCard = this._getPref("vCard");
         if (vCard != null && vCard !== undefined && vCard != "") {
         	return vCard;
         } else {
-        	vCard = this._getBoolRootPref(this.prefCardBookRoot + "cardCreationVersion");
+        	vCard = this._getRootPref(this.prefCardBookRoot + "cardCreationVersion");
 	if (vCard != null && vCard !== undefined && vCard != "") {
 		return vCard;
 	} else {
@@ -613,7 +699,42 @@ cardbookPreferenceService.prototype = {
     },
 
     setVCard: function (aVCard) {
-        this._setPref("vCard", aVCard);
+        if (aVCard != null && aVCard !== undefined && aVCard != "") {
+        	this._setPref("vCard", aVCard);
+        }
+    },
+
+   getDateFormat: function () {
+        let dateFormat = this._getPref("dateFormat");
+        if (dateFormat != null && dateFormat !== undefined && dateFormat != "") {
+        	return dateFormat;
+        } else {
+        	dateFormat = this._getRootPref(this.prefCardBookRoot + "dateFormatMenu");
+	if (dateFormat != null && dateFormat !== undefined && dateFormat != "") {
+		return dateFormat;
+	} else {
+		return "YYYY-MM-DD";
+	}
+        }
+    },
+
+    setDateFormat: function (aDateFormat) {
+        if (aDateFormat != null && aDateFormat !== undefined && aDateFormat != "") {
+        	this._setPref("dateFormat", aDateFormat);
+        }
+    },
+
+   getUrnuuid: function () {
+        let urnuuid = this._getBoolPref("urnuuid");
+        if (urnuuid != null && urnuuid !== undefined && urnuuid != "") {
+        	return urnuuid;
+        } else {
+        	return false;
+        }
+    },
+
+    setUrnuuid: function (aUrnuuid) {
+    	this._setBoolPref("urnuuid", aUrnuuid);
     },
 
    getPrefLabel: function () {

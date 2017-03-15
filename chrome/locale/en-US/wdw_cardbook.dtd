@@ -37,6 +37,8 @@
 <!ENTITY cardbookToolbarEditButtonTooltip "Allow the contact modification">
 <!ENTITY cardbookToolbarRemoveButtonLabel "Delete contact">
 <!ENTITY cardbookToolbarRemoveButtonTooltip "Allow the contact deletion">
+<!ENTITY cardbookToolbarPrintButtonLabel "Print Preview">
+<!ENTITY cardbookToolbarPrintButtonTooltip "Allow to print the selection">
 <!ENTITY cardbookToolbarAppMenuButtonLabel "CardBook menu">
 <!ENTITY cardbookToolbarAppMenuButtonTooltip "CardBook menu">
 <!ENTITY cardbookToolbarSearchBoxLabel "Contacts search">
@@ -124,7 +126,9 @@
 <!ENTITY localizeadrTreeLabel "Localize">
 <!ENTITY toEmailEmailTreeLabel "Email entry">
 <!ENTITY ccEmailEmailTreeLabel "Email entry (copy / cc)">
-<!ENTITY bccemailemailTree "Email entry (blind copy / bcc)">
+<!ENTITY bccemailemailTreeLabel "Email entry (blind copy / bcc)">
+<!ENTITY findemailemailTreeLabel "Find emails related to this email address">
+<!ENTITY findeventemailTreeLabel "Find calendar events related to this email address">
 <!ENTITY openURLTreeLabel "Open URL">
 
 <!ENTITY copyCardTreeLabel "Copy entry">
@@ -135,7 +139,9 @@
 <!ENTITY ccEmailCardFromCardsLabel "Email contacts (copy / cc)">
 <!ENTITY bccEmailCardFromAccountsOrCatsLabel "Email contacts (blind copy / bcc)">
 <!ENTITY bccEmailCardFromCardsLabel "Email contacts (blind copy / bcc)">
-<!ENTITY findEmailsFromCardsLabel "Find contact emails">
+<!ENTITY categoryLabel "Category">
+<!ENTITY findEmailsFromCardsLabel "Find emails related to this contact">
+<!ENTITY findEventsFromCardsLabel "Find calendar events related to this contact">
 <!ENTITY localizeCardFromCardsLabel "Localize contact">
 <!ENTITY openURLCardFromCardsLabel "Open URLs from contact">
 <!ENTITY cutCardFromAccountsOrCatsLabel "Cut contact">
@@ -157,4 +163,4 @@
 <!ENTITY syncAccountFromAccountsOrCatsLabel "Synchronize address book">
 <!ENTITY removeAccountFromAccountsOrCatsLabel "Delete address book">
 
-<!ENTITY IMPPMenuLabel "Connect">
+<!ENTITY IMPPMenuLabel "Connect To">

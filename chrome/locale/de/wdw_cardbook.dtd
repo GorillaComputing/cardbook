@@ -37,6 +37,8 @@
 <!ENTITY cardbookToolbarEditButtonTooltip "Erlaube das Ändern von Kontakten">
 <!ENTITY cardbookToolbarRemoveButtonLabel "Kontakt löschen">
 <!ENTITY cardbookToolbarRemoveButtonTooltip "Erlaube das Löschen von Kontakten">
+<!ENTITY cardbookToolbarPrintButtonLabel "Druckvorschau">
+<!ENTITY cardbookToolbarPrintButtonTooltip "Erlaube die Auswahl zu drucken">
 <!ENTITY cardbookToolbarAppMenuButtonLabel "CardBook Menü">
 <!ENTITY cardbookToolbarAppMenuButtonTooltip "CardBook Menü">
 <!ENTITY cardbookToolbarSearchBoxLabel "Suche Kontakte">
@@ -124,7 +126,9 @@
 <!ENTITY localizeadrTreeLabel "Lokalisieren">
 <!ENTITY toEmailEmailTreeLabel "Email an Kontakt verfassen">
 <!ENTITY ccEmailEmailTreeLabel "Email an Kontakt verfassen (Kopie / Cc)">
-<!ENTITY bccemailemailTree "Email an Kontakt verfassen (Blindkopie / Bcc)">
+<!ENTITY bccemailemailTreeLabel "Email an Kontakt verfassen (Blindkopie / Bcc)">
+<!ENTITY findemailemailTreeLabel "Suche Emails in Bezug auf diese Email-Adresse">
+<!ENTITY findeventemailTreeLabel "Suche Termine in Bezug auf diese Email-Adresse">
 <!ENTITY openURLTreeLabel "URL öffnen">
 
 <!ENTITY copyCardTreeLabel "Eintrag kopieren">
@@ -135,7 +139,9 @@
 <!ENTITY ccEmailCardFromCardsLabel "Email an Kontakt verfassen (Kopie / Cc)">
 <!ENTITY bccEmailCardFromAccountsOrCatsLabel "Email an Kontakt verfassen (Blindkopie / Bcc)">
 <!ENTITY bccEmailCardFromCardsLabel "Email an Kontakt verfassen (Blindkopie / Bcc)">
-<!ENTITY findEmailsFromCardsLabel "Suche Email-Adressen des Kontakts">
+<!ENTITY categoryLabel "Kategorie">
+<!ENTITY findEmailsFromCardsLabel "Suche Emails des Kontakts">
+<!ENTITY findEventsFromCardsLabel "Suche Termine des Kontakts">
 <!ENTITY localizeCardFromCardsLabel "Kontakt Lokalisieren">
 <!ENTITY openURLCardFromCardsLabel "URL öffnen">
 <!ENTITY cutCardFromAccountsOrCatsLabel "Kontakt ausschneiden">

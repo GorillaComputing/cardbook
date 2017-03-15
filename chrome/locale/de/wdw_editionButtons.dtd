@@ -10,6 +10,8 @@
 <!ENTITY validateEditionAccesskey "U">
 <!ENTITY cancelEditionLabel "Abbrechen">
 <!ENTITY cancelEditionAccesskey "A">
+<!ENTITY closeEditionLabel "Schließen">
+<!ENTITY closeEditionAccesskey "S">
 <!ENTITY buttonAppendToListLabel "Ersetzen">
 <!ENTITY buttonAppendToListAccesskey "R">
 <!ENTITY buttonRemoveFromListLabel "Entfernen">

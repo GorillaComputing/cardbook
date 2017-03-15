@@ -3,6 +3,7 @@
 <?xul-overlay href="chrome://cardbook/content/ovl_cardbookStringBundle.xul"?>
 <!DOCTYPE window [
 	<!ENTITY % birthdaySyncDTD SYSTEM "chrome://cardbook/locale/wdw_birthdaySync.dtd"> %birthdaySyncDTD;
+	<!ENTITY % buttonsDTD SYSTEM "chrome://cardbook/locale/wdw_editionButtons.dtd"> %buttonsDTD;
 ]>
 
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -17,6 +18,7 @@
 
 	<script src="chrome://messenger/content/dateFormat.js"/>
 	<script src="chrome://cardbook/content/cardbookUtils.js"/>
+	<script src="chrome://cardbook/content/preferences/cardbookPreferences.js"/>
 	<script src="chrome://cardbook/content/birthdays/cardbookBirthdaysUtils.js"/>
 	<script src="chrome://cardbook/content/birthdays/wdw_birthdaySync.js"/>
 
@@ -41,6 +43,6 @@
 
 	<hbox>
 		<spacer flex="1"/>  
-		<button label="&closeButtonLabel;" accesskey="&closeButtonAccesskey;" oncommand="wdw_birthdaySync.do_close();"/>
+		<button label="&closeEditionLabel;" accesskey="&closeEditionAccesskey;" oncommand="wdw_birthdaySync.do_close();"/>
 	</hbox>
 </window>

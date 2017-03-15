@@ -18,9 +18,9 @@ if ("undefined" == typeof(wdw_cardbookAddIMPP)) {
 		},
 
 		save: function () {
-			window.arguments[0].code = document.getElementById('IMPPCodeTextBox').value.trim();
-			window.arguments[0].label = document.getElementById('IMPPLabelTextBox').value.trim();
-			window.arguments[0].protocol = document.getElementById('IMPPProtocolTextBox').value.trim();
+			window.arguments[0].code = document.getElementById('IMPPCodeTextBox').value.replace(/:/g, "").trim();
+			window.arguments[0].label = document.getElementById('IMPPLabelTextBox').value.replace(/:/g, "").trim();
+			window.arguments[0].protocol = document.getElementById('IMPPProtocolTextBox').value.replace(/:/g, "").trim();
 			window.arguments[0].typeAction="SAVE";
 			close();
 		},

@@ -73,7 +73,6 @@
 		<tabs>
 			<tab id="generalTab" label="&generalTabLabel;"/>        
 			<tab id="noteTab" label="&noteTabLabel;"/>
-			<tab id="categoriesTab" label="&categoriesGroupboxLabel;"/>
 			<tab id="listTab" label="&listTabLabel;"/>
 			<tab id="mailPopularityTab" label="&mailPopularityTabLabel;"/>
 		</tabs>
@@ -92,11 +91,22 @@
 										</menulist>
 									</hbox>
 								</groupbox>
+								<groupbox id="categoriesReadOnlyGroupbox">
+									<caption label="&categoriesGroupboxLabel;" class="header"/>
+									<textbox id="categoriesTextBox" flex="1"/>
+								</groupbox>
+								<groupbox id="categoriesReadWriteGroupbox" flex="1">
+									<caption label="&categoriesGroupboxLabel;" class="header"/>
+									<hbox align="center" flex="1">
+										<menulist id="categoriesMenulist" type="cardbookPanelMenulist" flex="1">
+											<panel id="categoriesPanel" type="cardbookCategoryPanel" onpopuphiding="cardbookUtils.updateCategoryMenulist(this);"/>
+										</menulist>
+									</hbox>
+								</groupbox>
 								<groupbox id="existingDataGroupbox" flex="1">
 									<caption label="&existingDataGroupboxLabel;" class="header"/>
 									<hbox align="center" flex="1">
-										<label id="contactMenulistLabel" value="&contactLabel;" control="contactMenulist" class="header"/>
-										<menulist id="contactMenulist" editable="true" flex="1" oncommand="wdw_cardEdition.changeContact();">
+										<menulist id="contactMenulist" flex="1" oncommand="wdw_cardEdition.changeContact();">
 											<menupopup id="contactMenupopup" flex="1" onpopupshowing="wdw_cardEdition.loadContacts();"/>
 										</menulist>
 									</hbox>
@@ -132,7 +142,7 @@
 										<button id="cardbookSwitchButtonDown" class="small-button" label="↓" tooltiptext="&cardbookSwitchButtonTooltip;"
 												onclick="wdw_cardEdition.switchLastnameAndFirstname();" oninput="wdw_cardEdition.switchLastnameAndFirstname();"/>
 									</hbox>
-									<textbox id="lastnameTextBox"/>
+									<textbox id="lastnameTextBox" oninput="wdw_cardEdition.setDisplayName();"/>
 								</row>
 								<row align="center">
 									<hbox flex="1" align="center">
@@ -141,19 +151,19 @@
 										<button id="cardbookSwitchButtonUp" class="small-button" label="↑" tooltiptext="&cardbookSwitchButtonTooltip;"
 												onclick="wdw_cardEdition.switchLastnameAndFirstname();" oninput="wdw_cardEdition.switchLastnameAndFirstname();"/>
 									</hbox>
-									<textbox id="firstnameTextBox"/>
+									<textbox id="firstnameTextBox" oninput="wdw_cardEdition.setDisplayName();"/>
 								</row>
 								<row align="center">
 									<label id="othernameLabel" value="&othernameLabel;" control="othernameTextBox" class="header"/>
-									<textbox id="othernameTextBox"/>
+									<textbox id="othernameTextBox" oninput="wdw_cardEdition.setDisplayName();"/>
 								</row>
 								<row align="center">
 									<label id="prefixnameLabel" value="&prefixnameLabel;" control="prefixnameTextBox" class="header"/>
-									<textbox id="prefixnameTextBox"/>
+									<textbox id="prefixnameTextBox" oninput="wdw_cardEdition.setDisplayName();"/>
 								</row>
 								<row align="center">
 									<label id="suffixnameLabel" value="&suffixnameLabel;" control="suffixnameTextBox" class="header"/>
-									<textbox id="suffixnameTextBox"/>
+									<textbox id="suffixnameTextBox" oninput="wdw_cardEdition.setDisplayName();"/>
 								</row>
 								<row align="center">
 									<label id="nicknameLabel" value="&nicknameLabel;" control="nicknameTextBox" class="header"/>
@@ -283,34 +293,6 @@
 				<hbox id="noteGroupbox" flex="1">
 					<textbox id="noteTextBox" flex="1" multiline="true" wrap="virtual"/>
 				</hbox>
-			</tabpanel>
-
-			<tabpanel orient="vertical" style="overflow:auto">
-				<groupbox id="categoriesReadOnlyGroupbox">
-					<caption id="categoriesLabel" label="&categoriesGroupboxLabel;" class="header"/>
-					<textbox id="categoriesTextBox" flex="1"/>
-				</groupbox>
-				<groupbox id="categoriesReadWriteGroupbox" flex="1">
-					<caption label="&categoriesGroupboxLabel;" class="header"/>
-					<grid align="center" flex="1">
-						<columns>
-							<column/>
-							<column flex="1"/>
-						</columns>
-						<rows>
-							<row align="center" flex="1">
-								<label value="&categoriesListboxLabel;" control="categoriesListbox" class="header"/>
-								<listbox id="categoriesListbox" align="center" flex="1"/>
-							</row>
-							<row align="center">
-								<label value="&categoryTextboxLabel;" control="categoryTextbox" class="header"/>
-								<textbox id="categoryTextbox"/>
-								<button id="createCategoryEditionLabel" label="&createEditionLabel;" accesskey="&createEditionAccesskey;" oncommand="wdw_cardEdition.createCategory();"/>
-							</row>
-						</rows>
-					</grid>
-				</groupbox>
-				<spacer flex="100"/>
 			</tabpanel>
 
 			<tabpanel orient="vertical" style="overflow:auto">

@@ -22,6 +22,7 @@
 	<script src="chrome://cardbook/content/wdw_log.js"/>
 	<script src="chrome://cardbook/content/cardbookUtils.js"/>
 	<script src="chrome://cardbook/content/cardbookElementTools.js"/>
+	<script src="chrome://cardbook/content/cardbookCardParser.js"/>
 	<script src="chrome://cardbook/content/findDuplicates/wdw_findDuplicates.js"/>
 
 	<keyset id="wdw_findDuplicates-keys">

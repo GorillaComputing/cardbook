@@ -14,6 +14,7 @@
 <page id="abContactsPanel"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	onload="wdw_cardbookContactsSidebar.loadPanel();"
+	onunload="wdw_cardbookContactsSidebar.unloadPanel();"
 	selectedaddresses="true">
 
 	<stringbundleset id="stringbundleset">
@@ -95,7 +96,7 @@
 				<treecol id="PrimaryEmail" label="&PrimaryEmail.label;" flex="1" hidden="true" persist="width ordinal hidden" editable="false"/>
 				<splitter class="tree-splitter"/>
 			</treecols>
-			<treechildren id="abResultsTreeChildren" ondblclick="wdw_cardbookContactsSidebar.doubleClickCardsTree(event);" ondragstart="nsDragAndDrop.startDrag(event, abResultsPaneObserver);"/>
+			<treechildren id="abResultsTreeChildren" ondblclick="wdw_cardbookContactsSidebar.doubleClickCardsTree(event);" ondragstart="nsDragAndDrop.startDrag(event, CardBookResultsPaneObserver);"/>
 		</tree>
 		
 		<separator class="thin"/>
